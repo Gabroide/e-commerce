@@ -198,8 +198,8 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 											<td><?php echo $row_DatosConsulta["strEmail"];?></td>
 											<td><?php echo ShowState($row_DatosConsulta["intEstado"]);?></td>
 											<td><?php echo ShowLevel($row_DatosConsulta["intNivel"]);?></td>
-											<td><a href="user-edit.php?id=<?php echo $row_DatosConsulta["idUsuario"];?>" class="btn btn-success btn-circle">
-											</a></td>
+											<td><a href="user-edit.php?id=<?php echo $row_DatosConsulta["idUsuario"];?>" class="btn btn-warning btn-circle" titel="Edición de Usuario">
+												<i class="fa fa-edit"></i></a></td>
 										</tr>
               		
               							<?php
