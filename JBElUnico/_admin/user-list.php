@@ -57,7 +57,7 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
             if (isset($_GET['totalRows_DatosConsulta'])) {
               $totalRows_DatosConsulta = $_GET['totalRows_DatosConsulta'];
             } else {
-              $all_DatosConsulta = mysqli_query($NOMBRECONEXION,  $query_DatosConsulta);
+              $all_DatosConsulta = mysqli_query($con,  $query_DatosConsulta);
               $totalRows_DatosConsulta = mysqli_num_rows($all_DatosConsulta);
             }
             $totalPages_DatosConsulta = ceil($totalRows_DatosConsulta/$maxRows_DatosConsulta)-1;
@@ -133,34 +133,34 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
                 </div>
                 <div class="col-lg-7">
                 	<div class="well">
-					<form role="form" action="user-list.php" method="get" id="formsearch" name="formsearch">
-						
-						<div class="row">
-                			<div class="col-lg-4">
-						
-						<div class="form-group">
-							<label for="strBuscar">Buscar</label>
-							<input class="form-control" placeholder="Buscar..." name="strBuscar" id="strBuscar">
-						</div>
-							</div>
-							<div class="col-lg-6">
-						<div class="form-group">
-							<label for="intNivel">Nivel de Usuario</label>
-							<select class="form-control" name="intNivel" id="intNivel">
-								<option value="-1">Todos</option>
-								<option value="0">0: Usuario publico de la tienda</option>
-								<option value="1">1: Superadministrador</option>
-								<option value="10">10: Gestor de Ventas</option>
-								<option value="100">100: Gestor de Productos</option>
-							</select>
+						<form role="form" action="user-list.php" method="get" id="formsearch" name="formsearch">
+							<div class="row">
+								<div class="col-lg-4">
+									<div class="form-group">
+										<label for="strBuscar">Buscar</label>
+										<input class="form-control" placeholder="Buscar..." name="strBuscar"  id="strBuscar" value="<?php if (isset($_GET["strBuscar"]))
+											echo $_GET["strBuscar"];
+										?>">	
+									</div>
 								</div>
-						</div>
-						<div class="col-lg-2">
-						<button type="submit" class="btn btn-success" value="Buscar">Buscar</button>
+								<div class="col-lg-6">
+									<div class="form-group">
+										<label for="intNivel">Nivel de Usuario</label>
+										<select class="form-control" name="intNivel" id="intNivel">
+											<option value="-1" <?php if ((isset($_GET["intNivel"])) && (($_GET["intNivel"]=="-1"))) echo "selected"; ?>>Todos</option>
+											<option value="0" <?php if ((isset($_GET["intNivel"])) && (($_GET["intNivel"]=="0"))) echo "selected"; ?>>0: Usuario publico de la tienda</option>
+											<option value="1" <?php if ((isset($_GET["intNivel"])) && (($_GET["intNivel"]=="1"))) echo "selected"; ?>>1: Superadministrador</option>
+											<option value="10" <?php if ((isset($_GET["intNivel"])) && (($_GET["intNivel"]=="10"))) echo "selected"; ?>>10: Gestor de Ventas</option>
+											<option value="100" <?php if ((isset($_GET["intNivel"])) && (($_GET["intNivel"]=="100"))) echo "selected"; ?>>100: Gestor de Productos</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-lg-2">
+									<button type="submit" class="btn btn-success" value="Buscar">Buscar</button>
+								</div>
+								<input type="hidden" name="MM_search" id="MM_search" value="formsearch">
 							</div>
-						<input type="hidden" name="MM_search" id="MM_search" value="formsearch">
-						</div>
-					</form>
+						</form>
 					</div>
 				</div>
 	  		</div>
@@ -183,6 +183,7 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
                                             <th>E-mail</th>
                                             <th>Estado</th>
                                             <th>Nivel</th>
+                                            <th>Acción</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -197,6 +198,8 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 											<td><?php echo $row_DatosConsulta["strEmail"];?></td>
 											<td><?php echo ShowState($row_DatosConsulta["intEstado"]);?></td>
 											<td><?php echo ShowLevel($row_DatosConsulta["intNivel"]);?></td>
+											<td><a href="user-edit.php?id=<?php echo $row_DatosConsulta["idUsuario"];?>" class="btn btn-success btn-circle">
+											</a></td>
 										</tr>
               		
               							<?php
