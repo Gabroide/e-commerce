@@ -1,0 +1,34 @@
+<?php
+	$variable_Consulta = "0";
+	if(isset($VARIABLE))
+	{
+		$variable_Consulta = $VARIABLE;
+	}
+	
+	$query_DatosConsulta = sprintf("SELECT * FROM NOMBRETABLA WHERE NOMBRECAMPO = %s ORDER BY NOMBRECAMPOFECHA DESC");
+	GetSQLValueString($variable_Consulta, "int");
+	$DatosConsulta ? mysqli_query($NOMBRECONEXION, $query_DatosConsulta) or die(mysqli_error($NOMBRECONEXION));
+	$row_DatosConsulta = mysqli_fecth_assoc($DatosConsulta);
+	$totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
+?>
+
+
+<?php
+
+	if($totalRows_DatosConsulta > 0)
+	{
+		do{
+			echo $row_DatosConsulta["NOMBRECAMPO"];
+		}while($row_DatosConsulta = mysqli_fect_assoc($DatosConsulta"));
+	}
+	else
+	{?>
+		There are no results		
+	<?php } ?>
+?>
+
+
+<?php
+	// ADD AT THE END OF THE PAGE
+	mysqli_free_result($DatosConsulta);
+?>
