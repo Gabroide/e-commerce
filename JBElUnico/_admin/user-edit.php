@@ -1,6 +1,49 @@
 <?php require_once('../Connections/conexion.php'); ?>
-<?php
 
+<?php
+//MySQLi Fragmentos por http://www.dreamweaver-tutoriales.com
+//Copyright Jorge Vila 2015
+
+$editFormAction = $_SERVER['PHP_SELF'];
+if (isset($_SERVER['QUERY_STRING'])) {
+  $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
+}
+
+if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsert")) {
+ 
+	if($_POST["strPassword"]!="")
+	{
+		$updateSQL = sprintf("UPDATE tblusuario SET strEmail=%s, strNombre=%s, intNivel=%s, intEstado=%s, strPassword=%s WHERE idUsuario=%s",
+                       GetSQLValueString($_POST["strEmail"], "text"),
+					  GetSQLValueString($_POST["strNombre"], "text"),
+					  GetSQLValueString($_POST["intNivel"], "int"),
+					  GetSQLValueString($_POST["intEstado"], "int"),
+					   GetSQLValueString(md5($_POST["strPassword"]), "text"),
+					  GetSQLValueString($_POST["idUsuario"], "int"));
+	}
+	else
+	{
+		$updateSQL = sprintf("UPDATE tblusuario SET strEmail=%s, strNombre=%s, intNivel=%s, intEstado=%s WHERE idUsuario=%s",
+                       GetSQLValueString($_POST["strEmail"], "text"),
+					  GetSQLValueString($_POST["strNombre"], "text"),
+					  GetSQLValueString($_POST["intNivel"], "int"),
+					  GetSQLValueString($_POST["intEstado"], "int"),
+					  GetSQLValueString($_POST["idUsuario"], "int"));
+	}
+//echo $updateSQL;
+$Result1 = mysqli_query($con, $updateSQL) or die(mysqli_error($con));
+
+  $updateGoTo = "user-list.php";
+  if (isset($_SERVER['QUERY_STRING'])) {
+    $updateGoTo .= (strpos($updateGoTo, '?')) ? "&" : "?";
+    $updateGoTo .= $_SERVER['QUERY_STRING'];
+  }
+  header(sprintf("Location: %s", $updateGoTo));
+}
+
+?>
+
+<?php
 $query_DatosConsulta = sprintf("SELECT * FROM tblusuario WHERE idUsuario=%s", GetSQLValueString($_GET["id"], "int"));
 
 $DatosConsulta = mysqli_query($con,  $query_DatosConsulta) or die(mysqli_error($con));
@@ -63,14 +106,14 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <form role="form" action="user-add.php" method="post" id="forminsert" name="forminsert">
+                                    <form role="form" action="user-edit.php" method="post" id="forminsert" name="forminsert">
                                         <div class="form-group">
                                             <label for="strEmail">Correo electrónico</label>
                                             <input class="form-control" placeholder="micorreo@correo.es" name="strEmail" id="strEmail" value="<?php echo $row_DatosConsulta["strEmail"];?>">
                                         </div>
                                         <div class="form-group">
                                             <label for="strPassword">Contraseña</label>
-                                            <input class="form-control" placeholder="Contraseña" name="strPassword" id="strPassword">
+                                            <input class="form-control" placeholder="Escribir Contraseña sólo si se va a cambiar" name="strPassword" id="strPassword">
                                         </div>
                                         <div class="form-group">
                                             <label for="strNombre">Nombre del Usuario</label>
@@ -93,8 +136,9 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
                                             </select>
                                         </div>
                                         
-                                        <button type="submit" class="btn btn-success" value="Editar">Editar</button>                                        
-                                    	<input type="hidden" name="MM_insert" id="MM_insert" value="forminsertar">
+                                        <button type="submit" class="btn btn-success" value="Editar">Editar</button>
+                                        <input type="hidden" name="idUsuario" id="idUsuario" value="<?php echo $row_DatosConsulta["idUsuario"];?>">                                       
+                                    	<input type="hidden" name="MM_insert" id="MM_insert" value="forminsert">
                                     </form>
                                 </div>
                                 <!-- /.col-lg-6 (nested) -->
