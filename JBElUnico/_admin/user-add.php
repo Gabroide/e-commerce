@@ -11,12 +11,13 @@ if (isset($_SERVER['QUERY_STRING'])) {
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar")) {
 
 
-  $insertSQL = sprintf("INSERT INTO tblusuario(strEmail, strPassword, strNombre, intNivel, intEstado) VALUES (%s, %s, %s, %s, %s)",
+  $insertSQL = sprintf("INSERT INTO tblusuario(strEmail, strPassword, strNombre, intNivel, intEstado, strImagen) VALUES (%s, %s, %s, %s, %s, %s)",
                        GetSQLValueString($_POST["strEmail"], "text"),
 					  GetSQLValueString(md5($_POST["strPassword"]), "text"),
 					  GetSQLValueString($_POST["strNombre"], "text"),
 					  GetSQLValueString($_POST["intNivel"], "int"),
-					  GetSQLValueString($_POST["intEstado"], "int"));
+					  GetSQLValueString($_POST["intEstado"], "int"),
+					  GetSQLValueString($_POST["strImagen"], "text"));
 
   
   $Result1 = mysqli_query($con,  $insertSQL) or die(mysqli_error($con));
@@ -60,6 +61,8 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar")) {
 
 <body>
 <!-- InstanceBeginEditable name="ContenidoAdmin" -->
+<script src="scriptupload.js"></script>
+<script src="../js/script-admin.js"></script>
 <div id="wrapper">
   <!-- Navigation -->
   <?php include("../includes/adm-menu.php"); ?>
@@ -88,10 +91,13 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar")) {
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <form role="form" action="user-add.php" method="post" id="forminsert" name="forminsert">
+                                    <form role="form" action="user-add.php" method="post" id="forminsert" name="forminsert" onSubmit="javascript:return validarusuarioalta();">
                                         <div class="form-group">
                                             <label for="strEmail">Correo electrónico</label>
                                             <input class="form-control" placeholder="micorreo@correo.es" name="strEmail" id="strEmail">
+                                        </div>
+                                        <div class="alert alert-danger hiddeit" id="erroremail">
+                                        	El campo E-mail es obligatorio.
                                         </div>
                                         <div class="form-group">
                                             <label for="strPassword">Contraseña</label>
@@ -117,6 +123,54 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar")) {
                                                 <option value="1" selected>Activo</option>
                                             </select>
                                         </div>
+                                        							
+
+									<?php 
+									//BLOQUE INSERCION IMAGEN
+									//***********************
+									//***********************
+									//***********************									  //***********************
+									//PARÃMETROS DE IMAGEN
+									$nombrecampoimagen="strImagen";
+									$nombrecampoimagenmostrar="strImagenpic";
+									$nombrecarpetadestino="../images/users/"; //carpeta destino con barra al final
+									$nombrecampofichero="file1";
+									$nombrecampostatus="status1";
+									$nombrebarraprogreso="progressBar1";
+									$maximotamanofichero="500000"; //en Bytes, "0" para ilimitado. 1000000 Bytes = 1000Kb = 1Mb
+									$tiposficheropermitidos="jpg,png"; //  Por ejemplo "jpg,doc,png", separados por comas y poner "0" para permitir todos los tipos
+									$limiteancho="200"; // En pÃ­xels, "0" significa cualquier tamaÃ±o permitido
+									$limitealto="200"; // En pÃ­xels, "0" significa cualquier tamaÃ±o permitido
+
+									$cadenadeparametros="'".$nombrecampoimagen."','".$nombrecampoimagenmostrar."','".$nombrecarpetadestino."','".$nombrecampofichero."','".$nombrecampostatus."','".$nombrebarraprogreso."','".$maximotamanofichero."','".$tiposficheropermitidos."','".$limiteancho."','".$limitealto."'";
+
+									//$cadenadeparametros="";
+
+
+																		  ?>
+									<div class="form-group">
+										<label>Imagen</label>
+										<input class="form-control"  name="<?php echo $nombrecampoimagen;?>" id="<?php echo $nombrecampoimagen;?>">
+									</div> 
+									<div class="form-group">
+										<div class="row">
+											<div class="col-lg-6">
+												<input type="file" name="<?php echo $nombrecampofichero;?>" id="<?php echo $nombrecampofichero;?>"><br>
+											</div>
+											<div class="col-lg-6">
+												<input class="form-control" type="button" value="Subir Fichero" onclick="uploadFile(<?php echo $cadenadeparametros;?>)">
+											</div>
+										</div>
+										<progress id="<?php echo $nombrebarraprogreso;?>" value="0" max="100" style="width:100%;"></progress>
+										<h5 id="<?php echo $nombrecampostatus;?>"></h5>
+										<img src="" alt="" id="<?php echo $nombrecampoimagenmostrar;?>">
+									</div>   
+									<?php /*?>
+									//***********************
+									//***********************
+									//***********************									  //***********************
+									// FIN BLOQUE INSERCION IMAGEN
+									<?php */?>                                           
                                         
                                         <button type="submit" class="btn btn-success" value="Añadir">Añadir</button>                                        
                                     	<input type="hidden" name="MM_insert" id="MM_insert" value="forminsertar">

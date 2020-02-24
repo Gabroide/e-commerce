@@ -13,21 +13,23 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsert")) {
  
 	if($_POST["strPassword"]!="")
 	{
-		$updateSQL = sprintf("UPDATE tblusuario SET strEmail=%s, strNombre=%s, intNivel=%s, intEstado=%s, strPassword=%s WHERE idUsuario=%s",
+		$updateSQL = sprintf("UPDATE tblusuario SET strEmail=%s, strNombre=%s, intNivel=%s, intEstado=%s, strPassword=%s, strImagen=%s WHERE idUsuario=%s",
                        GetSQLValueString($_POST["strEmail"], "text"),
 					  GetSQLValueString($_POST["strNombre"], "text"),
 					  GetSQLValueString($_POST["intNivel"], "int"),
 					  GetSQLValueString($_POST["intEstado"], "int"),
-					   GetSQLValueString(md5($_POST["strPassword"]), "text"),
+					  GetSQLValueString(md5($_POST["strPassword"]), "text"),
+					  GetSQLValueString($_POST["strImagen"], "text"),
 					  GetSQLValueString($_POST["idUsuario"], "int"));
 	}
 	else
 	{
-		$updateSQL = sprintf("UPDATE tblusuario SET strEmail=%s, strNombre=%s, intNivel=%s, intEstado=%s WHERE idUsuario=%s",
+		$updateSQL = sprintf("UPDATE tblusuario SET strEmail=%s, strNombre=%s, intNivel=%s, intEstado=%s, strImagen=%s WHERE idUsuario=%s",
                        GetSQLValueString($_POST["strEmail"], "text"),
 					  GetSQLValueString($_POST["strNombre"], "text"),
 					  GetSQLValueString($_POST["intNivel"], "int"),
 					  GetSQLValueString($_POST["intEstado"], "int"),
+				 	  GetSQLValueString($_POST["strImagen"], "text"),
 					  GetSQLValueString($_POST["idUsuario"], "int"));
 	}
 //echo $updateSQL;
@@ -78,6 +80,7 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 
 <body>
 <!-- InstanceBeginEditable name="ContenidoAdmin" -->
+<script src="scriptupload.js"></script>
 <div id="wrapper">
   <!-- Navigation -->
   <?php include("../includes/adm-menu.php"); ?>
@@ -135,6 +138,53 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
                                                 <option value="1" <?php if ($row_DatosConsulta["intEstado"]=="1") echo "selected"; ?>>Activo</option>
                                             </select>
                                         </div>
+                                                                                
+										<?php 
+										//BLOQUE INSERCION IMAGEN
+										//***********************
+										//***********************
+										//***********************									  //***********************
+										//PARÃMETROS DE IMAGEN
+										$nombrecampoimagen="strImagen";
+										$nombrecampoimagenmostrar="strImagenpic";
+										$nombrecarpetadestino="../images/users/"; //carpeta destino con barra al final
+										$nombrecampofichero="file1";
+										$nombrecampostatus="status1";
+										$nombrebarraprogreso="progressBar1";
+										$maximotamanofichero="500000"; //en Bytes, "0" para ilimitado. 1000000 Bytes = 1000Kb = 1Mb
+										$tiposficheropermitidos="jpg,png"; //  Por ejemplo "jpg,doc,png", separados por comas y poner "0" para permitir todos los tipos
+										$limiteancho="200"; // En pÃ­xels, "0" significa cualquier tamaÃ±o permitido
+										$limitealto="200"; // En pÃ­xels, "0" significa cualquier tamaÃ±o permitido
+
+										$cadenadeparametros="'".$nombrecampoimagen."','".$nombrecampoimagenmostrar."','".$nombrecarpetadestino."','".$nombrecampofichero."','".$nombrecampostatus."','".$nombrebarraprogreso."','".$maximotamanofichero."','".$tiposficheropermitidos."','".$limiteancho."','".$limitealto."'";
+
+										//$cadenadeparametros="";
+
+
+																			  ?>
+										<div class="form-group">
+											<label>Imagen</label>
+											<input class="form-control"  name="<?php echo $nombrecampoimagen;?>" id="<?php echo $nombrecampoimagen;?>" value="<?php echo $row_DatosConsulta["strImagen"];?>">>
+										</div> 
+										<div class="form-group">
+											<div class="row">
+												<div class="col-lg-6">
+													<input type="file" name="<?php echo $nombrecampofichero;?>" id="<?php echo $nombrecampofichero;?>"><br>
+												</div>
+												<div class="col-lg-6">
+													<input class="form-control" type="button" value="Subir Fichero" onclick="uploadFile(<?php echo $cadenadeparametros;?>)">
+												</div>
+											</div>
+											<progress id="<?php echo $nombrebarraprogreso;?>" value="0" max="100" style="width:100%;"></progress>
+											<h5 id="<?php echo $nombrecampostatus;?>"></h5>
+											<img src="<?php echo $nombrecarpetadestino.$row_DatosConsulta["strImagen"];?>" alt="" id="<?php echo $nombrecampoimagenmostrar;?>">
+										</div>   
+										<?php /*?>
+										//***********************
+										//***********************
+										//***********************									  //***********************
+										// FIN BLOQUE INSERCION IMAGEN
+										<?php */?>     
                                         
                                         <button type="submit" class="btn btn-success" value="Editar">Editar</button>
                                         <input type="hidden" name="idUsuario" id="idUsuario" value="<?php echo $row_DatosConsulta["idUsuario"];?>">                                       
