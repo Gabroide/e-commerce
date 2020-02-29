@@ -11,36 +11,46 @@ if (isset($_SERVER['QUERY_STRING'])) {
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsert")) {
  
-	if($_POST["strPassword"]!="")
+	if(testuniquemailupload($_POST["idUsuario"], $_POST["strEmail"]))
 	{
-		$updateSQL = sprintf("UPDATE tblusuario SET strEmail=%s, strNombre=%s, intNivel=%s, intEstado=%s, strPassword=%s, strImagen=%s WHERE idUsuario=%s",
-                       GetSQLValueString($_POST["strEmail"], "text"),
-					  GetSQLValueString($_POST["strNombre"], "text"),
-					  GetSQLValueString($_POST["intNivel"], "int"),
-					  GetSQLValueString($_POST["intEstado"], "int"),
-					  GetSQLValueString(md5($_POST["strPassword"]), "text"),
-					  GetSQLValueString($_POST["strImagen"], "text"),
-					  GetSQLValueString($_POST["idUsuario"], "int"));
+	
+		if($_POST["strPassword"]!="")
+		{
+			$updateSQL = sprintf("UPDATE tblusuario SET strEmail=%s, strNombre=%s, intNivel=%s, intEstado=%s, strPassword=%s, strImagen=%s WHERE idUsuario=%s",
+						   GetSQLValueString($_POST["strEmail"], "text"),
+						  GetSQLValueString($_POST["strNombre"], "text"),
+						  GetSQLValueString($_POST["intNivel"], "int"),
+						  GetSQLValueString($_POST["intEstado"], "int"),
+						  GetSQLValueString(md5($_POST["strPassword"]), "text"),
+						  GetSQLValueString($_POST["strImagen"], "text"),
+						  GetSQLValueString($_POST["idUsuario"], "int"));
+		}
+		else
+		{
+			$updateSQL = sprintf("UPDATE tblusuario SET strEmail=%s, strNombre=%s, intNivel=%s, intEstado=%s, strImagen=%s WHERE idUsuario=%s",
+						   GetSQLValueString($_POST["strEmail"], "text"),
+						  GetSQLValueString($_POST["strNombre"], "text"),
+						  GetSQLValueString($_POST["intNivel"], "int"),
+						  GetSQLValueString($_POST["intEstado"], "int"),
+						  GetSQLValueString($_POST["strImagen"], "text"),
+						  GetSQLValueString($_POST["idUsuario"], "int"));
+		}
+	//echo $updateSQL;
+	$Result1 = mysqli_query($con, $updateSQL) or die(mysqli_error($con));
+
+	  $updateGoTo = "user-list.php";
+	  if (isset($_SERVER['QUERY_STRING'])) {
+		$updateGoTo .= (strpos($updateGoTo, '?')) ? "&" : "?";
+		$updateGoTo .= $_SERVER['QUERY_STRING'];
+	  }
+	  header(sprintf("Location: %s", $updateGoTo));
 	}
 	else
 	{
-		$updateSQL = sprintf("UPDATE tblusuario SET strEmail=%s, strNombre=%s, intNivel=%s, intEstado=%s, strImagen=%s WHERE idUsuario=%s",
-                       GetSQLValueString($_POST["strEmail"], "text"),
-					  GetSQLValueString($_POST["strNombre"], "text"),
-					  GetSQLValueString($_POST["intNivel"], "int"),
-					  GetSQLValueString($_POST["intEstado"], "int"),
-				 	  GetSQLValueString($_POST["strImagen"], "text"),
-					  GetSQLValueString($_POST["idUsuario"], "int"));
+		//EL EMAIL NO ESTÁ REPETIDO
+		$insertGoTo = "error.php?error=2&id=".$_POST["idUsuario"];
+	  	header(sprintf("Location: %s", $insertGoTo));
 	}
-//echo $updateSQL;
-$Result1 = mysqli_query($con, $updateSQL) or die(mysqli_error($con));
-
-  $updateGoTo = "user-list.php";
-  if (isset($_SERVER['QUERY_STRING'])) {
-    $updateGoTo .= (strpos($updateGoTo, '?')) ? "&" : "?";
-    $updateGoTo .= $_SERVER['QUERY_STRING'];
-  }
-  header(sprintf("Location: %s", $updateGoTo));
 }
 
 ?>
@@ -81,6 +91,7 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 <body>
 <!-- InstanceBeginEditable name="ContenidoAdmin" -->
 <script src="scriptupload.js"></script>
+<script src="../js/script-admin.js"></script>
 <div id="wrapper">
   <!-- Navigation -->
   <?php include("../includes/adm-menu.php"); ?>
@@ -109,10 +120,13 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <form role="form" action="user-edit.php" method="post" id="forminsert" name="forminsert">
+                                    <form role="form" action="user-edit.php" method="post" id="forminsert" name="forminsert" onSubmit="javascript:return validarusuarioeditar();">
                                         <div class="form-group">
                                             <label for="strEmail">Correo electrónico</label>
                                             <input class="form-control" placeholder="micorreo@correo.es" name="strEmail" id="strEmail" value="<?php echo $row_DatosConsulta["strEmail"];?>">
+                                        </div>
+                                        <div class="alert alert-danger hiddeit" id="erroremail">
+                                        	El campo E-mail es obligatorio.
                                         </div>
                                         <div class="form-group">
                                             <label for="strPassword">Contraseña</label>
@@ -120,7 +134,10 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
                                         </div>
                                         <div class="form-group">
                                             <label for="strNombre">Nombre del Usuario</label>
-                                            <input class="form-control" placeholder="Nombre" name="strNombre" id="strNombre" value="<?php echo $row_DatosConsulta["strNombre"];?>">>
+                                            <input class="form-control" placeholder="Nombre" name="strNombre" id="strNombre" value="<?php echo $row_DatosConsulta["strNombre"];?>">
+                                        </div>
+                                        <div class="alert alert-danger hiddeit" id="errornombre">
+                                        	El campo Nombre es obligatorio.
                                         </div>
                                         <div class="form-group">
                                             <label for="intNivel">Nivel de Usuario</label>
@@ -164,7 +181,7 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 																			  ?>
 										<div class="form-group">
 											<label>Imagen</label>
-											<input class="form-control"  name="<?php echo $nombrecampoimagen;?>" id="<?php echo $nombrecampoimagen;?>" value="<?php echo $row_DatosConsulta["strImagen"];?>">>
+											<input class="form-control"  name="<?php echo $nombrecampoimagen;?>" id="<?php echo $nombrecampoimagen;?>" value="<?php echo $row_DatosConsulta["strImagen"];?>">
 										</div> 
 										<div class="form-group">
 											<div class="row">
@@ -177,7 +194,11 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 											</div>
 											<progress id="<?php echo $nombrebarraprogreso;?>" value="0" max="100" style="width:100%;"></progress>
 											<h5 id="<?php echo $nombrecampostatus;?>"></h5>
-											<img src="<?php echo $nombrecarpetadestino.$row_DatosConsulta["strImagen"];?>" alt="" id="<?php echo $nombrecampoimagenmostrar;?>">
+											<?php if($row_DatosConsulta["strImagen"] != ""){?>
+												<img src="<?php echo $nombrecarpetadestino.$row_DatosConsulta["strImagen"];?>" alt="" id="<?php echo $nombrecampoimagenmostrar;?>">
+											<?php } else {?>
+												<img src="../images/users/nouser.jpg" width="200" height="200" alt="Avatar del usuario"/>
+											<?php }?>
 										</div>   
 										<?php /*?>
 										//***********************

@@ -65,5 +65,42 @@ function ShowState($state)
 	}
 }
 
+//MySQLi Fragmentos por http://www.dreamweaver-tutoriales.com
+//Copyright Jorge Vila 2015
 
+function testuniquemail($email)
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT strEmail FROM tblusuario WHERE strEmail = %s",GetSQLValueString($email, "text"));
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	if ($totalRows_ConsultaFuncion==0) 
+		return true;
+	else
+		return false;
+	
+	mysqli_free_result($ConsultaFuncion);
+}
+
+function testuniquemailupload($idactual, $email)
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT strEmail FROM tblusuario WHERE strEmail = %s AND idUsuario <> %s",GetSQLValueString($email, "text"), GetSQLValueString($idactual, "int"));
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	if ($totalRows_ConsultaFuncion==0)
+		return true;
+	else
+		return false;
+	
+	mysqli_free_result($ConsultaFuncion);
+}
 ?>

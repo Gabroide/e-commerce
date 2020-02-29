@@ -99,24 +99,24 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar")) {
                                             <input class="form-control" placeholder="Escribir Nombre del usuario" name="strNombre" id="strNombre">
                                         </div>
                                           
-		<div class="form-group">
-			<label>Nivel de Usuario</label>
-			<select name="intNivel" class="form-control" id="intNivel">
-				<option value="0">0: Usuario público de tienda</option>
-				<option value="1">1: SuperAdministrador </option>
-				<option value="10">10: Gestor de Ventas</option>
-				<option value="100">100: Gestor de Productos</option>
+										<div class="form-group">
+											<label>Nivel de Usuario</label>
+											<select name="intNivel" class="form-control" id="intNivel">
+												<option value="0">0: Usuario público de tienda</option>
+												<option value="1">1: SuperAdministrador </option>
+												<option value="10">10: Gestor de Ventas</option>
+												<option value="100">100: Gestor de Productos</option>
 
-			</select>
-		</div>
-       <div class="form-group">
-			<label>Estado</label>
-			<select name="intEstado" class="form-control" id="intEstado">
-				<option value="0">Inactivo</option>
-				<option value="1" selected>Activo</option>
-				
-			</select>
-		</div>
+											</select>
+										</div>
+									   <div class="form-group">
+											<label>Estado</label>
+											<select name="intEstado" class="form-control" id="intEstado">
+												<option value="0">Inactivo</option>
+												<option value="1" selected>Activo</option>
+
+											</select>
+										</div>
                                         
                                         <button type="submit" class="btn btn-success">Añadir</button>
                                       <input name="MM_insert" type="hidden" id="MM_insert" value="forminsertar">

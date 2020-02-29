@@ -10,30 +10,39 @@ if (isset($_SERVER['QUERY_STRING'])) {
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar")) {
 
+	if(testuniquemail($_POST["strEmail"]))
+	{
 
-  $insertSQL = sprintf("INSERT INTO tblusuario(strEmail, strPassword, strNombre, intNivel, intEstado, strImagen) VALUES (%s, %s, %s, %s, %s, %s)",
-                       GetSQLValueString($_POST["strEmail"], "text"),
-					  GetSQLValueString(md5($_POST["strPassword"]), "text"),
-					  GetSQLValueString($_POST["strNombre"], "text"),
-					  GetSQLValueString($_POST["intNivel"], "int"),
-					  GetSQLValueString($_POST["intEstado"], "int"),
-					  GetSQLValueString($_POST["strImagen"], "text"));
-
-  
-  $Result1 = mysqli_query($con,  $insertSQL) or die(mysqli_error($con));
+	  $insertSQL = sprintf("INSERT INTO tblusuario(strEmail, strPassword, strNombre, intNivel, intEstado, strImagen) VALUES (%s, %s, %s, %s, %s, %s)",
+						   GetSQLValueString($_POST["strEmail"], "text"),
+						  GetSQLValueString(md5($_POST["strPassword"]), "text"),
+						  GetSQLValueString($_POST["strNombre"], "text"),
+						  GetSQLValueString($_POST["intNivel"], "int"),
+						  GetSQLValueString($_POST["intEstado"], "int"),
+						  GetSQLValueString($_POST["strImagen"], "text"));
 
 
-  $insertGoTo = "user-list.php";
-  if (isset($_SERVER['QUERY_STRING'])) {
-    $insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
-    $insertGoTo .= $_SERVER['QUERY_STRING'];
-  }
-  header(sprintf("Location: %s", $insertGoTo));
+	  $Result1 = mysqli_query($con,  $insertSQL) or die(mysqli_error($con));
+
+
+	  $insertGoTo = "user-list.php";
+	  if (isset($_SERVER['QUERY_STRING'])) {
+		$insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
+		$insertGoTo .= $_SERVER['QUERY_STRING'];
+	  }
+	  header(sprintf("Location: %s", $insertGoTo));
+	}
+	else
+	{
+		//EL EMAIL NO ES úNICO
+		$insertGoTo = "error.php?error=1";
+	  	header(sprintf("Location: %s", $insertGoTo));
+	}
 }
 ?>              
 
 <!DOCTYPE html>
-<html lang="en"><!-- InstanceBegin template="/Templates/Administracion.dwt.php" codeOutsideHTMLIsLocked="false" -->
+<html lang="es"><!-- InstanceBegin template="/Templates/Administracion.dwt.php" codeOutsideHTMLIsLocked="false" -->
 
 <head>
 
@@ -103,9 +112,15 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar")) {
                                             <label for="strPassword">Contraseña</label>
                                             <input class="form-control" placeholder="Contraseña" name="strPassword" id="strPassword">
                                         </div>
+                                        <div class="alert alert-danger hiddeit" id="errorpass">
+                                        	El campo Contraseña es obligatorio.
+                                        </div>
                                         <div class="form-group">
                                             <label for="strNombre">Nombre del Usuario</label>
                                             <input class="form-control" placeholder="Nombre" name="strNombre" id="strNombre">
+                                        </div>
+                                        <div class="alert alert-danger hiddeit" id="errornombre">
+                                        	El campo Nombre es obligatorio.
                                         </div>
                                         <div class="form-group">
                                             <label for="intNivel">Nivel de Usuario</label>

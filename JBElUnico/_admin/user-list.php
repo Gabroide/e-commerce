@@ -10,6 +10,52 @@ if (isset($VARIABLE)) {
 }
 
 /**************************************************************/
+/*ORDEN PARAMETROS*/
+/*ESTO CAMBIARÃ SEGÃšN A QUÃ‰ TABLA*/
+if (isset($_GET["valor"]))
+{
+	switch ($_GET["valor"]) {
+    case 1:
+        $parametro_orden= "idUsuario";
+        break;
+    case 2:
+        $parametro_orden= "strNombre";
+        break;
+    case 3:
+        $parametro_orden= "strEmail";
+        break;
+    case 4:
+        $parametro_orden= "intEstado";
+        break;
+    case 5:
+        $parametro_orden= "intNivel";
+        break;
+	}
+}
+else
+	$parametro_orden= "idUsuario"; //POR DEFECTO
+
+if (isset($_GET["orden"]))
+{
+	switch ($_GET["orden"]) {
+    case 1:
+        $parametro_ordena_sentido= "ASC";
+        break;
+    case 2:
+        $parametro_ordena_sentido= "DESC";
+        break;
+	}
+}
+else
+	$parametro_ordena_sentido= "ASC"; //POR DEFECTO
+
+$cadenaOrden=" ORDER BY ".$parametro_orden." ".$parametro_ordena_sentido;
+
+/*ORDEN PARAMETROS*/
+/**************************************************************/
+
+
+/**************************************************************/
 /**********************************         PAGINACION         /
 /**************************************************************/
 
@@ -28,6 +74,7 @@ if (isset($VARIABLE)) {
 /*************************************************************/
 /*************************************************************/
 
+$consultaextendidaparaordenacion="";
 
 if((isset($_GET["MM_search"])) && ($_GET["MM_search"]=="formsearch"))
 {
@@ -38,16 +85,16 @@ if((isset($_GET["MM_search"])) && ($_GET["MM_search"]=="formsearch"))
 	else{
 		$consultaextendida = " AND intNivel=".$_GET["intNivel"];
 	}
-	$query_DatosConsulta = sprintf("SELECT * FROM tblusuario WHERE strNombre LIKE %s ".$consultaextendida." ORDER BY idUsuario ASC", GetSQLValueString("%".$_GET["strBuscar"]."%", "text"));
+	$query_DatosConsulta = sprintf("SELECT * FROM tblusuario WHERE strNombre LIKE %s ".$consultaextendida.$cadenaOrden, GetSQLValueString("%".$_GET["strBuscar"]."%", "text"));
 	echo $query_DatosConsulta;
 }
 else
 {
-	$query_DatosConsulta = sprintf("SELECT * FROM tblusuario ORDER BY idUsuario ASC");
+	$query_DatosConsulta = sprintf("SELECT * FROM tblusuario".$cadenaOrden);
 }
 
 $query_limit_DatosConsulta = sprintf("%s LIMIT %d, %d", $query_DatosConsulta, $startRow_DatosConsulta, $maxRows_DatosConsulta);
-$DatosConsulta = mysqli_query($con,  $query_DatosConsulta) or die(mysqli_error($con));
+$DatosConsulta = mysqli_query($con,  $query_limit_DatosConsulta) or die(mysqli_error($con));
 $row_DatosConsulta = mysqli_fetch_assoc($DatosConsulta);
 $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 
@@ -179,6 +226,7 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
                                     <thead>
                                         <tr>
                                             <th>Id</th>
+                                            <th></th>
                                             <th>Nombre</th>
                                             <th>E-mail</th>
                                             <th>Estado</th>
@@ -194,11 +242,18 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
               		
 										<tr>
 											<td><?php echo $row_DatosConsulta["idUsuario"];?></td>
+											<td>
+												<?php if($row_DatosConsulta["strImagen"] != ""){?>
+													<img src="../images/users/<?php echo $row_DatosConsulta["strImagen"];?>" width="30" height="30" alt="avatar del usuario">
+												<?php } else {?>
+													<img src="../images/users/nouser.jpg" width="30" height="30" alt=""/>	
+												<?php }?>
+											</td>
 											<td><?php echo $row_DatosConsulta["strNombre"];?></td>
 											<td><?php echo $row_DatosConsulta["strEmail"];?></td>
 											<td><?php echo ShowState($row_DatosConsulta["intEstado"]);?></td>
 											<td><?php echo ShowLevel($row_DatosConsulta["intNivel"]);?></td>
-											<td><a href="user-edit.php?id=<?php echo $row_DatosConsulta["idUsuario"];?>" class="btn btn-warning btn-circle" titel="Edición de Usuario">
+										  <td><a href="user-edit.php?id=<?php echo $row_DatosConsulta["idUsuario"];?>" class="btn btn-warning btn-circle" titel="Edición de Usuario">
 												<i class="fa fa-edit"></i></a></td>
 										</tr>
               		
