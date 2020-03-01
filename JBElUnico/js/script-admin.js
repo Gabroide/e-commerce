@@ -1,4 +1,11 @@
  // JavaScript Document
+function validarEmail( email ) {
+    expr = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    if ( !expr.test(email) )
+        return false;
+else return true;
+}
+
 function validarusuarioalta()
 {
     valid = true;
@@ -7,6 +14,13 @@ function validarusuarioalta()
 		$("#erroremail").show("slow");
 	    valid = false;
 	}
+	
+	$("#wrongemail").hide("slow");
+	if (!validarEmail(document.forminsert.strEmail.value)){
+		$("#wrongemail").show("slow");
+	    valid = false;
+	}
+	
 	$("#errorpass").hide("slow");
 	if (document.forminsert.strPassword.value == ""){
 		$("#errorpass").show("slow");

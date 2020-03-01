@@ -108,6 +108,9 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar")) {
                                         <div class="alert alert-danger hiddeit" id="erroremail">
                                         	El campo E-mail es obligatorio.
                                         </div>
+                                        <div class="alert alert-danger hiddeit" id="wrongemail">
+                                        	El E-mail introducido es incorrecto.
+                                        </div>
                                         <div class="form-group">
                                             <label for="strPassword">Contraseña</label>
                                             <input class="form-control" placeholder="Contraseña" name="strPassword" id="strPassword">

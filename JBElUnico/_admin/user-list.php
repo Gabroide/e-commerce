@@ -1,3 +1,4 @@
+
 <?php require_once('../Connections/conexion.php'); ?>
 
 <?php
@@ -85,6 +86,9 @@ if((isset($_GET["MM_search"])) && ($_GET["MM_search"]=="formsearch"))
 	else{
 		$consultaextendida = " AND intNivel=".$_GET["intNivel"];
 	}
+	
+	$consultaextendidaparaordenacion="&intNivel=".$_GET["intNivel"]."&MM_Buscar=formsearch&strBuscar=".$_GET["strBuscar"];
+	
 	$query_DatosConsulta = sprintf("SELECT * FROM tblusuario WHERE strNombre LIKE %s ".$consultaextendida.$cadenaOrden, GetSQLValueString("%".$_GET["strBuscar"]."%", "text"));
 	echo $query_DatosConsulta;
 }
@@ -225,12 +229,82 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
                                 <table class="table table-striped">
                                     <thead>
                                         <tr>
-                                            <th>Id</th>
+                                            <th>Id <?php
+													//BLOQUE ORDENACIÃ“N
+													//SI HAY PARÃMETROS, HAY QUE SABER SI SON DE ORDEN
+													$parametroparaprocesar="1";
+													if (!isset($_GET["orden"])) {
+														$orden=0;
+														$valor=0;
+													}
+													else {
+														$orden=$_GET["orden"];
+														$valor=$_GET["valor"];
+													}
+													MostrarOrdenCampo($parametroparaprocesar, $orden, $valor,$currentPage, $consultaextendidaparaordenacion);
+												?>
+                                           </th>
                                             <th></th>
-                                            <th>Nombre</th>
-                                            <th>E-mail</th>
-                                            <th>Estado</th>
-                                            <th>Nivel</th>
+                                            <th>Nombre <?php
+													//BLOQUE ORDENACIÃ“N
+													//SI HAY PARÃMETROS, HAY QUE SABER SI SON DE ORDEN
+													$parametroparaprocesar="2";
+													if (!isset($_GET["orden"])) {
+														$orden=0;
+														$valor=0;
+													}
+													else {
+														$orden=$_GET["orden"];
+														$valor=$_GET["valor"];
+													}
+													MostrarOrdenCampo($parametroparaprocesar, $orden, $valor,$currentPage, $consultaextendidaparaordenacion);
+												?>
+                                            </th>
+                                            <th>E-mail <?php
+													//BLOQUE ORDENACIÃ“N
+													//SI HAY PARÃMETROS, HAY QUE SABER SI SON DE ORDEN
+													$parametroparaprocesar="3";
+													if (!isset($_GET["orden"])) {
+														$orden=0;
+														$valor=0;
+													}
+													else {
+														$orden=$_GET["orden"];
+														$valor=$_GET["valor"];
+													}
+													MostrarOrdenCampo($parametroparaprocesar, $orden, $valor,$currentPage, $consultaextendidaparaordenacion);
+												?> 
+                                            </th>
+                                            <th>Estado <?php
+													//BLOQUE ORDENACIÃ“N
+													//SI HAY PARÃMETROS, HAY QUE SABER SI SON DE ORDEN
+													$parametroparaprocesar="4";
+													if (!isset($_GET["orden"])) {
+														$orden=0;
+														$valor=0;
+													}
+													else {
+														$orden=$_GET["orden"];
+														$valor=$_GET["valor"];
+													}
+													MostrarOrdenCampo($parametroparaprocesar, $orden, $valor,$currentPage, $consultaextendidaparaordenacion);
+												?>
+                                            </th>
+                                            <th>Nivel <?php
+													//BLOQUE ORDENACIÃ“N
+													//SI HAY PARÃMETROS, HAY QUE SABER SI SON DE ORDEN
+													$parametroparaprocesar="5";
+													if (!isset($_GET["orden"])) {
+														$orden=0;
+														$valor=0;
+													}
+													else {
+														$orden=$_GET["orden"];
+														$valor=$_GET["valor"];
+													}
+													MostrarOrdenCampo($parametroparaprocesar, $orden, $valor,$currentPage, $consultaextendidaparaordenacion);
+												?>
+                                            </th>
                                             <th>Acción</th>
                                         </tr>
                                     </thead>

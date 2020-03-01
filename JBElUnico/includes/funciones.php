@@ -103,4 +103,39 @@ function testuniquemailupload($idactual, $email)
 	
 	mysqli_free_result($ConsultaFuncion);
 }
+
+function MostrarOrdenCampo($parametroparaprocesar, $orden, $valor, $currentPage, $consultaextendidaparaordenacion){
+
+	if ((isset($orden)) && ($orden!="0"))	{
+		if ((isset($valor)) && ($valor==$parametroparaprocesar))
+		{
+			//SI HAY VALOR Y ORDEN Y ERA ESTE PARÃMETRO
+			//SI VENIA DE orden=1
+			if ($orden=="1"){
+			?>
+			<a href="<?php echo $currentPage;?>?orden=2&valor=<?php echo $parametroparaprocesar;?><?php echo $consultaextendidaparaordenacion;?>"><i class="fa fa-angle-double-down"></i></a>
+			<?php
+			}
+			if ($orden=="2"){
+			?>
+			<a href="<?php echo $currentPage;?>?orden=1&valor=<?php echo $parametroparaprocesar;?><?php echo $consultaextendidaparaordenacion;?>"><i class="fa fa-angle-double-up"></i></a>
+			<?php
+			}
+		}
+
+		else
+		{ //SI HAY VALOR Y ORDEN Y PERO NO DE ESTE PARÃMETRO
+			?>
+			<a href="<?php echo $currentPage;?>?orden=1&valor=<?php echo $parametroparaprocesar;?><?php echo $consultaextendidaparaordenacion;?>"><i class="fa fa-angle-double-up"></i></a>
+			<?php
+
+		}
+	}
+	else
+	{ //NO HAY PARÃMETROS
+		?>
+			<a href="<?php echo $currentPage;?>?orden=1&valor=<?php echo $parametroparaprocesar;?><?php echo $consultaextendidaparaordenacion;?>"><i class="fa fa-angle-double-down"></i></a>
+			<?php
+	s}
+}
 ?>
