@@ -136,6 +136,6 @@ function MostrarOrdenCampo($parametroparaprocesar, $orden, $valor, $currentPage,
 		?>
 			<a href="<?php echo $currentPage;?>?orden=1&valor=<?php echo $parametroparaprocesar;?><?php echo $consultaextendidaparaordenacion;?>"><i class="fa fa-angle-double-down"></i></a>
 			<?php
-	s}
+	}
 }
 ?>

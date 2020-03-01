@@ -89,8 +89,28 @@ if((isset($_GET["MM_search"])) && ($_GET["MM_search"]=="formsearch"))
 	
 	$consultaextendidaparaordenacion="&intNivel=".$_GET["intNivel"]."&MM_Buscar=formsearch&strBuscar=".$_GET["strBuscar"];
 	
-	$query_DatosConsulta = sprintf("SELECT * FROM tblusuario WHERE strNombre LIKE %s ".$consultaextendida.$cadenaOrden, GetSQLValueString("%".$_GET["strBuscar"]."%", "text"));
-	echo $query_DatosConsulta;
+	//(BLOQUE NOMBRE)
+	$porciones = explode(" ", $_GET["strBuscar"]);
+	$longitud = count($porciones);
+	$extramodelo=" strNombre LIKE '%".$_GET["strBuscar"] ."%'";
+	for($i=0; $i<$longitud; $i++)
+	{
+		$extramodelo.=" OR strNombre LIKE '%".$porciones[$i] ."%'";
+	}
+	//(FIN BLOQUE NOMBRE)
+	
+	//(BLOQUE E-MAIL)
+	$porciones = explode(" ", $_GET["strBuscar"]);
+	$longitud = count($porciones);
+	$extramodelo.=" OR strEmail LIKE '%".$_GET["strBuscar"] ."%'";
+	for($i=0; $i<$longitud; $i++)
+	{
+		$extramodelo.=" OR strEmail LIKE '%".$porciones[$i] ."%'";
+	}
+	//(FIN BLOQUE E-MAIL)
+	
+	$query_DatosConsulta = "SELECT * FROM tblusuario WHERE ".$extramodelo." ".$consultaextendida.$cadenaOrden;
+	//echo $query_DatosConsulta;
 }
 else
 {
