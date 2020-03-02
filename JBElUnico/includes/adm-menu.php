@@ -235,7 +235,10 @@
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a href="user-list.php"><i class="fa fa-dashboard fa-fw"></i> Usuarios</a>
+                            <a href="user-list.php"><i class="fa fa-user fa-fw"></i> Usuarios</a>
+                        </li>
+                        <li>
+                            <a href="category-list.php"><i class="fa fa-ellipsis-v fa-fw"></i> Categorías</a>
                         </li>
                         <li>
                             <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>

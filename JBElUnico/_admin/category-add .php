@@ -78,11 +78,11 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar")) {
   <div id="page-wrapper">
      <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Gestión de Usuarios</h1>
+                    <h1 class="page-header">Gestión de Categorías</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
-			<a href="user-list.php" class="btn btn-outline btn-info">Volver atrás</a>
+			<a href="category-list.php" class="btn btn-outline btn-info">Volver atrás</a>
 			<br>
 			<br>
            
@@ -94,13 +94,13 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar")) {
                         </div>
 `                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                        	Añadir Usuario
+                        	Añadir Categoría
                         	<!-- /.table-responsive -->
                         </div>
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <form role="form" action="user-add.php" method="post" id="forminsert" name="forminsert" onSubmit="javascript:return validarusuarioalta();">
+                                    <form role="form" action="category-add.php" method="post" id="forminsert" name="forminsert" onSubmit="javascript:return validarusuarioalta();">
                                         <div class="form-group">
                                             <label for="strEmail">Correo electrónico</label>
                                             <input class="form-control" placeholder="micorreo@correo.es" name="strEmail" id="strEmail">

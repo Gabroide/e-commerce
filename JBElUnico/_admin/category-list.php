@@ -17,24 +17,21 @@ if (isset($_GET["valor"]))
 {
 	switch ($_GET["valor"]) {
     case 1:
-        $parametro_orden= "idUsuario";
+        $parametro_orden= "idCategoria";
         break;
     case 2:
         $parametro_orden= "strNombre";
         break;
     case 3:
-        $parametro_orden= "strEmail";
-        break;
-    case 4:
         $parametro_orden= "intEstado";
         break;
-    case 5:
-        $parametro_orden= "intNivel";
+    case 4:
+        $parametro_orden= "intOrden";
         break;
-	}
+    }
 }
 else
-	$parametro_orden= "idUsuario"; //POR DEFECTO
+	$parametro_orden= "strNombre"; //POR DEFECTO
 
 if (isset($_GET["orden"]))
 {
@@ -63,7 +60,7 @@ $cadenaOrden=" ORDER BY ".$parametro_orden." ".$parametro_ordena_sentido;
 			
             $currentPage = $_SERVER["PHP_SELF"];
             
-            $maxRows_DatosConsulta = 10; // Numero de registros por pagina
+            $maxRows_DatosConsulta = 50; // Numero de registros por pagina
             $pageNum_DatosConsulta = 0;  // Seleccion de pÃ¡gina actual
             $interval_page = 4; // desde la pagina actual - este valor hasta la pagina actual + este valor
             
@@ -75,47 +72,7 @@ $cadenaOrden=" ORDER BY ".$parametro_orden." ".$parametro_ordena_sentido;
 /*************************************************************/
 /*************************************************************/
 
-$consultaextendidaparaordenacion="";
-
-if((isset($_GET["MM_search"])) && ($_GET["MM_search"]=="formsearch"))
-{
-	if((isset($_GET["intNivel"])) && ($_GET["intNivel"]=="-1"))
-	{
-		$consultaextendida = "";
-	}
-	else{
-		$consultaextendida = " AND intNivel=".$_GET["intNivel"];
-	}
-	
-	$consultaextendidaparaordenacion="&intNivel=".$_GET["intNivel"]."&MM_Buscar=formsearch&strBuscar=".$_GET["strBuscar"];
-	
-	//(BLOQUE NOMBRE)
-	$porciones = explode(" ", $_GET["strBuscar"]);
-	$longitud = count($porciones);
-	$extramodelo=" strNombre LIKE '%".$_GET["strBuscar"] ."%'";
-	for($i=0; $i<$longitud; $i++)
-	{
-		$extramodelo.=" OR strNombre LIKE '%".$porciones[$i] ."%'";
-	}
-	//(FIN BLOQUE NOMBRE)
-	
-	//(BLOQUE E-MAIL)
-	$porciones = explode(" ", $_GET["strBuscar"]);
-	$longitud = count($porciones);
-	$extramodelo.=" OR strEmail LIKE '%".$_GET["strBuscar"] ."%'";
-	for($i=0; $i<$longitud; $i++)
-	{
-		$extramodelo.=" OR strEmail LIKE '%".$porciones[$i] ."%'";
-	}
-	//(FIN BLOQUE E-MAIL)
-	
-	$query_DatosConsulta = "SELECT * FROM tblusuario WHERE (".$extramodelo.") ".$consultaextendida.$cadenaOrden;
-	//echo $query_DatosConsulta;
-}
-else
-{
-	$query_DatosConsulta = sprintf("SELECT * FROM tblusuario".$cadenaOrden);
-}
+$query_DatosConsulta = sprintf("SELECT * FROM tblcategoria".$cadenaOrden);
 
 $query_limit_DatosConsulta = sprintf("%s LIMIT %d, %d", $query_DatosConsulta, $startRow_DatosConsulta, $maxRows_DatosConsulta);
 $DatosConsulta = mysqli_query($con,  $query_limit_DatosConsulta) or die(mysqli_error($con));
@@ -193,47 +150,17 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
   <div id="page-wrapper">
      <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Gestión de Usuarios</h1>
+                    <h1 class="page-header">Gestión de Categorías</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
 			
            <div class="row">
                 <div class="col-lg-5">
-                	<a value="Añadir Usuario" href="user-add.php" class="btn btn-outline btn-primary">Añadir Usuario</a>
-                </div>
-                <div class="col-lg-7">
-                	<div class="well">
-						<form role="form" action="user-list.php" method="get" id="formsearch" name="formsearch">
-							<div class="row">
-								<div class="col-lg-4">
-									<div class="form-group">
-										<label for="strBuscar">Buscar</label>
-										<input class="form-control" placeholder="Buscar..." name="strBuscar"  id="strBuscar" value="<?php if (isset($_GET["strBuscar"]))
-											echo $_GET["strBuscar"];
-										?>">	
-									</div>
-								</div>
-								<div class="col-lg-6">
-									<div class="form-group">
-										<label for="intNivel">Nivel de Usuario</label>
-										<select class="form-control" name="intNivel" id="intNivel">
-											<option value="-1" <?php if ((isset($_GET["intNivel"])) && (($_GET["intNivel"]=="-1"))) echo "selected"; ?>>Todos</option>
-											<option value="0" <?php if ((isset($_GET["intNivel"])) && (($_GET["intNivel"]=="0"))) echo "selected"; ?>>0: Usuario publico de la tienda</option>
-											<option value="1" <?php if ((isset($_GET["intNivel"])) && (($_GET["intNivel"]=="1"))) echo "selected"; ?>>1: Superadministrador</option>
-											<option value="10" <?php if ((isset($_GET["intNivel"])) && (($_GET["intNivel"]=="10"))) echo "selected"; ?>>10: Gestor de Ventas</option>
-											<option value="100" <?php if ((isset($_GET["intNivel"])) && (($_GET["intNivel"]=="100"))) echo "selected"; ?>>100: Gestor de Productos</option>
-										</select>
-									</div>
-								</div>
-								<div class="col-lg-2">
-									<button type="submit" class="btn btn-success" value="Buscar">Buscar</button>
-								</div>
-								<input type="hidden" name="MM_search" id="MM_search" value="formsearch">
-							</div>
-						</form>
-					</div>
-				</div>
+                	<a value="Añadir Categoria" href="category-add.php" class="btn btn-outline btn-primary">Añadir Categoría Principal</a>
+                	<br>
+                	<br>
+			   </div>
 	  		</div>
            
             <div class="row">
@@ -280,7 +207,7 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 													MostrarOrdenCampo($parametroparaprocesar, $orden, $valor,$currentPage, $consultaextendidaparaordenacion);
 												?>
                                             </th>
-                                            <th>E-mail <?php
+                                            <th>Estado <?php
 													//BLOQUE ORDENACIÃ“N
 													//SI HAY PARÃMETROS, HAY QUE SABER SI SON DE ORDEN
 													$parametroparaprocesar="3";
@@ -295,7 +222,7 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 													MostrarOrdenCampo($parametroparaprocesar, $orden, $valor,$currentPage, $consultaextendidaparaordenacion);
 												?> 
                                             </th>
-                                            <th>Estado <?php
+                                            <th>Orden <?php
 													//BLOQUE ORDENACIÃ“N
 													//SI HAY PARÃMETROS, HAY QUE SABER SI SON DE ORDEN
 													$parametroparaprocesar="4";
@@ -310,23 +237,7 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 													MostrarOrdenCampo($parametroparaprocesar, $orden, $valor,$currentPage, $consultaextendidaparaordenacion);
 												?>
                                             </th>
-                                            <th>Nivel <?php
-													//BLOQUE ORDENACIÃ“N
-													//SI HAY PARÃMETROS, HAY QUE SABER SI SON DE ORDEN
-													$parametroparaprocesar="5";
-													if (!isset($_GET["orden"])) {
-														$orden=0;
-														$valor=0;
-													}
-													else {
-														$orden=$_GET["orden"];
-														$valor=$_GET["valor"];
-													}
-													MostrarOrdenCampo($parametroparaprocesar, $orden, $valor,$currentPage, $consultaextendidaparaordenacion);
-												?>
-                                            </th>
-                                            <th>Acción</th>
-                                        </tr>
+										</tr>                                        </tr>
                                     </thead>
                                     <tbody>
                                        <?php 
@@ -335,19 +246,11 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 													?>
               		
 										<tr>
-											<td><?php echo $row_DatosConsulta["idUsuario"];?></td>
-											<td>
-												<?php if($row_DatosConsulta["strImagen"] != ""){?>
-													<img src="../images/users/<?php echo $row_DatosConsulta["strImagen"];?>" width="30" height="30" alt="avatar del usuario">
-												<?php } else {?>
-													<img src="../images/users/nouser.jpg" width="30" height="30" alt=""/>	
-												<?php }?>
-											</td>
+											<td><?php echo $row_DatosConsulta["idCategoria"];?></td>
 											<td><?php echo $row_DatosConsulta["strNombre"];?></td>
-											<td><?php echo $row_DatosConsulta["strEmail"];?></td>
 											<td><?php echo ShowState($row_DatosConsulta["intEstado"]);?></td>
-											<td><?php echo ShowLevel($row_DatosConsulta["intNivel"]);?></td>
-										  <td><a href="user-edit.php?id=<?php echo $row_DatosConsulta["idUsuario"];?>" class="btn btn-warning btn-circle" titel="Edición de Usuario">
+											<td><?php echo ShowLevel($row_DatosConsulta["intOrden"]);?></td>
+										  <td><a href="category-edit.php?id=<?php echo $row_DatosConsulta["idCategoria"];?>" class="btn btn-warning btn-circle" titel="Edición de Categoria">
 												<i class="fa fa-edit"></i></a></td>
 										</tr>
               		
