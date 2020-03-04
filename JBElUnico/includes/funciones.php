@@ -138,4 +138,27 @@ function MostrarOrdenCampo($parametroparaprocesar, $orden, $valor, $currentPage,
 			<?php
 	}
 }
+
+function dropdowncategory($padre)
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT * FROM tblcategoria WHERE refPadre = %s",GetSQLValueString($padre, "text"));
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	if ($totalRows_ConsultaFuncion>0) 
+	{
+		do{
+		?>
+		<option value="<?php echo $row_ConsultaFuncion["idCategoria"] ?>'"><?php echo $row_ConsultaFuncion["strNombre"] ?></option>
+		<?php	
+		} while($row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion));
+	}
+	
+	mysqli_free_result($ConsultaFuncion);
+}
+
 ?>
