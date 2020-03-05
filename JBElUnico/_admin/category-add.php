@@ -107,6 +107,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar")) {
                                             <label for="refPdre">Categoría de la que depende</label>
                                             <select class="form-control" name="refPadre" id="refPadre">
                                                 <option value="0">Categoría Principal</option>
+                                                <?php dropdowncategory(0); ?>
                                             </select>
                                         </div>
                                         <div class="form-group">

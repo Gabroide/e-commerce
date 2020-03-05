@@ -139,11 +139,11 @@ function MostrarOrdenCampo($parametroparaprocesar, $orden, $valor, $currentPage,
 	}
 }
 
-function dropdowncategory($padre)
+function dropdowncategory($padre, $pertenencia = "")
 {
 	global $con;
 	
-	$query_ConsultaFuncion = sprintf("SELECT * FROM tblcategoria WHERE refPadre = %s",GetSQLValueString($padre, "text"));
+	$query_ConsultaFuncion = sprintf("SELECT * FROM tblcategoria WHERE refPadre = %s ",GetSQLValueString($padre, "text"));
 	//echo $query_ConsultaFuncion;
 	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
 	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
@@ -153,8 +153,40 @@ function dropdowncategory($padre)
 	{
 		do{
 		?>
-		<option value="<?php echo $row_ConsultaFuncion["idCategoria"] ?>'"><?php echo $row_ConsultaFuncion["strNombre"] ?></option>
+		<option value="<?php echo $row_ConsultaFuncion["idCategoria"] ?>"><?php echo $pertenencia.$row_ConsultaFuncion["strNombre"] ?></option>
+		<?php
+			dropdowncategory($row_ConsultaFuncion["idCategoria"], " --");
+		} while($row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion));
+	}
+	
+	mysqli_free_result($ConsultaFuncion);
+}
+
+function adminlevelcategory($padre, $pertenencia="")
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT * FROM tblcategoria WHERE refPadre = %s ",GetSQLValueString($padre, "text"));
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	if ($totalRows_ConsultaFuncion>0) 
+	{
+		do{
+		?>
+			<tr>
+				<td><?php echo $row_ConsultaFuncion["idCategoria"];?></td>
+				<td><?php echo $pertenencia.$row_ConsultaFuncion["strNombre"];?></td>
+				<td><?php echo ShowState($row_ConsultaFuncion["intEstado"]);?></td>
+				<td><?php echo $row_ConsultaFuncion["intOrden"];?></td>
+				<td></td>
+				<td><a href="category-edit.php?id=<?php echo $row_ConsultaFuncion["idCategoria"];?>" class="btn btn-warning btn-circle" titel="Edición de Categoria">
+					<i class="fa fa-edit"></i></a></td>
+			</tr>
 		<?php	
+			adminlevelcategory($row_ConsultaFuncion["idCategoria"], "----- ");
 		} while($row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion));
 	}
 	

@@ -72,7 +72,7 @@ $cadenaOrden=" ORDER BY ".$parametro_orden." ".$parametro_ordena_sentido;
 /*************************************************************/
 /*************************************************************/
 
-$query_DatosConsulta = sprintf("SELECT * FROM tblcategoria".$cadenaOrden);
+$query_DatosConsulta = sprintf("SELECT * FROM tblcategoria WHERE refPadre=0".$cadenaOrden);
 
 $query_limit_DatosConsulta = sprintf("%s LIMIT %d, %d", $query_DatosConsulta, $startRow_DatosConsulta, $maxRows_DatosConsulta);
 $DatosConsulta = mysqli_query($con,  $query_limit_DatosConsulta) or die(mysqli_error($con));
@@ -177,7 +177,8 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
                                     <thead>
                                         <tr>
                                             <th>Id <?php
-													//BLOQUE ORDENACIÃ“N
+													$consultaextendidaparaordenacion = "";
+													//BsLOQUE ORDENACIÃ“N
 													//SI HAY PARÃMETROS, HAY QUE SABER SI SON DE ORDEN
 													$parametroparaprocesar="1";
 													if (!isset($_GET["orden"])) {
@@ -191,7 +192,6 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 													MostrarOrdenCampo($parametroparaprocesar, $orden, $valor,$currentPage, $consultaextendidaparaordenacion);
 												?>
                                            </th>
-                                            <th></th>
                                             <th>Nombre <?php
 													//BLOQUE ORDENACIÃ“N
 													//SI HAY PARÃMETROS, HAY QUE SABER SI SON DE ORDEN
@@ -237,6 +237,7 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 													MostrarOrdenCampo($parametroparaprocesar, $orden, $valor,$currentPage, $consultaextendidaparaordenacion);
 												?>
                                             </th>
+                                            <th>Acciones </th>
 										</tr>                                        </tr>
                                     </thead>
                                     <tbody>
@@ -249,12 +250,14 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 											<td><?php echo $row_DatosConsulta["idCategoria"];?></td>
 											<td><?php echo $row_DatosConsulta["strNombre"];?></td>
 											<td><?php echo ShowState($row_DatosConsulta["intEstado"]);?></td>
-											<td><?php echo ShowLevel($row_DatosConsulta["intOrden"]);?></td>
-										  <td><a href="category-edit.php?id=<?php echo $row_DatosConsulta["idCategoria"];?>" class="btn btn-warning btn-circle" titel="Edición de Categoria">
+											<td><?php echo $row_DatosConsulta["intOrden"];?></td>
+									  		<td></td>
+										  	<td><a href="category-edit.php?id=<?php echo $row_DatosConsulta["idCategoria"];?>" class="btn btn-warning btn-circle" titel="Edición de Categoria">
 												<i class="fa fa-edit"></i></a></td>
 										</tr>
               		
               							<?php
+												 adminlevelcategory($row_DatosConsulta["idCategoria"], "-- ");
 											 } while ($row_DatosConsulta = mysqli_fetch_assoc($DatosConsulta)); 
 											?> 
 									</tbody>
@@ -290,7 +293,7 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 			<li><a href="<?php printf("%s?pageNum_DatosConsulta=%d%s", $currentPage, min($totalPages_DatosConsulta, $pageNum_DatosConsulta + 1), $queryString_DatosConsulta); ?>" title="Siguiente">&raquo;</a></li>									<?php } // Show if not last page ?>
 			<?php if ($pageNum_DatosConsulta < $totalPages_DatosConsulta) { // Show if not last page ?>							<li><a href="<?php printf("%s?pageNum_DatosConsulta=%d%s", $currentPage, $totalPages_DatosConsulta, $queryString_DatosConsulta); ?>" title="Ultimo">Ãšltimo</a></li>							
 			<?php } // Show if not last page ?>       
-	</ul>s
+	</ul>
                                 <?php 
 									} 
 											else
