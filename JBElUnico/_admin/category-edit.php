@@ -2,31 +2,38 @@
 <?php
 //MySQLi Fragmentos por http://www.dreamweaver-tutoriales.com
 //Copyright Jorge Vila 2015
-
 $editFormAction = $_SERVER['PHP_SELF'];
 if (isset($_SERVER['QUERY_STRING'])) {
   $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
 }
 
-if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar")) {
+if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsert")) {
+	
 
-	$insertSQL = sprintf("INSERT INTO tblcategoria(strNombre, intEstado, refPadre, intOrden) VALUES (%s, %s, %s, %s)",
-						  GetSQLValueString($_POST["strNombre"], "text"),
-						  GetSQLValueString($_POST["intEstado"], "int"),
-						  GetSQLValueString($_POST["refPadre"], "int"),
-						  GetSQLValueString($_POST["intOrden"], "int"));
+  $updateSQL = sprintf("UPDATE tblcategoria SET strNombre=%s, intEstado=%s, refPadre=%s, intOrden=%s WHERE idCategoria=%s",
+                       GetSQLValueString($_POST["strNombre"], "text"),
+					   GetSQLValueString($_POST["intEstado"], "int"),
+					   GetSQLValueString($_POST["refPadre"], "int"),
+					   GetSQLValueString($_POST["intOrden"], "int"),
+					   GetSQLValueString($_POST["idCategoria"], "int"));
 
+//echo $updateSQL;
+$Result1 = mysqli_query($con, $updateSQL) or die(mysqli_error($con));
 
-	  $Result1 = mysqli_query($con,  $insertSQL) or die(mysqli_error($con));
+  $updateGoTo = "categorY-list.php";
+  if (isset($_SERVER['QUERY_STRING'])) {
+    $updateGoTo .= (strpos($updateGoTo, '?')) ? "&" : "?";
+    $updateGoTo .= $_SERVER['QUERY_STRING'];
+  }
+  header(sprintf("Location: %s", $updateGoTo));
+	}
 
+$query_DatosConsulta = sprintf("SELECT * FROM tblcategoria WHERE idCategoria=%s", GetSQLValueString($_GET["id"], "int"));
 
-	  $insertGoTo = "category-list.php";
-	  if (isset($_SERVER['QUERY_STRING'])) {
-		$insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
-		$insertGoTo .= $_SERVER['QUERY_STRING'];
-	  }
-	  header(sprintf("Location: %s", $insertGoTo));
-}
+$DatosConsulta = mysqli_query($con,  $query_DatosConsulta) or die(mysqli_error($con));
+$row_DatosConsulta = mysqli_fetch_assoc($DatosConsulta);
+$totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
+
 ?>              
 
 <!DOCTYPE html>
@@ -88,38 +95,34 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar")) {
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <form role="form" action="category-add.php" method="post" id="forminsert" name="forminsert" onSubmit="javascript:return validarcategoria	alta();">
+                                    <form action="categorY-edit.php" method="post" id="forminsert" name="forminsert" role="form" onSubmit="javascript:return validarcategoriaalta();">
                                         <div class="form-group">
-                                            <label for="strNombre">Nombre de Categoría</label>
-                                            <input class="form-control" placeholder="Nombre" name="strNombre" id="strNombre">
+                                            <label>Nombre de categoría</label>
+                                            <input class="form-control" placeholder="Escribir Nombre del categoría" name="strNombre" id="strNombre" value="<?php echo $row_DatosConsulta["strNombre"];?>">
                                         </div>
-                                        <div class="alert alert-danger hiddeit" id="errornombre">
-                                        	El campo Nombre de Categoría es obligatorio.
-                                        </div>
+                                        <div class="alert alert-danger hiddeit" id="errornombre">eL CAMPO Nombre es obligatorio</div>
                                         <div class="form-group">
-                                            <label for="intOrden">Orden de Categoría</label>
-                                            <input class="form-control" placeholder="Orden de la Categoría" name="intOrden" id="intOrden">
+                                        	<label>Orden de categoría</label>
+                                            <input class="form-control" placeholder="Escribir Orden de la categoría" name="intOrden" id="intOrden" value="<?php echo $row_DatosConsulta["intOrden"];?>">
                                         </div>
-                                        <div class="alert alert-danger hiddeit" id="errornombre">
-                                        	El campo Orden de la Categoría es obligatorio.
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="refPdre">Categoría de la que depende</label>
-                                            <select class="form-control" name="refPadre" id="refPadre">
-                                                <option value="0">Categoría Principal</option>
-                                                <?php dropdowncategory(0); ?>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="intEstado">Estado</label>
-                                            <select class="form-control" name="intEstado" id="intEstado">
-                                                <option value="0">Inactivo</option>
-                                                <option value="1" selected>Activo</option>
-                                            </select>
-                                        </div>
-                                                                            
-                                        <button type="submit" class="btn btn-success" value="Añadir">Añadir</button>                                        
-                                    	<input type="hidden" name="MM_insert" id="MM_insert" value="forminsertar">
+                                       	<div class="alert alert-danger hiddeit" id="errororden">Orden obligatorio</div>  
+										<div class="form-group">
+											<label>Categoría de la que depende</label>
+											<select name="refPadre" class="form-control" id="refPadre">
+												<option value="0" <?php if ($row_DatosConsulta["refPadre"]=="0") echo "selected"; ?>>Categoría Principal</option>
+												<?php dropdowncategoryupdate(0, $row_DatosConsulta["refPadre"]);?>
+											</select>
+										</div>
+									   <div class="form-group">
+											<label>Estado</label>
+											<select name="intEstado" class="form-control" id="intEstado">
+												<option value="0" <?php if ($row_DatosConsulta["intEstado"]=="0") echo "selected"; ?>>Inactivo</option>
+												<option value="1" <?php if ($row_DatosConsulta["intEstado"]=="1") echo "selected"; ?>>Activo</option>
+											</select>
+										</div>
+                                        <button type="submit" class="btn btn-success">Actualizar</button>
+                                        <input name="idCategoria" type="hidden" id="idCategoria" value="<?php echo $row_DatosConsulta["idCategoria"];?>">
+                                      	<input name="MM_insert" type="hidden" id="MM_insert" value="forminsert">                                       
                                     </form>
                                 </div>
                                 <!-- /.col-lg-6 (nested) -->

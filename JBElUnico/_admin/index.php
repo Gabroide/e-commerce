@@ -23,6 +23,8 @@
     <!-- Custom Fonts -->
     <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
+  <link href="../css/extra-admin.css" rel="stylesheet" type="text/css">
+   
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -33,6 +35,7 @@
 </head>
 
 <body>
+    <script src="../js/script-admin.js"></script>
 
     <div class="container">
         <div class="row">
@@ -42,14 +45,23 @@
                         <h3 class="panel-title">Accede a la administración</h3>
                     </div>
                     <div class="panel-body">
-                        <form role="form" action="acceso.php" method="post">
+                        <form id="formaccess" name="formaccess" role="form" action="acceso.php" method="post" onSubmit="javascript:return validaraccesoadmin();">
                             <fieldset>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
+                                    <input class="form-control" placeholder="E-mail" name="strEmail" type="email" autofocus>
                                 </div>
+                                <div class="alert alert-danger hiddeit" id="erroremail">
+                                	El campo E-mail es obligatorio.
+                                </div>
+                               	<div class="alert alert-danger hiddeit" id="wrongemail">
+                                	El E-mail introducido es incorrecto.
+                              	</div>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="Contraseña" name="password" type="password" value="">
+                                    <input class="form-control" placeholder="Contraseña" name="strPassword" type="password" value="">
                                 </div>
+                               	<div class="alert alert-danger hiddeit" id="errorpass">
+                                	El campo Contraseña es obligatorio.
+                               	</div>
                                
                                 <!-- Change this to a button or input when using this as a form -->
                                 <input name="Acceder" type="submit" id="Acceder" value="Acceder" class="btn btn-lg btn-success btn-block">

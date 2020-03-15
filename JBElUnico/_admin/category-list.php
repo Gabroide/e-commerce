@@ -248,7 +248,7 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
               		
 										<tr>
 											<td><?php echo $row_DatosConsulta["idCategoria"];?></td>
-											<td><?php echo $row_DatosConsulta["strNombre"];?></td>
+											<td><strong><?php echo $row_DatosConsulta["strNombre"];?></strong></td>
 											<td><?php echo ShowState($row_DatosConsulta["intEstado"]);?></td>
 											<td><?php echo $row_DatosConsulta["intOrden"];?></td>
 									  		<td></td>

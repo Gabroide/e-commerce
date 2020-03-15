@@ -139,6 +139,28 @@ function MostrarOrdenCampo($parametroparaprocesar, $orden, $valor, $currentPage,
 	}
 }
 
+function dropdowncategorylevel2($padre, $pertenencia = "")
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT * FROM tblcategoria WHERE refPadre = %s ",GetSQLValueString($padre, "text"));
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	if ($totalRows_ConsultaFuncion>0) 
+	{
+		do{
+		?>
+		<option value="<?php echo $row_ConsultaFuncion["idCategoria"] ?>"><?php echo $pertenencia.$row_ConsultaFuncion["strNombre"] ?></option>
+		<?php
+		} while($row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion));
+	}
+	
+	mysqli_free_result($ConsultaFuncion);
+}
+
 function dropdowncategory($padre, $pertenencia = "")
 {
 	global $con;
@@ -155,7 +177,53 @@ function dropdowncategory($padre, $pertenencia = "")
 		?>
 		<option value="<?php echo $row_ConsultaFuncion["idCategoria"] ?>"><?php echo $pertenencia.$row_ConsultaFuncion["strNombre"] ?></option>
 		<?php
-			dropdowncategory($row_ConsultaFuncion["idCategoria"], " --");
+			dropdowncategorylevel2($row_ConsultaFuncion["idCategoria"], " --");
+		} while($row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion));
+	}
+	
+	mysqli_free_result($ConsultaFuncion);
+}
+
+function dropdowncategoryupdate($padre, $seleccionado, $pertenencia = "")
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT * FROM tblcategoria WHERE refPadre = %s ",GetSQLValueString($padre, "text"));
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	if ($totalRows_ConsultaFuncion>0) 
+	{
+		do{
+		?>
+		<option value="<?php echo $row_ConsultaFuncion["idCategoria"] ?>" <?php if ($seleccionado==$row_ConsultaFuncion["idCategoria"]) echo "selected"; ?>><?php echo $pertenencia.$row_ConsultaFuncion["strNombre"] ?></option>
+		<?php
+			dropdowncategoryupdate2($row_ConsultaFuncion["idCategoria"], $seleccionado, " --");
+		} while($row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion));
+	}
+	
+	mysqli_free_result($ConsultaFuncion);
+}
+
+function dropdowncategoryupdate2($padre, $seleccionado, $pertenencia = "")
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT * FROM tblcategoria WHERE refPadre = %s ",GetSQLValueString($padre, "text"));
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	if ($totalRows_ConsultaFuncion>0) 
+	{
+		do{
+		?>
+		<option value="<?php echo $row_ConsultaFuncion["idCategoria"] ?>" <?php if ($seleccionado==$row_ConsultaFuncion["idCategoria"]) echo "selected"; ?>><?php echo $pertenencia.$row_ConsultaFuncion["strNombre"] ?></option>
+		<?php
+			
 		} while($row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion));
 	}
 	

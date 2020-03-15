@@ -1,4 +1,4 @@
-<?php require_once('../Connections/conexion.php'); ?>
+	<?php require_once('../Connections/conexion.php'); ?>
 
 <?php
 //MySQLi Fragmentos por http://www.dreamweaver-tutoriales.com
