@@ -46,18 +46,21 @@
 					<div class="col-lg-12">
 						<div class="panel panel-default">
 							<div class="panel-heading">
-								Añadir Usuario
+								Atención
 							</div>
 							<div class="panel-body">
 								<div class="row">
 									<div class="col-lg-6">
-
 										<?php if ($_GET["error"]==1){?>
 											<div class="alert alert-danger">El correo introducido ya existe. <a href="user-add.php">Inténtalo de nuevo</a>.</div>
 										<?php }?>
 										
 										<?php if ($_GET["error"]==2){?>
 											<div class="alert alert-danger">El correo introducido ya existe. <a href="user-edit.php?id=<?php echo $_GET["id"];?>'">Inténtalo de nuevo</a>.</div>
+										<?php }?>
+										
+										<?php if ($_GET["error"]==3){?>
+											<div class="alert alert-danger">Usted no dispone de las credenciales para acceder a esta sección.</div>
 										<?php }?>
 								  </div>
 									<!-- /.col-lg-6 (nested) -->
