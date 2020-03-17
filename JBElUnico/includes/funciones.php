@@ -286,7 +286,7 @@ function isAuthorized($strUsers, $strGroups, $UserName, $UserGroup) {
   return $isValid; 
 }
 
-function RestringirAcceso($LISTADENIVELES)
+function RestringirAcceso($acceden)
 {
 	if (!isset($_SESSION)) {
   		session_start();
