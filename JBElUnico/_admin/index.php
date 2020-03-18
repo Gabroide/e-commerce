@@ -48,7 +48,12 @@
                         <form id="formaccess" name="formaccess" role="form" action="acceso.php" method="post" onSubmit="javascript:return validaraccesoadmin();">
                             <fieldset>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="E-mail" name="strEmail" type="email" autofocus>
+                                  <?php if (isset($_GET["error"])){?>
+                                  	<div class="alert alert-danger">
+                                   		Error de acceso, el usuario o el password son incorrectos.
+                                  	</div>
+								  <?php }?>
+                                  <input class="form-control" placeholder="E-mail" name="strEmail" type="email" autofocus>
                                 </div>
                                 <div class="alert alert-danger hiddeit" id="erroremail">
                                 	El campo E-mail es obligatorio.

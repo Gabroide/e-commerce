@@ -1,4 +1,4 @@
-<?php require_once('../Connections/conexion.php'); ?>
+<?php require_once('../Connections/conexion.php'); RestringirAcceso("1");?>
 <?php
 //MySQLi Fragmentos por http://www.dreamweaver-tutoriales.com
 //Copyright Jorge Vila 2015

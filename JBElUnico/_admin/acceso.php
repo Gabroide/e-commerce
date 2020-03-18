@@ -23,7 +23,7 @@ if(isset($_POST['strEmail']))
 	  $password=md5($_POST['strPassword']);
 	  $MM_fldUserAuthorization = "intNivel";
 	  $MM_redirectLoginSuccess = "inicio.php";
-	  $MM_redirectLoginFailed = "errorlogin.php";
+	  $MM_redirectLoginFailed = "index.php?error=1";
 	  $MM_redirecttoReferrer = false;
 
 
@@ -32,7 +32,7 @@ if(isset($_POST['strEmail']))
 
 	  $LoginRS = mysqli_query($con,  $LoginRS__query) or die(mysqli_error($con));
 	  $loginFoundUser = mysqli_num_rows($LoginRS);
-	  if ($loginFoundUser) {
+	  if (($loginFoundUser) && (mysqli_result($LoginRS,0,'intNivel')!=0)){
 
 		$loginStrGroup  = mysqli_result($LoginRS,0,'intNivel');
 
@@ -53,6 +53,7 @@ if(isset($_POST['strEmail']))
 		if (isset($_SESSION['PrevUrl']) && false) {
 		  $MM_redirectLoginSuccess = $_SESSION['PrevUrl'];	
 		}
+		  
 		header("Location: " . $MM_redirectLoginSuccess );
 	  }
 	  else {
