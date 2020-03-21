@@ -5,8 +5,8 @@
 					<div class="col-sm-6">
 						<div class="contactinfo">
 							<ul class="nav nav-pills">
-								<li><a href="#"><i class="fa fa-phone"></i> +2 95 01 88 821</a></li>
-								<li><a href="#"><i class="fa fa-envelope"></i> info@domain.com</a></li>
+								<li><a href="#"><i class="fa fa-phone"></i> <?php echo _telefono; ?></a></li>
+								<li><a href="mailto"><i class="fa fa-envelope"></i> <?php echo _email; ?></li>
 							</ul>
 						</div>
 					</div>
@@ -30,7 +30,7 @@
 				<div class="row">
 					<div class="col-sm-4">
 						<div class="logo pull-left">
-							<a href="index.html"><img src="images/home/logo.png" alt="" /></a>
+							<a href="index.php"><img src="images/<?php echo _logo; ?>" alt="Logo de la empresa" /></a>
 						</div>
 						<div class="btn-group pull-right">
 							<div class="btn-group">

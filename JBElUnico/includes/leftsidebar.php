@@ -1,10 +1,10 @@
 <?php
-	$query_DatosConsulta = sprintf("SELECT * FROM tblcategoria WHERE refPadre=0 AND intEstado=1 ORDER BY intOrden ASC");
+	$query_DatosConsultaCategorias = sprintf("SELECT * FROM tblcategoria WHERE refPadre=0 AND intEstado=1 ORDER BY intOrden ASC");
 
 	
-	$DatosConsulta = mysqli_query($con,  $query_DatosConsulta) or die(mysqli_error($con));
-	$row_DatosConsulta = mysqli_fetch_assoc($DatosConsulta);
-	$totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
+	$DatosConsultaCategorias = mysqli_query($con,  $query_DatosConsultaCategorias) or die(mysqli_error($con));
+	$row_DatosConsultaCategorias = mysqli_fetch_assoc($DatosConsultaCategorias);
+	$totalRows_DatosConsultaCategorias = mysqli_num_rows($DatosConsultaCategorias);
 
 ?>
 
@@ -18,38 +18,38 @@
 				$solapaapertura=$solapa.$count;
 		?>
 		<div class="panel panel-default">
-			<?php if(hassubcategories($row_DatosConsulta["idCategoria"])){ ?>
+			<?php if(hassubcategories($row_DatosConsultaCategorias["idCategoria"])){ ?>
 			<div class="panel-heading">
 				<h4 class="panel-title">
 					<a data-toggle="collapse" data-parent="#accordian" href="#<?php echo $solapaapertura;?>">
 						<span class="badge pull-right"><i class="fa fa-plus"></i></span>
-						<?php echo $row_DatosConsulta["strNombre"];?>
+						<?php echo $row_DatosConsultaCategorias["strNombre"];?>
 					</a>
 				</h4>
 			</div>
 			<div id="<?php echo $solapaapertura;?>" < class="panel-collapse collapse">
 				<div class="panel-body">
 					<ul>
-					<?php showsubcategories($row_DatosConsulta["idCategoria"]);?>
+					<?php showsubcategories($row_DatosConsultaCategorias["idCategoria"]);?>
 					</ul>
 				</div>
 			</div>
-		</div>
 		<?php }
 			else
 			{
 		?>
 		<div class="panel-heading">
 				<h4 class="panel-title">
-					<a href="category.php?id=<?php echo $row_DatosConsulta["idCategoria"];?>">
-						<?php echo $row_DatosConsulta["strNombre"];?>
+					<a href="category.php?id=<?php echo $row_DatosConsultaCategorias["idCategoria"];?>">
+						<?php echo $row_DatosConsultaCategorias["strNombre"];?>
 					</a>
 				</h4>
 			</div>
 		<?php }?>
+		</div>
 		<?php
 				$count++;
-			} while ($row_DatosConsulta = mysqli_fetch_assoc($DatosConsulta)); 
+			} while ($row_DatosConsultaCategorias = mysqli_fetch_assoc($DatosConsultaCategorias)); 
 		?>
 	</div><!--/category-products-->
 	

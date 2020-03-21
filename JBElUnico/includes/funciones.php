@@ -379,4 +379,26 @@ function showsubsubcategories($padre)
 	
 	mysqli_free_result($ConsultaFuncion);
 }
+
+function ConfigIni()
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT * FROM tblconfiguracion WHERE idConfiguracion = 1");
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	if ($totalRows_ConsultaFuncion>0) 
+	{
+		define("_logo", $row_ConsultaFuncion["strLogo"]);
+		define("_email", $row_ConsultaFuncion["strEmail"]);
+		define("_telefono", $row_ConsultaFuncion["strTelefono"]);
+	}
+	
+	mysqli_free_result($ConsultaFuncion);
+}
+
+ConfigIni();
 ?>
