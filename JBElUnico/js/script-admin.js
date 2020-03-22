@@ -90,3 +90,22 @@ function validaraccesoadmin()
 	
 	return valid;
 }
+
+function validarmarcaalta()
+{
+    valid = true;
+	
+	$("#errorpass").hide("slow");
+	if (document.forminsert.strMarca.value == ""){
+		$("#errormarca").show("slow");
+	    valid = false;
+	}
+	
+	$("#errororden").hide("slow");
+	if (document.forminsert.intOrden.value == ""){
+		$("#errororden").show("slow");
+	    valid = false;
+	}
+	
+	return valid;
+}

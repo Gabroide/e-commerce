@@ -9,26 +9,23 @@ if (isset($_SERVER['QUERY_STRING'])) {
   $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
 }
 
+$msgsuccess=0;
+
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsert")) {
 
 	
 	
-  $updateSQL = sprintf("UPDATE tblconfiguracion SET strTelefono=%s, strEmail=%s, strLogo=%s WHERE idConfiguracion=%s",
+  $updateSQL = sprintf("UPDATE tblconfiguracion SET strTelefono=%s, strEmail=%s, strLogo=%s, intMarca=%s WHERE idConfiguracion=%s",
                        GetSQLValueString($_POST["strTelefono"], "text"),
 					   GetSQLValueString($_POST["strEmail"], "text"),
-					   GetSQLValueString($_POST["strLogo"], "text"),					   
+					   GetSQLValueString($_POST["strLogo"], "text"),
+					   GetSQLValueString($_POST["intMarca"], "int"),
 					   GetSQLValueString($_POST["idConfiguracion"], "int"));
 
 //echo $updateSQL;
 $Result1 = mysqli_query($con, $updateSQL) or die(mysqli_error($con));
 
-  $updateGoTo = "settings.php";
-  if (isset($_SERVER['QUERY_STRING'])) {
-    $updateGoTo .= (strpos($updateGoTo, '?')) ? "&" : "?";
-    $updateGoTo .= $_SERVER['QUERY_STRING'];
-  }
-  header(sprintf("Location: %s", $updateGoTo));
-
+	$msgsuccess=1;
 }
 
 ?>
@@ -84,6 +81,16 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 			<br>
 			<br>
            
+           <?php if($msgsuccess==1){ ?>
+           <div class="row">
+               	<div class="col-lg-12">
+			   		<div class="alert alert-success">
+						Las modificaciones efectuadas se han guardado correctamente.</a>.
+		   			</div>
+			   	</div>
+	  		</div>
+          <?php }?>
+           
             <div class="row">
                 <div class="col-lg-12">
                     <div class="panel panel-default">
@@ -100,13 +107,17 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
                                 <div class="col-lg-6">
                                     <form role="form" action="settings.php" method="post" id="forminsert" name="forminsert">
                                         <div class="form-group">
-                                            <label>E-mail</label>
+                                            <label for="strEmail">E-mail</label>
                                             <input class="form-control" placeholder="e-mail" name="strEmail" id="strEmail" value="<?php echo $row_DatosConsulta["strEmail"];?>">
                                         </div>
                                         
                                         <div class="form-group">
-                                            <label>Teléfono</label>
+                                            <label for="strTelefono">Teléfono</label>
                                             <input class="form-control" placeholder="Teléfono que saldrá en la parte superior" name="strTelefono" id="strTelefono" value="<?php echo $row_DatosConsulta["strTelefono"];?>">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="intMarca">Mostrar Marcas</label>
+                                            <input class="form-control" placeholder="Teléfono que saldrá en la parte superior" name="strTelefono" id="IntMarca" value="<?php echo $row_DatosConsulta["intMarca"];?>">
                                         </div>
 										<?php 
 											//BLOQUE INSERCION IMAGEN

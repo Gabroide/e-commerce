@@ -1,5 +1,5 @@
 <?php
-	$query_DatosConsultaCategorias = sprintf("SELECT * FROM tblcategoria WHERE refPadre=0 AND intEstado=1 ORDER BY intOrden ASC");
+	$query_s = sprintf("SELECT * FROM tblcategoria WHERE refPadre=0 AND intEstado=1 ORDER BY intOrden ASC");
 
 	
 	$DatosConsultaCategorias = mysqli_query($con,  $query_DatosConsultaCategorias) or die(mysqli_error($con));
@@ -53,17 +53,27 @@
 		?>
 	</div><!--/category-products-->
 	
+	<?php
+		$query_DatosConsultaMarcas = sprintf("SELECT * FROM tblmarca WHERE intEstado=1 ORDER BY intOrden ASC");
+
+	
+		$DatosConsultaMarcas = mysqli_query($con,  $query_DatosConsultaMarcas) or die(mysqli_error($con));
+		$row_DatosConsultaMarcas = mysqli_fetch_assoc($DatosConsultaMarcas);
+		$totalRows_DatosConsultaMarcas = mysqli_num_rows($DatosConsultaMarcas);
+
+	?>
+	
 	<div class="brands_products"><!--brands_products-->
-		<h2>Brands</h2>
+		<h2>Marcas</h2>
 		<div class="brands-name">
 			<ul class="nav nav-pills nav-stacked">
-				<li><a href="#"> <span class="pull-right">(50)</span>Acne</a></li>
-				<li><a href="#"> <span class="pull-right">(56)</span>Grüne Erde</a></li>
-				<li><a href="#"> <span class="pull-right">(27)</span>Albiro</a></li>
-				<li><a href="#"> <span class="pull-right">(32)</span>Ronhill</a></li>
-				<li><a href="#"> <span class="pull-right">(5)</span>Oddmolly</a></li>
-				<li><a href="#"> <span class="pull-right">(9)</span>Boudestijn</a></li>
-				<li><a href="#"> <span class="pull-right">(4)</span>Rösch creative culture</a></li>
+				<?php 
+					do{
+				?>
+					<li><a href="#"> <span class="pull-right">(50)</span><?php echo $row_DatosConsultaMarcas["strMarca"];?></a></li>
+				<?php
+					} while ($row_DatosConsultaMarcas = mysqli_fetch_assoc($DatosConsultaMarcas)); 
+				?>	
 			</ul>
 		</div>
 	</div><!--/brands_products-->

@@ -241,6 +241,9 @@
                             <a href="category-list.php"><i class="fa fa-ellipsis-v fa-fw"></i> Categorías</a>
                         </li>
                         <li>
+                            <a href="brands-list.php"><i class="fa fa-apple fa-fw"></i> Marcas</a>
+                        </li>
+                        <li>
                             <a href="settings.php"><i class="fa fa-gear fa-fw"></i> Configuración</a>
                         </li>
                         <li>
