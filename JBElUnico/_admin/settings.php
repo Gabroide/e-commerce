@@ -13,13 +13,16 @@ $msgsuccess=0;
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsert")) {
 
+	$marcas=0;
 	
+	if(isset($_POST["intMarcas"]) && ($_POST["intMarcas"])=="1")
+		$marcas=1;
 	
-  $updateSQL = sprintf("UPDATE tblconfiguracion SET strTelefono=%s, strEmail=%s, strLogo=%s, intMarca=%s WHERE idConfiguracion=%s",
+  $updateSQL = sprintf("UPDATE tblconfiguracion SET strTelefono=%s, strEmail=%s, strLogo=%s, intMarcas=%s WHERE idConfiguracion=%s",
                        GetSQLValueString($_POST["strTelefono"], "text"),
 					   GetSQLValueString($_POST["strEmail"], "text"),
 					   GetSQLValueString($_POST["strLogo"], "text"),
-					   GetSQLValueString($_POST["intMarca"], "int"),
+					   GetSQLValueString($marcas, "int"),
 					   GetSQLValueString($_POST["idConfiguracion"], "int"));
 
 //echo $updateSQL;
@@ -116,10 +119,15 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
                                             <input class="form-control" placeholder="Teléfono que saldrá en la parte superior" name="strTelefono" id="strTelefono" value="<?php echo $row_DatosConsulta["strTelefono"];?>">
                                         </div>
                                         <div class="form-group">
-                                            <label for="intMarca">Mostrar Marcas</label>
-                                            <input class="form-control" placeholder="Teléfono que saldrá en la parte superior" name="strTelefono" id="IntMarca" value="<?php echo $row_DatosConsulta["intMarca"];?>">
-                                        </div>
-										<?php 
+                                            <label>Mostrar Marcas</label>
+ 											<div class="checkbox">
+												<label>
+													<input type="checkbox" value="1" name="intMarcas" id="intMarcas" <?php if ($row_DatosConsulta["intMarcas"]==1){ ?>checked="checked" <?php }?>>
+													Marcar para mostrar el apartado de marcas en el menú de la izquierda
+												</label>
+											</div>
+                                        </div>                                    
+                                        <?php 
 											//BLOQUE INSERCION IMAGEN
 											//***********************
 											//***********************

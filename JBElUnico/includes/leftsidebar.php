@@ -1,12 +1,11 @@
-<?php
-	$query_s = sprintf("SELECT * FROM tblcategoria WHERE refPadre=0 AND intEstado=1 ORDER BY intOrden ASC");
+<?php 
+	$query_DatosConsultaCategorias = sprintf("SELECT * FROM tblcategoria WHERE refPadre=0 AND intEstado=1 ORDER BY intOrden ASC");
 
-	
 	$DatosConsultaCategorias = mysqli_query($con,  $query_DatosConsultaCategorias) or die(mysqli_error($con));
 	$row_DatosConsultaCategorias = mysqli_fetch_assoc($DatosConsultaCategorias);
 	$totalRows_DatosConsultaCategorias = mysqli_num_rows($DatosConsultaCategorias);
-
 ?>
+
 
 <div class="left-sidebar">
 	<h2>Categorías</h2>
@@ -63,20 +62,22 @@
 
 	?>
 	
-	<div class="brands_products"><!--brands_products-->
-		<h2>Marcas</h2>
-		<div class="brands-name">
-			<ul class="nav nav-pills nav-stacked">
-				<?php 
-					do{
-				?>
-					<li><a href="#"> <span class="pull-right">(50)</span><?php echo $row_DatosConsultaMarcas["strMarca"];?></a></li>
-				<?php
-					} while ($row_DatosConsultaMarcas = mysqli_fetch_assoc($DatosConsultaMarcas)); 
-				?>	
-			</ul>
-		</div>
-	</div><!--/brands_products-->
+	<?php if(_marcas==1){?>
+		<div class="brands_products"><!--brands_products-->
+			<h2>Marcas</h2>
+			<div class="brands-name">
+				<ul class="nav nav-pills nav-stacked">
+					<?php 
+						do{
+					?>
+						<li><a href="#"> <span class="pull-right">(50)</span><?php echo $row_DatosConsultaMarcas["strMarca"];?></a></li>
+					<?php
+						} while ($row_DatosConsultaMarcas = mysqli_fetch_assoc($DatosConsultaMarcas)); 
+					?>	
+				</ul>
+			</div>
+		</div><!--/brands_products-->
+	<?php }?>
 
 	<div class="price-range"><!--price-range-->
 		<h2>Price Range</h2>

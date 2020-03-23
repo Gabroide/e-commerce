@@ -395,6 +395,7 @@ function ConfigIni()
 		define("_logo", $row_ConsultaFuncion["strLogo"]);
 		define("_email", $row_ConsultaFuncion["strEmail"]);
 		define("_telefono", $row_ConsultaFuncion["strTelefono"]);
+		define("_marcas", $row_ConsultaFuncion["intMarcas"]);
 	}
 	
 	mysqli_free_result($ConsultaFuncion);
