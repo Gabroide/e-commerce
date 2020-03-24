@@ -17,24 +17,24 @@ if (isset($_GET["valor"]))
 {
 	switch ($_GET["valor"]) {
     case 1:
-        $parametro_orden= "idUsuario";
+        $parametro_orden= "idProducto";
         break;
     case 2:
         $parametro_orden= "strNombre";
         break;
     case 3:
-        $parametro_orden= "strEmail";
+        $parametro_orden= "dblPrecio";
         break;
     case 4:
         $parametro_orden= "intEstado";
         break;
     case 5:
-        $parametro_orden= "intNivel";
+        $parametro_orden= "refMarca";
         break;
 	}
 }
 else
-	$parametro_orden= "idUsuario"; //POR DEFECTO
+	$parametro_orden= "idProducto"; //POR DEFECTO
 
 if (isset($_GET["orden"]))
 {
@@ -79,15 +79,15 @@ $consultaextendidaparaordenacion="";
 
 if((isset($_GET["MM_search"])) && ($_GET["MM_search"]=="formsearch"))
 {
-	if((isset($_GET["intNivel"])) && ($_GET["intNivel"]=="-1"))
+	if((isset($_GET["intEstado"])) && ($_GET["intEstado"]=="-1"))
 	{
 		$consultaextendida = "";
 	}
 	else{
-		$consultaextendida = " AND intNivel=".$_GET["intNivel"];
+		$consultaextendida = " AND intEstado=".$_GET["intEstado"];
 	}
 	
-	$consultaextendidaparaordenacion="&intNivel=".$_GET["intNivel"]."&MM_Buscar=formsearch&strBuscar=".$_GET["strBuscar"];
+	$consultaextendidaparaordenacion="&intEstado=".$_GET["intEstado"]."&MM_Buscar=formsearch&strBuscar=".$_GET["strBuscar"];
 	
 	//(BLOQUE NOMBRE)
 	$porciones = explode(" ", $_GET["strBuscar"]);
@@ -102,19 +102,19 @@ if((isset($_GET["MM_search"])) && ($_GET["MM_search"]=="formsearch"))
 	//(BLOQUE E-MAIL)
 	$porciones = explode(" ", $_GET["strBuscar"]);
 	$longitud = count($porciones);
-	$extramodelo.=" OR strEmail LIKE '%".$_GET["strBuscar"] ."%'";
+	$extramodelo.=" OR strDescripcion LIKE '%".$_GET["strBuscar"] ."%'";
 	for($i=0; $i<$longitud; $i++)
 	{
-		$extramodelo.=" OR strEmail LIKE '%".$porciones[$i] ."%'";
+		$extramodelo.=" OR strDescripcion LIKE '%".$porciones[$i] ."%'";
 	}
 	//(FIN BLOQUE E-MAIL)
 	
-	$query_DatosConsulta = "SELECT * FROM tblusuario WHERE (".$extramodelo.") ".$consultaextendida.$cadenaOrden;
+	$query_DatosConsulta = "SELECT * FROM tblproducto WHERE (".$extramodelo.") ".$consultaextendida.$cadenaOrden;
 	//echo $query_DatosConsulta;
 }
 else
 {
-	$query_DatosConsulta = sprintf("SELECT * FROM tblusuario".$cadenaOrden);
+	$query_DatosConsulta = sprintf("SELECT * FROM tblproducto".$cadenaOrden);
 }
 
 $query_limit_DatosConsulta = sprintf("%s LIMIT %d, %d", $query_DatosConsulta, $startRow_DatosConsulta, $maxRows_DatosConsulta);
@@ -193,18 +193,18 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
   <div id="page-wrapper">
      <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Gestión de Usuarios</h1>
+                    <h1 class="page-header">Gestión de Productos</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
 			
            <div class="row">
                 <div class="col-lg-5">
-                	<a value="Añadir Usuario" href="user-add.php" class="btn btn-outline btn-primary">Añadir Usuario</a>
+                	<a value="Añadir Producto" href="product-add.php" class="btn btn-outline btn-primary">Añadir Producto</a>
                 </div>
                 <div class="col-lg-7">
                 	<div class="well">
-						<form role="form" action="user-list.php" method="get" id="formsearch" name="formsearch">
+						<form role="form" action="product-list.php" method="get" id="formsearch" name="formsearch">
 							<div class="row">
 								<div class="col-lg-4">
 									<div class="form-group">
@@ -217,12 +217,10 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 								<div class="col-lg-6">
 									<div class="form-group">
 										<label for="intNivel">Nivel de Usuario</label>
-										<select class="form-control" name="intNivel" id="intNivel">
-											<option value="-1" <?php if ((isset($_GET["intNivel"])) && (($_GET["intNivel"]=="-1"))) echo "selected"; ?>>Todos</option>
-											<option value="0" <?php if ((isset($_GET["intNivel"])) && (($_GET["intNivel"]=="0"))) echo "selected"; ?>>0: Usuario publico de la tienda</option>
-											<option value="1" <?php if ((isset($_GET["intNivel"])) && (($_GET["intNivel"]=="1"))) echo "selected"; ?>>1: Superadministrador</option>
-											<option value="10" <?php if ((isset($_GET["intNivel"])) && (($_GET["intNivel"]=="10"))) echo "selected"; ?>>10: Gestor de Ventas</option>
-											<option value="100" <?php if ((isset($_GET["intNivel"])) && (($_GET["intNivel"]=="100"))) echo "selected"; ?>>100: Gestor de Productos</option>
+										<select class="form-control" name="intEstado" id="intEstado">
+											<option value="-1" <?php if ((isset($_GET["intEstado"])) && (($_GET["intEstado"]=="-1"))) echo "selected"; ?>>Todos</option>
+											<option value="0" <?php if ((isset($_GET["intEstado"])) && (($_GET["intEstado"]=="0"))) echo "selected"; ?>>Producto inactivo</option>
+											<option value="1" <?php if ((isset($_GET["intEstado"])) && (($_GET["intEstado"]=="1"))) echo "selected"; ?>>Producto activo</option>
 										</select>
 									</div>
 								</div>
@@ -280,7 +278,7 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 													MostrarOrdenCampo($parametroparaprocesar, $orden, $valor,$currentPage, $consultaextendidaparaordenacion);
 												?>
                                             </th>
-                                            <th>E-mail <?php
+                                            <th>Precio <?php
 													//BLOQUE ORDENACIÃ“N
 													//SI HAY PARÃMETROS, HAY QUE SABER SI SON DE ORDEN
 													$parametroparaprocesar="3";
@@ -310,7 +308,7 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 													MostrarOrdenCampo($parametroparaprocesar, $orden, $valor,$currentPage, $consultaextendidaparaordenacion);
 												?>
                                             </th>
-                                            <th>Nivel <?php
+                                            <th>Marca <?php
 													//BLOQUE ORDENACIÃ“N
 													//SI HAY PARÃMETROS, HAY QUE SABER SI SON DE ORDEN
 													$parametroparaprocesar="5";
@@ -335,20 +333,21 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 													?>
               		
 										<tr>
-											<td><?php echo $row_DatosConsulta["idUsuario"];?></td>
+											<td><?php echo $row_DatosConsulta["idProducto"];?></td>
 											<td>
 												<?php if($row_DatosConsulta["strImagen"] != ""){?>
-													<img src="../images/users/<?php echo $row_DatosConsulta["strImagen"];?>" width="30" height="30" alt="avatar del usuario">
+													<img src="../images/products/<?php echo $row_DatosConsulta["strImagen"];?>" width="30" height="30" alt="imagen del producto">
 												<?php } else {?>
-													<img src="../images/users/nouser.jpg" width="30" height="30" alt=""/>	
+													<img src="../images/users/nouser.jpg" width="30" height="30" alt="El poducto no tiene imagen"/>	
 												<?php }?>
 											</td>
 											<td><?php echo $row_DatosConsulta["strNombre"];?></td>
-											<td><?php echo $row_DatosConsulta["strEmail"];?></td>
+											<td><?php echo $row_DatosConsulta["dblPrecio"];?></td>
 											<td><?php echo ShowState($row_DatosConsulta["intEstado"]);?></td>
-											<td><?php echo ShowLevel($row_DatosConsulta["intNivel"]);?></td>
-										  <td><a href="user-edit.php?id=<?php echo $row_DatosConsulta["idUsuario"];?>" class="btn btn-warning btn-circle" title="Edición de Usuario">
-												<i class="fa fa-edit"></i></a></td>
+											<td><?php echo ShowBrand($row_DatosConsulta["refMarca"]);?></td>
+										  	<td><a href="product-edit.php?id=<?php echo $row_DatosConsulta["idProducto"];?>" class="btn btn-warning btn-circle" title="Edición de Producto">
+												<i class="fa fa-edit"></i></a>
+											</td>
 										</tr>
               		
               							<?php

@@ -402,4 +402,23 @@ function ConfigIni()
 }
 
 ConfigIni();
+
+function ShowBrand($idMarca)
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT * FROM tblmarca WHERE idMarca = %s",
+		 GetSQLValueString($idMarca, "text"));
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	if ($totalRows_ConsultaFuncion>0)	
+		return $row_ConsultaFuncion["strMarca"];
+	else
+		return "No usado";
+	mysqli_free_result($ConsultaFuncion);
+}
+
 ?>
