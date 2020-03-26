@@ -8,15 +8,15 @@ if (isset($_SERVER['QUERY_STRING'])) {
   $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
 }
 
-if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar")) {
+if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsert")) {
 
 	$esprincipal=0;
 	
 	if(isset($_POST["intPrincipal"]) && ($_POST["intPrincipal"])=="1")
 		$esprincipal=1;
-	
-	  $insertSQL = sprintf("INSERT INTO tblproducto(strNombre, refCategoria1, strImagen1, strDescripcion, dblPrecio, intEstado, refMArca, refCategoria2, refCategoria3, refCategoria4, refCategoria5, strImagen2, strImagen3, strImagen4, strImagen5, intPrincipal) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-						   GetSQLValueString($_POST["strNombre"], "text"),
+
+	$updateSQL = sprintf("UPDATE tblproducto SET strNombre=%s, refCategoria1=%s, strImagen1=%s, strDescripcion=%s, dblPrecio=%s, intEstado=%s, refMArca=%s, refCategoria2=%s, refCategoria3=%s, refCategoria4=%s, refCategoria5=%s, strImagen2=%s, strImagen3=%s, strImagen4=%s, strImagen5=%s, intPrincipal=%s WHERE idProducto=%s",
+                       GetSQLValueString($_POST["strNombre"], "text"),
 						  GetSQLValueString($_POST["refCategoria1"], "int"),
 						  GetSQLValueString($_POST["strImagen1"], "text"),
 						  GetSQLValueString($_POST["strDescripcion"], "text"),
@@ -31,10 +31,12 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar")) {
 						  GetSQLValueString($_POST["strImagen3"], "text"),
 						  GetSQLValueString($_POST["strImagen4"], "text"),
 						  GetSQLValueString($_POST["strImagen5"], "text"),
-						  GetSQLValueString($esprincipal, "int"));
+						  GetSQLValueString($esprincipal, "int"),
+						GetSQLValueString($_POST["idProducto----"], "int"));
 
+//echo $updateSQL;
+$Result1 = mysqli_query($con, $updateSQL) or die(mysqli_error($con));
 
-	  $Result1 = mysqli_query($con,  $insertSQL) or die(mysqli_error($con));
 
 	  $insertGoTo = "product-list.php";
 	  if (isset($_SERVER['QUERY_STRING'])) {
@@ -126,7 +128,7 @@ $totalRows_DatosMarcas = mysqli_num_rows($DatosMarcas);
                         </div>
 `                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                        	Añadir Producto
+                        	Editar Producto
                         	<!-- /.table-responsive -->
                         </div>
                         <div class="panel-body">
@@ -136,21 +138,23 @@ $totalRows_DatosMarcas = mysqli_num_rows($DatosMarcas);
 									<div class="col-lg-6">
 										<div class="form-group">
 											<label for="strNombre">Nombre del Producto</label>
-											<input class="form-control" placeholder="Esctibir Nombre del Producto" name="strNombre" id="strNombre">
+											<input class="form-control" placeholder="Esctibir Nombre del Producto" name="strNombre" id="strNombre" value="<?php echo $row_DatosProducto["strNombre"];?>">
 										</div>
 										<div class="form-group">
 											<label for="strDescripcion">Descripción del Producto</label>
-											<textarea name="strDescripcion" id="strDescripcion">Esctibir la Descripciónn del Producto</textarea>
+											<textarea name="strDescripcion" id="strDescripcion">
+												<?php echo $row_DatosProducto["strDescripcion"];?>
+											</textarea>
 										</div>
 										<div class="form-group">
 											<label for="dblPrecio">Precio del Producto</label>
-											<input class="form-control" placeholder="Esctibir Precio del Producto" name="dblPrecio" id="dblPrecio">
+											<input class="form-control" placeholder="Esctibir Precio del Producto" name="dblPrecio" id="dblPrecio" value="<?php echo $row_DatosProducto["dblPrecio"];?>">
 										</div>
 										<div class="form-group">
                                             <label>Mostrar en página principal</label>
  											<div class="checkbox">
 												<label>
-													<input type="checkbox" value="1" name="intPrincipal" id="intPrincipal">
+													<input type="checkbox" value="1" name="intPrincipal" id="intPrincipal" <?php if ($row_DatosProducto["intPrincipal"]==1){ ?>checked="checked" <?php }?>>
 													Marcar para mostrar el producto en la página principal de la tienda.
 												</label>
 											</div>
@@ -158,9 +162,9 @@ $totalRows_DatosMarcas = mysqli_num_rows($DatosMarcas);
 										<div class="form-group">
 											<label for="refMarca">Marca</label>
 											<select class="form-control" name="refMarca" id="refMarca">
-												<option value="0">Sin Marca</option>
+												<option value="0" <?php if ($row_DatosProducto["refMarca"]==0) echo "selected"; ?>>Sin Marca</option>
 												<?php do{?>
-												<option value="<?php echo $row_DatosMarcas["idMarca"];?>"><?php echo $row_DatosMarcas["strMarca"];?></option>
+												<option value="<?php echo $row_DatosMarcas["idMarca"];?>" <?php if($row_DatosProducto["refMarca"]==$row_DatosMarcas["idMarca"]) echo "selected"; ?>><?php echo $row_DatosMarcas["strMarca"];?></option>
 												<?php } while($row_DatosMarcas=mysqli_fetch_assoc($DatosMarcas));?>
 											</select>
 										</div>
@@ -168,12 +172,13 @@ $totalRows_DatosMarcas = mysqli_num_rows($DatosMarcas);
 										<div class="form-group">
 											<label for="intEstado">Estado</label>
 											<select class="form-control" name="intEstado" id="intEstado">
-												<option value="0">Inactivo</option>
-												<option value="1" selected>Activo</option>
+												<option value="0" <?php if ($row_DatosProducto["intEstado"]=="0") echo "selected"; ?>>Inactivo</option>
+                                                <option value="1" <?php if ($row_DatosProducto["intEstado"]=="1") echo "selected"; ?>>Activo</option>
 											</select>
 										</div>
-										<button type="submit" class="btn btn-success" value="Añadir">Añadir</button>                                        
-										<input type="hidden" name="MM_insert" id="MM_insert" value="forminsertar">
+										<button type="submit" class="btn btn-success" value="Actualizar">Actualizar</button>                                        
+										<input type="hidden" name="idProducto" id="idProducto" value="<?php echo $row_DatosProducto["idProducto"];?>">	
+                                   		<input type="hidden" name="MM_insert" id="MM_insert" value="forminsertar">
                                     </div>
                                 <!-- /.col-lg-6 (nested) -->
                                 	<div class="col-lg-6">
@@ -237,7 +242,7 @@ $totalRows_DatosMarcas = mysqli_num_rows($DatosMarcas);
 																			  ?>
 										<div class="form-group">
 											<label>Imagen Principal</label>
-											<input class="form-control"  name="<?php echo $nombrecampoimagen;?>" id="<?php echo $nombrecampoimagen;?>">
+											<input class="form-control"  name="<?php echo $nombrecampoimagen;?>" id="<?php echo $nombrecampoimagen;?>" value="<?php echo $row_DatosProducto["strImagen1"];?>">
 										</div> 
 										<div class="form-group">
 											<div class="row">
@@ -250,7 +255,13 @@ $totalRows_DatosMarcas = mysqli_num_rows($DatosMarcas);
 											</div>
 											<progress id="<?php echo $nombrebarraprogreso;?>" value="0" max="100" style="width:100%;"></progress>
 											<h5 id="<?php echo $nombrecampostatus;?>"></h5>
-											<img src="" alt="" id="<?php echo $nombrecampoimagenmostrar;?>">
+											<?php if ($row_DatosProducto["strImagen1"]!=""){?>
+											<img src="<?php echo $nombrecarpetadestino.$row_DatosConsulta["strImagen1"];?>" alt="Imagen producto 1" id="<?php echo $nombrecampoimagenmostrar;?>" width="200">
+											<?php }
+											else
+											{?>
+											<img src="../images/users/nouser.jpg" alt="producto sin imagen" width="200"  id="<?php echo $nombrecampoimagenmostrar;?>">
+											<?php }?>
 										</div>   
 										<?php /*?>
 										//***********************
@@ -263,7 +274,8 @@ $totalRows_DatosMarcas = mysqli_num_rows($DatosMarcas);
 										//BLOQUE INSERCION IMAGEN 2
 										//***********************
 										//***********************
-										//***********************									  //***********************
+										//***********************									  
+										//***********************
 										//PARÃMETROS DE IMAGEN
 										$nombrecampoimagen="strImagen2";
 										$nombrecampoimagenmostrar="strImagenpic2";
@@ -284,7 +296,7 @@ $totalRows_DatosMarcas = mysqli_num_rows($DatosMarcas);
 																			  ?>
 										<div class="form-group">
 											<label>Imagen 2</label>
-											<input class="form-control"  name="<?php echo $nombrecampoimagen;?>" id="<?php echo $nombrecampoimagen;?>">
+											<input class="form-control"  name="<?php echo $nombrecampoimagen;?>" id="<?php echo $nombrecampoimagen;?>" value="<?php echo $row_DatosProducto["strImagen2"];?>">
 										</div> 
 										<div class="form-group">
 											<div class="row">
@@ -297,7 +309,13 @@ $totalRows_DatosMarcas = mysqli_num_rows($DatosMarcas);
 											</div>
 											<progress id="<?php echo $nombrebarraprogreso;?>" value="0" max="100" style="width:100%;"></progress>
 											<h5 id="<?php echo $nombrecampostatus;?>"></h5>
-											<img src="" alt="" id="<?php echo $nombrecampoimagenmostrar;?>">
+											<?php if ($row_DatosProducto["strImagen2"]!=""){?>
+											<img src="<?php echo $nombrecarpetadestino.$row_DatosConsulta["strImagen2"];?>" alt="Imagen producto 2" id="<?php echo $nombrecampoimagenmostrar;?>" width="200">
+											<?php }
+											else
+											{?>
+											<img src="../images/users/nouser.jpg" alt="producto sin imagen" width="200"  id="<?php echo $nombrecampoimagenmostrar;?>">
+											<?php }?>
 										</div>   
 										<?php /*?>
 										//***********************
@@ -331,7 +349,7 @@ $totalRows_DatosMarcas = mysqli_num_rows($DatosMarcas);
 																			  ?>
 										<div class="form-group">
 											<label>Imagen 3</label>
-											<input class="form-control"  name="<?php echo $nombrecampoimagen;?>" id="<?php echo $nombrecampoimagen;?>">
+											<input class="form-control"  name="<?php echo $nombrecampoimagen;?>" id="<?php echo $nombrecampoimagen;?>" value="<?php echo $row_DatosProducto["strImagen3"];?>">
 										</div> 
 										<div class="form-group">
 											<div class="row">
@@ -344,7 +362,13 @@ $totalRows_DatosMarcas = mysqli_num_rows($DatosMarcas);
 											</div>
 											<progress id="<?php echo $nombrebarraprogreso;?>" value="0" max="100" style="width:100%;"></progress>
 											<h5 id="<?php echo $nombrecampostatus;?>"></h5>
-											<img src="" alt="" id="<?php echo $nombrecampoimagenmostrar;?>">
+											<?php if ($row_DatosProducto["strImagen3"]!=""){?>
+											<img src="<?php echo $nombrecarpetadestino.$row_DatosConsulta["strImagen3"];?>" alt="Imagen producto 3" id="<?php echo $nombrecampoimagenmostrar;?>" width="200">
+											<?php }
+											else
+											{?>
+											<img src="../images/users/nouser.jpg" alt="producto sin imagen" width="200"  id="<?php echo $nombrecampoimagenmostrar;?>">
+											<?php }?>
 										</div>   
 										<?php /*?>
 										//***********************
@@ -378,7 +402,7 @@ $totalRows_DatosMarcas = mysqli_num_rows($DatosMarcas);
 																			  ?>
 										<div class="form-group">
 											<label>Imagen 4</label>
-											<input class="form-control"  name="<?php echo $nombrecampoimagen;?>" id="<?php echo $nombrecampoimagen;?>">
+											<input class="form-control"  name="<?php echo $nombrecampoimagen;?>" id="<?php echo $nombrecampoimagen;?>" value="<?php echo $row_DatosProducto["strImagen4"];?>">
 										</div> 
 										<div class="form-group">
 											<div class="row">
@@ -391,7 +415,13 @@ $totalRows_DatosMarcas = mysqli_num_rows($DatosMarcas);
 											</div>
 											<progress id="<?php echo $nombrebarraprogreso;?>" value="0" max="100" style="width:100%;"></progress>
 											<h5 id="<?php echo $nombrecampostatus;?>"></h5>
-											<img src="" alt="" id="<?php echo $nombrecampoimagenmostrar;?>">
+											<?php if ($row_DatosProducto["strImagen4"]!=""){?>
+											<img src="<?php echo $nombrecarpetadestino.$row_DatosConsulta["strImagen4"];?>" alt="Imagen producto 4" id="<?php echo $nombrecampoimagenmostrar;?>" width="200">
+											<?php }
+											else
+											{?>
+											<img src="../images/users/nouser.jpg" alt="producto sin imagen" width="200"  id="<?php echo $nombrecampoimagenmostrar;?>">
+											<?php }?>
 										</div>   
 										<?php /*?>
 										//***********************
@@ -404,7 +434,8 @@ $totalRows_DatosMarcas = mysqli_num_rows($DatosMarcas);
 										//BLOQUE INSERCION IMAGEN 5
 										//***********************
 										//***********************
-										//***********************									  //***********************
+										//***********************									  
+										//***********************
 										//PARÃMETROS DE IMAGEN
 										$nombrecampoimagen="strImagen5";
 										$nombrecampoimagenmostrar="strImagenpic5";
@@ -425,7 +456,7 @@ $totalRows_DatosMarcas = mysqli_num_rows($DatosMarcas);
 																			  ?>
 										<div class="form-group">
 											<label>Imagen 5</label>
-											<input class="form-control"  name="<?php echo $nombrecampoimagen;?>" id="<?php echo $nombrecampoimagen;?>">
+											<input class="form-control"  name="<?php echo $nombrecampoimagen;?>" id="<?php echo $nombrecampoimagen;?>" value="<?php echo $row_DatosProducto["strImagen5"];?>">
 										</div> 
 										<div class="form-group">
 											<div class="row">
@@ -438,7 +469,13 @@ $totalRows_DatosMarcas = mysqli_num_rows($DatosMarcas);
 											</div>
 											<progress id="<?php echo $nombrebarraprogreso;?>" value="0" max="100" style="width:100%;"></progress>
 											<h5 id="<?php echo $nombrecampostatus;?>"></h5>
-											<img src="" alt="" id="<?php echo $nombrecampoimagenmostrar;?>">
+											<?php if ($row_DatosProducto["strImagen5"]!=""){?>
+											<img src="<?php echo $nombrecarpetadestino.$row_DatosConsulta["strImagen5"];?>" alt="Imagen producto 5" id="<?php echo $nombrecampoimagenmostrar;?>" width="200">
+											<?php }
+											else
+											{?>
+											<img src="../images/users/nouser.jpg" alt="producto sin imagen" width="200"  id="<?php echo $nombrecampoimagenmostrar;?>">
+											<?php }?>
 										</div>   
 										<?php /*?>
 										//***********************
