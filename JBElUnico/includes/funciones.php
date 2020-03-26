@@ -493,4 +493,72 @@ function ProcessComaCost($precio)
 {
 	return str_replace(',','.',$precio);
 }
+
+function dropdowncategoryProductsEdit($padre, $seleccionado, $pertenencia = "")
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT * FROM tblcategoria WHERE refPadre = %s ",GetSQLValueString($padre, "text"));
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	if ($totalRows_ConsultaFuncion>0) 
+	{
+		do{
+		?>
+		<option value="<?php echo $row_ConsultaFuncion["idCategoria"] ?>" <?php if ($seleccionado==$row_ConsultaFuncion["idCategoria"]) echo "selected"; ?>><?php echo $pertenencia.$row_ConsultaFuncion["strNombre"] ?></option>
+		<?php
+			dropdowncategorylevel2ProductsEdit($row_ConsultaFuncion["idCategoria"], $seleccionado, " --");
+		} while($row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion));
+	}
+	
+	mysqli_free_result($ConsultaFuncion);
+}
+
+function dropdowncategorylevel2ProductsEdit($padre, $seleccionado, $pertenencia = "")
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT * FROM tblcategoria WHERE refPadre = %s ",GetSQLValueString($padre, "text"));
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	if ($totalRows_ConsultaFuncion>0) 
+	{
+		do{
+		?>
+		<option value="<?php echo $row_ConsultaFuncion["idCategoria"] ?>" <?php if ($seleccionado==$row_ConsultaFuncion["idCategoria"]) echo "selected"; ?>><?php echo $pertenencia.$row_ConsultaFuncion["strNombre"] ?></option>
+		<?php
+			dropdowncategorylevel3ProductsEdit($row_ConsultaFuncion["idCategoria"], $seleccionado, " ----");
+		} while($row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion));
+	}
+	
+	mysqli_free_result($ConsultaFuncion);
+}
+
+function dropdowncategorylevel3ProductsEdit($padre, $seleccionado, $pertenencia = "")
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT * FROM tblcategoria WHERE refPadre = %s ",GetSQLValueString($padre, "text"));
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	if ($totalRows_ConsultaFuncion>0) 
+	{
+		do{
+		?>
+		<option value="<?php echo $row_ConsultaFuncion["idCategoria"] ?>" <?php if ($seleccionado==$row_ConsultaFuncion["idCategoria"]) echo "selected"; ?>><?php echo $pertenencia.$row_ConsultaFuncion["strNombre"] ?></option>
+		<?php
+		} while($row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion));
+	}
+	
+	mysqli_free_result($ConsultaFuncion);
+}
 ?>

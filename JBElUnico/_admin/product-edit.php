@@ -1,4 +1,5 @@
-<?php require_once('../Connections/conexion.php'); RestringirAcceso("1");?>
+<?php require_once('../Connections/conexion.php');
+RestringirAcceso("1");?>
 <?php
 //MySQLi Fragmentos por http://www.dreamweaver-tutoriales.com
 //Copyright Jorge Vila 2015
@@ -10,56 +11,55 @@ if (isset($_SERVER['QUERY_STRING'])) {
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsert")) {
 
-	$esprincipal=0;
-	
-	if(isset($_POST["intPrincipal"]) && ($_POST["intPrincipal"])=="1")
+$esprincipal=0;
+	if ((isset($_POST["intPrincipal"])) && ($_POST["intPrincipal"]=="1"))
 		$esprincipal=1;
-
-	$updateSQL = sprintf("UPDATE tblproducto SET strNombre=%s, refCategoria1=%s, strImagen1=%s, strDescripcion=%s, dblPrecio=%s, intEstado=%s, refMArca=%s, refCategoria2=%s, refCategoria3=%s, refCategoria4=%s, refCategoria5=%s, strImagen2=%s, strImagen3=%s, strImagen4=%s, strImagen5=%s, intPrincipal=%s WHERE idProducto=%s",
+	
+  $updateSQL = sprintf("UPDATE tblproducto SET strNombre=%s, refCategoria1=%s,  refCategoria2=%s,  refCategoria3=%s, refCategoria4=%s, refCategoria5=%s,  strImagen1=%s, strImagen2=%s, strImagen3=%s, strImagen4=%s, strImagen5=%s, strDescripcion=%s, dblPrecio=%s, intEstado=%s, refMarca=%s, intPrincipal=%s WHERE idProducto=%s",
                        GetSQLValueString($_POST["strNombre"], "text"),
-						  GetSQLValueString($_POST["refCategoria1"], "int"),
-						  GetSQLValueString($_POST["strImagen1"], "text"),
-						  GetSQLValueString($_POST["strDescripcion"], "text"),
-						  GetSQLValueString(ProcessComaCost($_POST["dblPrecio"]), "double"),
-						  GetSQLValueString($_POST["intEstado"], "int"),
-						  GetSQLValueString($_POST["refMarca"], "int"),
-						  GetSQLValueString($_POST["refCategoria2"], "int"),
-						   GetSQLValueString($_POST["refCategoria3"], "int"),
-						  GetSQLValueString($_POST["refCategoria4"], "int"),
-						  GetSQLValueString($_POST["refCategoria5"], "int"),
-						  GetSQLValueString($_POST["strImagen2"], "text"),
-						  GetSQLValueString($_POST["strImagen3"], "text"),
-						  GetSQLValueString($_POST["strImagen4"], "text"),
-						  GetSQLValueString($_POST["strImagen5"], "text"),
-						  GetSQLValueString($esprincipal, "int"),
-						GetSQLValueString($_POST["idProducto----"], "int"));
+                       GetSQLValueString($_POST["refCategoria1"], "int"),
+					   GetSQLValueString($_POST["refCategoria2"], "int"),
+					   GetSQLValueString($_POST["refCategoria3"], "int"),
+					   GetSQLValueString($_POST["refCategoria4"], "int"),
+					   GetSQLValueString($_POST["refCategoria5"], "int"),
+                       GetSQLValueString($_POST["strImagen1"], "text"),
+					   GetSQLValueString($_POST["strImagen2"], "text"),
+					   GetSQLValueString($_POST["strImagen3"], "text"),
+					   GetSQLValueString($_POST["strImagen4"], "text"),
+					   GetSQLValueString($_POST["strImagen5"], "text"),
+                       GetSQLValueString($_POST["strDescripcion"], "text"),
+                       GetSQLValueString(ProcessComaCost($_POST["dblPrecio"]), "double"),
+					   GetSQLValueString($_POST["intEstado"], "int"),
+					   GetSQLValueString($_POST["refMarca"], "int"),
+					   GetSQLValueString($esprincipal, "int"),
+					   GetSQLValueString($_POST["idProducto"], "int")
+					  );
 
 //echo $updateSQL;
 $Result1 = mysqli_query($con, $updateSQL) or die(mysqli_error($con));
+	
 
 
-	  $insertGoTo = "product-list.php";
-	  if (isset($_SERVER['QUERY_STRING'])) {
-		$insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
-		$insertGoTo .= $_SERVER['QUERY_STRING'];
-	  }
-	  header(sprintf("Location: %s", $insertGoTo));
+  $insertGoTo = "product-list.php";
+  if (isset($_SERVER['QUERY_STRING'])) {
+    $insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
+    $insertGoTo .= $_SERVER['QUERY_STRING'];
+  }
+  header(sprintf("Location: %s", $insertGoTo));
 }
 
-$query_DatosProducto = sprintf("SELECT * FROM tblproducto WHERE idProducto=%s", GetSQLValueString($_GET["id"], "int"));
-
+$query_DatosProducto = sprintf("SELECT * FROM tblproducto WHERE idProducto=%s", GetSQLValueString($_GET["id"], "int") );
 $DatosProducto = mysqli_query($con,  $query_DatosProducto) or die(mysqli_error($con));
 $row_DatosProducto = mysqli_fetch_assoc($DatosProducto);
 $totalRows_DatosProducto = mysqli_num_rows($DatosProducto);
+
 
 $query_DatosMarcas = sprintf("SELECT * FROM tblmarca WHERE intEstado=1 ORDER BY strMarca");
 
 $DatosMarcas = mysqli_query($con,  $query_DatosMarcas) or die(mysqli_error($con));
 $row_DatosMarcas = mysqli_fetch_assoc($DatosMarcas);
 $totalRows_DatosMarcas = mysqli_num_rows($DatosMarcas);
-
-?>              
-
+?>
 <!DOCTYPE html>
 <html lang="es"><!-- InstanceBegin template="/Templates/Administracion.dwt.php" codeOutsideHTMLIsLocked="false" -->
 
@@ -132,7 +132,7 @@ $totalRows_DatosMarcas = mysqli_num_rows($DatosMarcas);
                         	<!-- /.table-responsive -->
                         </div>
                         <div class="panel-body">
-                           <form role="form" action="product-add.php" method="post" id="forminsert" name="forminsert"> <!--onSubmit="javascript:return validarusuarioalta();">
+                           <form action="product-edit.php" method="post" id="forminsertar" name="forminsert" role="form"> <!--onSubmit="javascript:return validarusuarioalta();">
                                         -->
 								<div class="row">
 									<div class="col-lg-6">
@@ -176,16 +176,16 @@ $totalRows_DatosMarcas = mysqli_num_rows($DatosMarcas);
                                                 <option value="1" <?php if ($row_DatosProducto["intEstado"]=="1") echo "selected"; ?>>Activo</option>
 											</select>
 										</div>
-										<button type="submit" class="btn btn-success" value="Actualizar">Actualizar</button>                                        
-										<input type="hidden" name="idProducto" id="idProducto" value="<?php echo $row_DatosProducto["idProducto"];?>">	
-                                   		<input type="hidden" name="MM_insert" id="MM_insert" value="forminsertar">
+										<button type="submit" class="btn btn-success">Actualizar</button>
+                                        <input name="idProducto" type="hidden" id="idProducto" value="<?php echo $row_DatosProducto["idProducto"];?>">
+                                      <input name="MM_insert" type="hidden" id="MM_insert" value="forminsert">
                                     </div>
                                 <!-- /.col-lg-6 (nested) -->
                                 	<div class="col-lg-6">
                                 		<div class="form-group">
 											<label for="refCategoria1">Categoría 1</label>
 											<select name="refCategoria1" class="form-control" id="refCategoria1">
-												<?php dropdowncategoryProducts(0);?>
+												<?php dropdowncategoryProductsEdit(0, $row_DatosProducto["refCategoria1"]);?>
 											</select>
 										</div>
                                 		<div class="form-group">
