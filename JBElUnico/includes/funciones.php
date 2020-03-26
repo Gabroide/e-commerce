@@ -488,4 +488,9 @@ function dropdowncategorylevel3Products($padre, $pertenencia = "")
 	
 	mysqli_free_result($ConsultaFuncion);
 }
+
+function ProcessComaCost($precio)
+{
+	return str_replace(',','.',$precio);
+}
 ?>

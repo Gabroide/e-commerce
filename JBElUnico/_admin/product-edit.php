@@ -44,6 +44,12 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar")) {
 	  header(sprintf("Location: %s", $insertGoTo));
 }
 
+$query_DatosProducto = sprintf("SELECT * FROM tblproducto WHERE idProducto=%s", GetSQLValueString($_GET["id"], "int"));
+
+$DatosProducto = mysqli_query($con,  $query_DatosProducto) or die(mysqli_error($con));
+$row_DatosProducto = mysqli_fetch_assoc($DatosProducto);
+$totalRows_DatosProducto = mysqli_num_rows($DatosProducto);
+
 $query_DatosMarcas = sprintf("SELECT * FROM tblmarca WHERE intEstado=1 ORDER BY strMarca");
 
 $DatosMarcas = mysqli_query($con,  $query_DatosMarcas) or die(mysqli_error($con));
