@@ -10,14 +10,22 @@ if (isset($_SERVER['QUERY_STRING'])) {
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar")) {
 
-	  $insertSQL = sprintf("INSERT INTO tblproducto(strNombre, refCategoria, strImagen, strDescripcion, dblPrecio, intEstado, refMArca) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+	  $insertSQL = sprintf("INSERT INTO tblproducto(strNombre, refCategoria1, strImagen1, strDescripcion, dblPrecio, intEstado, refMArca, refCategoria2, refCategoria3, refCategoria4, refCategoria5, strImagen2, strImagen3, strImagen4, strImagen5) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
 						   GetSQLValueString($_POST["strNombre"], "text"),
-						  GetSQLValueString($_POST["refCategoria"], "int"),
-						  GetSQLValueString($_POST["strImagen"], "text"),
+						  GetSQLValueString($_POST["refCategoria1"], "int"),
+						  GetSQLValueString($_POST["strImagen1"], "text"),
 						  GetSQLValueString($_POST["strDescripcion"], "text"),
 						  GetSQLValueString($_POST["dblPrecio"], "double"),
 						  GetSQLValueString($_POST["intEstado"], "int"),
-						  GetSQLValueString($_POST["refMarca"], "int"));
+						  GetSQLValueString($_POST["refMarca"], "int"),
+						  GetSQLValueString($_POST["refCategoria2"], "int"),
+						   GetSQLValueString($_POST["refCategoria3"], "int"),
+						  GetSQLValueString($_POST["refCategoria4"], "int"),
+						  GetSQLValueString($_POST["refCategoria5"], "int"),
+						  GetSQLValueString($_POST["strImagen2"], "text"),
+						  GetSQLValueString($_POST["strImagen3"], "text"),
+						  GetSQLValueString($_POST["strImagen4"], "text"),
+						  GetSQLValueString($_POST["strImagen5"], "text"));
 
 
 	  $Result1 = mysqli_query($con,  $insertSQL) or die(mysqli_error($con));
@@ -134,20 +142,48 @@ $totalRows_DatosMarcas = mysqli_num_rows($DatosMarcas);
                                 <!-- /.col-lg-6 (nested) -->
                                 	<div class="col-lg-6">
                                 		<div class="form-group">
-											<label>Categoría de la que depende</label>
-											<select name="refCategoria" class="form-control" id="refCategoria">
+											<label for="refCategoria1">Categoría 1</label>
+											<select name="refCategoria1" class="form-control" id="refCategoria1">
+												<?php dropdowncategoryProducts(0);?>
+											</select>
+										</div>
+                                		<div class="form-group">
+											<label for="refCategoria2">Categoría 2</label>
+											<select name="refCategoria2" class="form-control" id="refCategoria2">
+												<option value="0">Sin Categoría</option>
+												<?php dropdowncategoryProducts(0);?>
+											</select>
+										</div>
+                                		<div class="form-group">
+											<label for="refCategoria3">Categoría 3</label>
+											<select name="refCategoria3" class="form-control" id="refCategoria3">
+												<option value="0">Sin Categoría</option>
+												<?php dropdowncategoryProducts(0);?>
+											</select>
+										</div>
+                                		<div class="form-group">
+											<label for="refCategoria4">Categoría 4</label>
+											<select name="refCategoria4" class="form-control" id="refCategoria4">
+												<option value="0">Sin Categoría</option>
+												<?php dropdowncategoryProducts(0);?>
+											</select>
+										</div>
+                                		<div class="form-group">
+											<label for="refCategoria5">Categoría 5</label>
+											<select name="refCategoria5" class="form-control" id="refCategoria5">
+												<option value="0">Sin Categoría</option>
 												<?php dropdowncategoryProducts(0);?>
 											</select>
 										</div>
 
                                 		<?php 
-										//BLOQUE INSERCION IMAGEN
+										//BLOQUE INSERCION IMAGEN PRINCIPAL
 										//***********************
 										//***********************
 										//***********************									  //***********************
 										//PARÃMETROS DE IMAGEN
-										$nombrecampoimagen="strImagen";
-										$nombrecampoimagenmostrar="strImagenpic";
+										$nombrecampoimagen="strImagen1";
+										$nombrecampoimagenmostrar="strImagenpic1";
 										$nombrecarpetadestino="../images/uproducts/"; //carpeta destino con barra al final
 										$nombrecampofichero="file1";
 										$nombrecampostatus="status1";
@@ -164,7 +200,7 @@ $totalRows_DatosMarcas = mysqli_num_rows($DatosMarcas);
 
 																			  ?>
 										<div class="form-group">
-											<label>Imagen</label>
+											<label>Imagen Principal</label>
 											<input class="form-control"  name="<?php echo $nombrecampoimagen;?>" id="<?php echo $nombrecampoimagen;?>">
 										</div> 
 										<div class="form-group">
@@ -185,8 +221,196 @@ $totalRows_DatosMarcas = mysqli_num_rows($DatosMarcas);
 										//***********************
 										//***********************									  
 										//***********************
-										// FIN BLOQUE INSERCION IMAGEN
-										<?php */?>                                           
+										// FIN BLOQUE INSERCION IMAGEN PRINCIPAL
+										<?php */?>
+                               			<?php 
+										//BLOQUE INSERCION IMAGEN 2
+										//***********************
+										//***********************
+										//***********************									  //***********************
+										//PARÃMETROS DE IMAGEN
+										$nombrecampoimagen="strImagen2";
+										$nombrecampoimagenmostrar="strImagenpic2";
+										$nombrecarpetadestino="../images/uproducts/"; //carpeta destino con barra al final
+										$nombrecampofichero="file2";
+										$nombrecampostatus="status2";
+										$nombrebarraprogreso="progressBar2";
+										$maximotamanofichero="500000"; //en Bytes, "0" para ilimitado. 1000000 Bytes = 1000Kb = 1Mb
+										$tiposficheropermitidos="jpg,png"; //  Por ejemplo "jpg,doc,png", separados por comas y poner "0" para permitir todos los tipos
+										$limiteancho="200"; // En pÃ­xels, "0" significa cualquier tamaÃ±o permitido
+										$limitealto="200"; // En pÃ­xels, "0" significa cualquier tamaÃ±o permitido
+
+										$cadenadeparametros="'".$nombrecampoimagen."','".$nombrecampoimagenmostrar."','".$nombrecarpetadestino."','".$nombrecampofichero."','".$nombrecampostatus."','".$nombrebarraprogreso."','".$maximotamanofichero."','".$tiposficheropermitidos."','".$limiteancho."','".$limitealto."'";
+
+										//$cadenadeparametros="";
+										
+
+																			  ?>
+										<div class="form-group">
+											<label>Imagen 2</label>
+											<input class="form-control"  name="<?php echo $nombrecampoimagen;?>" id="<?php echo $nombrecampoimagen;?>">
+										</div> 
+										<div class="form-group">
+											<div class="row">
+												<div class="col-lg-6">
+													<input type="file" name="<?php echo $nombrecampofichero;?>" id="<?php echo $nombrecampofichero;?>"><br>
+												</div>
+												<div class="col-lg-6">
+													<input class="form-control" type="button" value="Subir Fichero" onclick="uploadFile(<?php echo $cadenadeparametros;?>)">
+												</div>
+											</div>
+											<progress id="<?php echo $nombrebarraprogreso;?>" value="0" max="100" style="width:100%;"></progress>
+											<h5 id="<?php echo $nombrecampostatus;?>"></h5>
+											<img src="" alt="" id="<?php echo $nombrecampoimagenmostrar;?>">
+										</div>   
+										<?php /*?>
+										//***********************
+										//***********************
+										//***********************									  
+										//***********************
+										// FIN BLOQUE INSERCION IMAGEN 2
+										<?php */?>
+                              			<?php 
+										//BLOQUE INSERCION IMAGEN 3
+										//***********************
+										//***********************
+										//***********************									  //***********************
+										//PARÃMETROS DE IMAGEN
+										$nombrecampoimagen="strImagen3";
+										$nombrecampoimagenmostrar="strImagenpic3";
+										$nombrecarpetadestino="../images/uproducts/"; //carpeta destino con barra al final
+										$nombrecampofichero="file3";
+										$nombrecampostatus="status3";
+										$nombrebarraprogreso="progressBar3";
+										$maximotamanofichero="500000"; //en Bytes, "0" para ilimitado. 1000000 Bytes = 1000Kb = 1Mb
+										$tiposficheropermitidos="jpg,png"; //  Por ejemplo "jpg,doc,png", separados por comas y poner "0" para permitir todos los tipos
+										$limiteancho="200"; // En pÃ­xels, "0" significa cualquier tamaÃ±o permitido
+										$limitealto="200"; // En pÃ­xels, "0" significa cualquier tamaÃ±o permitido
+
+										$cadenadeparametros="'".$nombrecampoimagen."','".$nombrecampoimagenmostrar."','".$nombrecarpetadestino."','".$nombrecampofichero."','".$nombrecampostatus."','".$nombrebarraprogreso."','".$maximotamanofichero."','".$tiposficheropermitidos."','".$limiteancho."','".$limitealto."'";
+
+										//$cadenadeparametros="";
+										
+
+																			  ?>
+										<div class="form-group">
+											<label>Imagen 3</label>
+											<input class="form-control"  name="<?php echo $nombrecampoimagen;?>" id="<?php echo $nombrecampoimagen;?>">
+										</div> 
+										<div class="form-group">
+											<div class="row">
+												<div class="col-lg-6">
+													<input type="file" name="<?php echo $nombrecampofichero;?>" id="<?php echo $nombrecampofichero;?>"><br>
+												</div>
+												<div class="col-lg-6">
+													<input class="form-control" type="button" value="Subir Fichero" onclick="uploadFile(<?php echo $cadenadeparametros;?>)">
+												</div>
+											</div>
+											<progress id="<?php echo $nombrebarraprogreso;?>" value="0" max="100" style="width:100%;"></progress>
+											<h5 id="<?php echo $nombrecampostatus;?>"></h5>
+											<img src="" alt="" id="<?php echo $nombrecampoimagenmostrar;?>">
+										</div>   
+										<?php /*?>
+										//***********************
+										//***********************
+										//***********************									  
+										//***********************
+										// FIN BLOQUE INSERCION IMAGEN 3
+										<?php */?>                                                                                      		
+                               			<?php 
+										//BLOQUE INSERCION IMAGEN 4
+										//***********************
+										//***********************
+										//***********************									  //***********************
+										//PARÃMETROS DE IMAGEN
+										$nombrecampoimagen="strImagen4";
+										$nombrecampoimagenmostrar="strImagenpic4";
+										$nombrecarpetadestino="../images/uproducts/"; //carpeta destino con barra al final
+										$nombrecampofichero="file4";
+										$nombrecampostatus="status4";
+										$nombrebarraprogreso="progressBar4";
+										$maximotamanofichero="500000"; //en Bytes, "0" para ilimitado. 1000000 Bytes = 1000Kb = 1Mb
+										$tiposficheropermitidos="jpg,png"; //  Por ejemplo "jpg,doc,png", separados por comas y poner "0" para permitir todos los tipos
+										$limiteancho="200"; // En pÃ­xels, "0" significa cualquier tamaÃ±o permitido
+										$limitealto="200"; // En pÃ­xels, "0" significa cualquier tamaÃ±o permitido
+
+										$cadenadeparametros="'".$nombrecampoimagen."','".$nombrecampoimagenmostrar."','".$nombrecarpetadestino."','".$nombrecampofichero."','".$nombrecampostatus."','".$nombrebarraprogreso."','".$maximotamanofichero."','".$tiposficheropermitidos."','".$limiteancho."','".$limitealto."'";
+
+										//$cadenadeparametros="";
+										
+
+																			  ?>
+										<div class="form-group">
+											<label>Imagen 4</label>
+											<input class="form-control"  name="<?php echo $nombrecampoimagen;?>" id="<?php echo $nombrecampoimagen;?>">
+										</div> 
+										<div class="form-group">
+											<div class="row">
+												<div class="col-lg-6">
+													<input type="file" name="<?php echo $nombrecampofichero;?>" id="<?php echo $nombrecampofichero;?>"><br>
+												</div>
+												<div class="col-lg-6">
+													<input class="form-control" type="button" value="Subir Fichero" onclick="uploadFile(<?php echo $cadenadeparametros;?>)">
+												</div>
+											</div>
+											<progress id="<?php echo $nombrebarraprogreso;?>" value="0" max="100" style="width:100%;"></progress>
+											<h5 id="<?php echo $nombrecampostatus;?>"></h5>
+											<img src="" alt="" id="<?php echo $nombrecampoimagenmostrar;?>">
+										</div>   
+										<?php /*?>
+										//***********************
+										//***********************
+										//***********************									  
+										//***********************
+										// FIN BLOQUE INSERCION IMAGEN 4
+										<?php */?>
+                               			<?php 
+										//BLOQUE INSERCION IMAGEN 5
+										//***********************
+										//***********************
+										//***********************									  //***********************
+										//PARÃMETROS DE IMAGEN
+										$nombrecampoimagen="strImagen5";
+										$nombrecampoimagenmostrar="strImagenpic5";
+										$nombrecarpetadestino="../images/uproducts/"; //carpeta destino con barra al final
+										$nombrecampofichero="file5";
+										$nombrecampostatus="status5";
+										$nombrebarraprogreso="progressBar5";
+										$maximotamanofichero="500000"; //en Bytes, "0" para ilimitado. 1000000 Bytes = 1000Kb = 1Mb
+										$tiposficheropermitidos="jpg,png"; //  Por ejemplo "jpg,doc,png", separados por comas y poner "0" para permitir todos los tipos
+										$limiteancho="200"; // En pÃ­xels, "0" significa cualquier tamaÃ±o permitido
+										$limitealto="200"; // En pÃ­xels, "0" significa cualquier tamaÃ±o permitido
+
+										$cadenadeparametros="'".$nombrecampoimagen."','".$nombrecampoimagenmostrar."','".$nombrecarpetadestino."','".$nombrecampofichero."','".$nombrecampostatus."','".$nombrebarraprogreso."','".$maximotamanofichero."','".$tiposficheropermitidos."','".$limiteancho."','".$limitealto."'";
+
+										//$cadenadeparametros="";
+										
+
+																			  ?>
+										<div class="form-group">
+											<label>Imagen 5</label>
+											<input class="form-control"  name="<?php echo $nombrecampoimagen;?>" id="<?php echo $nombrecampoimagen;?>">
+										</div> 
+										<div class="form-group">
+											<div class="row">
+												<div class="col-lg-6">
+													<input type="file" name="<?php echo $nombrecampofichero;?>" id="<?php echo $nombrecampofichero;?>"><br>
+												</div>
+												<div class="col-lg-6">
+													<input class="form-control" type="button" value="Subir Fichero" onclick="uploadFile(<?php echo $cadenadeparametros;?>)">
+												</div>
+											</div>
+											<progress id="<?php echo $nombrebarraprogreso;?>" value="0" max="100" style="width:100%;"></progress>
+											<h5 id="<?php echo $nombrecampostatus;?>"></h5>
+											<img src="" alt="" id="<?php echo $nombrecampoimagenmostrar;?>">
+										</div>   
+										<?php /*?>
+										//***********************
+										//***********************
+										//***********************									  
+										//***********************
+										// FIN BLOQUE INSERCION IMAGEN 5
+										<?php */?>                                                                            
                                 	</div>                                <!-- /.col-lg-6 (nested) -->
                             	</div>
                             </form>
