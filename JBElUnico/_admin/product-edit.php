@@ -191,29 +191,29 @@ $totalRows_DatosMarcas = mysqli_num_rows($DatosMarcas);
                                 		<div class="form-group">
 											<label for="refCategoria2">Categoría 2</label>
 											<select name="refCategoria2" class="form-control" id="refCategoria2">
-												<option value="0">Sin Categoría</option>
-												<?php dropdowncategoryProducts(0);?>
+												<option value="0" <?php if (0==$row_DatosProducto["refCategoria2"]) echo "selected"; ?>>Sin Categoría</option>
+												<?php dropdowncategoryProductsEdit(0, $row_DatosProducto["refCategoria2"]);?>
 											</select>
 										</div>
                                 		<div class="form-group">
 											<label for="refCategoria3">Categoría 3</label>
 											<select name="refCategoria3" class="form-control" id="refCategoria3">
-												<option value="0">Sin Categoría</option>
-												<?php dropdowncategoryProducts(0);?>
+												<option value="0" <?php if (0==$row_DatosProducto["refCategoria3"]) echo "selected"; ?>>Sin Categoría</option>
+												<?php dropdowncategoryProductsEdit(0, $row_DatosProducto["refCategoria3"]);?>
 											</select>
 										</div>
                                 		<div class="form-group">
 											<label for="refCategoria4">Categoría 4</label>
 											<select name="refCategoria4" class="form-control" id="refCategoria4">
-												<option value="0">Sin Categoría</option>
-												<?php dropdowncategoryProducts(0);?>
+												<option value="0" <?php if (0==$row_DatosProducto["refCategoria4"]) echo "selected"; ?>>Sin Categoría</option>
+												<?php dropdowncategoryProductsEdit(0, $row_DatosProducto["refCategoria4"]);?>
 											</select>
 										</div>
                                 		<div class="form-group">
 											<label for="refCategoria5">Categoría 5</label>
 											<select name="refCategoria5" class="form-control" id="refCategoria5">
-												<option value="0">Sin Categoría</option>
-												<?php dropdowncategoryProducts(0);?>
+												<option value="0" <?php if (0==$row_DatosProducto["refCategoria5"]) echo "selected"; ?>>Sin Categoría</option>
+												<?php dropdowncategoryProductsEdit(0, $row_DatosProducto["refCategoria5"]);?>
 											</select>
 										</div>
 
