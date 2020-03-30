@@ -630,11 +630,43 @@ function ProductosDependientes($cat)
 	{
 		do{
 		?>
-		<a href="productlist.php?id=<?php echo $row_ConsultaFuncion["idProducto"]:?>"><?php echo $row_ConsultaFuncion["strNombre"];?></a><br>
+		<a href="productlist.php?id=<?php echo $row_ConsultaFuncion["idProducto"];?>"><?php echo $row_ConsultaFuncion["strNombre"];?></a><br>
 
 		<?php
 		} while($row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion));
 	}
+	
+	mysqli_free_result($ConsultaFuncion);
+}
+
+function BrandsItems($marca)
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT COUNT(idProducto) AS total FROM tblproducto WHERE refMarca=%s", 
+								   GetSQLValueString($marca, "int"));
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	return $row_ConsultaFuncion["total"];
+	
+	mysqli_free_result($ConsultaFuncion);
+}
+
+function CalculateProductCost($producto)
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT dblPrecio FROM tblproducto WHERE idProducto=%s", 
+								   GetSQLValueString($producto, "int"));
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	return $row_ConsultaFuncion["dblPrecio"];
 	
 	mysqli_free_result($ConsultaFuncion);
 }
