@@ -221,23 +221,24 @@ $totalRows_DatosMarcas = mysqli_num_rows($DatosMarcas);
 										//BLOQUE INSERCION IMAGEN PRINCIPAL
 										//***********************
 										//***********************
-										//***********************									  //***********************
-										//PARÃMETROS DE IMAGEN
+										//***********************									  
+										//***********************
+										//PARÁMETROS DE IMAGEN PRINCIPAL
 										$nombrecampoimagen="strImagen1";
 										$nombrecampoimagenmostrar="strImagenpic1";
-										$nombrecarpetadestino="../images/uproducts/"; //carpeta destino con barra al final
+										$nombrecarpetadestino="../images/products/"; //carpeta destino con barra al final
 										$nombrecampofichero="file1";
 										$nombrecampostatus="status1";
 										$nombrebarraprogreso="progressBar1";
 										$maximotamanofichero="500000"; //en Bytes, "0" para ilimitado. 1000000 Bytes = 1000Kb = 1Mb
-										$tiposficheropermitidos="jpg,png"; //  Por ejemplo "jpg,doc,png", separados por comas y poner "0" para permitir todos los tipos
-										$limiteancho="200"; // En pÃ­xels, "0" significa cualquier tamaÃ±o permitido
-										$limitealto="200"; // En pÃ­xels, "0" significa cualquier tamaÃ±o permitido
+										$tiposficheropermitidos="jpg, png"; //  Por ejemplo "jpg,doc,png", separados por comas y poner "0" para permitir todos los tipos
+										$limiteancho="530"; // En píxels, "0" significa cualquier tamaño permitido
+										$limitealto="530"; // En píxels, "0" significa cualquier tamaño permitido
 
 										$cadenadeparametros="'".$nombrecampoimagen."','".$nombrecampoimagenmostrar."','".$nombrecarpetadestino."','".$nombrecampofichero."','".$nombrecampostatus."','".$nombrebarraprogreso."','".$maximotamanofichero."','".$tiposficheropermitidos."','".$limiteancho."','".$limitealto."'";
 
 										//$cadenadeparametros="";
-										
+
 
 																			  ?>
 										<div class="form-group">
@@ -256,11 +257,11 @@ $totalRows_DatosMarcas = mysqli_num_rows($DatosMarcas);
 											<progress id="<?php echo $nombrebarraprogreso;?>" value="0" max="100" style="width:100%;"></progress>
 											<h5 id="<?php echo $nombrecampostatus;?>"></h5>
 											<?php if ($row_DatosProducto["strImagen1"]!=""){?>
-											<img src="<?php echo $nombrecarpetadestino.$row_DatosConsulta["strImagen1"];?>" alt="Imagen producto 1" id="<?php echo $nombrecampoimagenmostrar;?>" width="200">
+											<img src="<?php echo $nombrecarpetadestino.$row_DatosProducto["strImagen1"];?>" alt="Imagen 1 del producto" id="<?php echo $nombrecampoimagenmostrar;?>" width="200">
 											<?php }
 											else
 											{?>
-											<img src="../images/users/nouser.jpg" alt="producto sin imagen" width="200"  id="<?php echo $nombrecampoimagenmostrar;?>">
+											<img src="../images/users/nouser.jpg" alt="Producto sin imagen" width="200"  id="<?php echo $nombrecampoimagenmostrar;?>">
 											<?php }?>
 										</div>   
 										<?php /*?>
@@ -269,29 +270,28 @@ $totalRows_DatosMarcas = mysqli_num_rows($DatosMarcas);
 										//***********************									  
 										//***********************
 										// FIN BLOQUE INSERCION IMAGEN PRINCIPAL
-										<?php */?>
-                               			<?php 
+										<?php */?>    
+										<?php 
 										//BLOQUE INSERCION IMAGEN 2
 										//***********************
 										//***********************
-										//***********************									  
-										//***********************
-										//PARÃMETROS DE IMAGEN
+										//***********************									  //***********************
+										//PARÁMETROS DE IMAGEN 2
 										$nombrecampoimagen="strImagen2";
 										$nombrecampoimagenmostrar="strImagenpic2";
-										$nombrecarpetadestino="../images/uproducts/"; //carpeta destino con barra al final
+										$nombrecarpetadestino="../images/products/"; //carpeta destino con barra al final
 										$nombrecampofichero="file2";
 										$nombrecampostatus="status2";
 										$nombrebarraprogreso="progressBar2";
 										$maximotamanofichero="500000"; //en Bytes, "0" para ilimitado. 1000000 Bytes = 1000Kb = 1Mb
-										$tiposficheropermitidos="jpg,png"; //  Por ejemplo "jpg,doc,png", separados por comas y poner "0" para permitir todos los tipos
-										$limiteancho="200"; // En pÃ­xels, "0" significa cualquier tamaÃ±o permitido
-										$limitealto="200"; // En pÃ­xels, "0" significa cualquier tamaÃ±o permitido
+										$tiposficheropermitidos="jpg, png"; //  Por ejemplo "jpg,doc,png", separados por comas y poner "0" para permitir todos los tipos
+										$limiteancho="530"; // En píxels, "0" significa cualquier tamaño permitido
+										$limitealto="530"; // En píxels, "0" significa cualquier tamaño permitido
 
 										$cadenadeparametros="'".$nombrecampoimagen."','".$nombrecampoimagenmostrar."','".$nombrecarpetadestino."','".$nombrecampofichero."','".$nombrecampostatus."','".$nombrebarraprogreso."','".$maximotamanofichero."','".$tiposficheropermitidos."','".$limiteancho."','".$limitealto."'";
 
 										//$cadenadeparametros="";
-										
+
 
 																			  ?>
 										<div class="form-group">
@@ -310,41 +310,40 @@ $totalRows_DatosMarcas = mysqli_num_rows($DatosMarcas);
 											<progress id="<?php echo $nombrebarraprogreso;?>" value="0" max="100" style="width:100%;"></progress>
 											<h5 id="<?php echo $nombrecampostatus;?>"></h5>
 											<?php if ($row_DatosProducto["strImagen2"]!=""){?>
-											<img src="<?php echo $nombrecarpetadestino.$row_DatosConsulta["strImagen2"];?>" alt="Imagen producto 2" id="<?php echo $nombrecampoimagenmostrar;?>" width="200">
+											<img src="<?php echo $nombrecarpetadestino.$row_DatosProducto["strImagen2"];?>" alt="Imagen 2 del producto" id="<?php echo $nombrecampoimagenmostrar;?>" width="200">
 											<?php }
 											else
 											{?>
-											<img src="../images/users/nouser.jpg" alt="producto sin imagen" width="200"  id="<?php echo $nombrecampoimagenmostrar;?>">
+											<img src="../images/users/nouser.jpg" alt="Producto sin imagen" width="200"  id="<?php echo $nombrecampoimagenmostrar;?>">
 											<?php }?>
 										</div>   
 										<?php /*?>
 										//***********************
 										//***********************
-										//***********************									  
-										//***********************
+										//***********************									  //***********************
 										// FIN BLOQUE INSERCION IMAGEN 2
-										<?php */?>
-                              			<?php 
+										<?php */?> 
+										<?php 
 										//BLOQUE INSERCION IMAGEN 3
 										//***********************
 										//***********************
 										//***********************									  //***********************
-										//PARÃMETROS DE IMAGEN
+										//PARÁMETROS DE IMAGEN 3
 										$nombrecampoimagen="strImagen3";
 										$nombrecampoimagenmostrar="strImagenpic3";
-										$nombrecarpetadestino="../images/uproducts/"; //carpeta destino con barra al final
+										$nombrecarpetadestino="../images/products/"; //carpeta destino con barra al final
 										$nombrecampofichero="file3";
 										$nombrecampostatus="status3";
 										$nombrebarraprogreso="progressBar3";
 										$maximotamanofichero="500000"; //en Bytes, "0" para ilimitado. 1000000 Bytes = 1000Kb = 1Mb
-										$tiposficheropermitidos="jpg,png"; //  Por ejemplo "jpg,doc,png", separados por comas y poner "0" para permitir todos los tipos
-										$limiteancho="200"; // En pÃ­xels, "0" significa cualquier tamaÃ±o permitido
-										$limitealto="200"; // En pÃ­xels, "0" significa cualquier tamaÃ±o permitido
+										$tiposficheropermitidos="jpg, png"; //  Por ejemplo "jpg,doc,png", separados por comas y poner "0" para permitir todos los tipos
+										$limiteancho="530"; // En píxels, "0" significa cualquier tamaño permitido
+										$limitealto="530"; // En píxels, "0" significa cualquier tamaño permitido
 
 										$cadenadeparametros="'".$nombrecampoimagen."','".$nombrecampoimagenmostrar."','".$nombrecarpetadestino."','".$nombrecampofichero."','".$nombrecampostatus."','".$nombrebarraprogreso."','".$maximotamanofichero."','".$tiposficheropermitidos."','".$limiteancho."','".$limitealto."'";
 
 										//$cadenadeparametros="";
-										
+
 
 																			  ?>
 										<div class="form-group">
@@ -363,11 +362,11 @@ $totalRows_DatosMarcas = mysqli_num_rows($DatosMarcas);
 											<progress id="<?php echo $nombrebarraprogreso;?>" value="0" max="100" style="width:100%;"></progress>
 											<h5 id="<?php echo $nombrecampostatus;?>"></h5>
 											<?php if ($row_DatosProducto["strImagen3"]!=""){?>
-											<img src="<?php echo $nombrecarpetadestino.$row_DatosConsulta["strImagen3"];?>" alt="Imagen producto 3" id="<?php echo $nombrecampoimagenmostrar;?>" width="200">
+											<img src="<?php echo $nombrecarpetadestino.$row_DatosProducto["strImagen3"];?>" alt="Imagen 3 del producto" id="<?php echo $nombrecampoimagenmostrar;?>" width="200">
 											<?php }
 											else
 											{?>
-											<img src="../images/users/nouser.jpg" alt="producto sin imagen" width="200"  id="<?php echo $nombrecampoimagenmostrar;?>">
+											<img src="../images/users/nouser.jpg" alt="Producto sin imagen" width="200"  id="<?php echo $nombrecampoimagenmostrar;?>">
 											<?php }?>
 										</div>   
 										<?php /*?>
@@ -376,28 +375,28 @@ $totalRows_DatosMarcas = mysqli_num_rows($DatosMarcas);
 										//***********************									  
 										//***********************
 										// FIN BLOQUE INSERCION IMAGEN 3
-										<?php */?>                                                                                      		
-                               			<?php 
+										<?php */?> 
+										<?php 
 										//BLOQUE INSERCION IMAGEN 4
 										//***********************
 										//***********************
 										//***********************									  //***********************
-										//PARÃMETROS DE IMAGEN
+										//PARÁMETROS DE IMAGEN 4
 										$nombrecampoimagen="strImagen4";
 										$nombrecampoimagenmostrar="strImagenpic4";
-										$nombrecarpetadestino="../images/uproducts/"; //carpeta destino con barra al final
+										$nombrecarpetadestino="../images/products/"; //carpeta destino con barra al final
 										$nombrecampofichero="file4";
 										$nombrecampostatus="status4";
 										$nombrebarraprogreso="progressBar4";
 										$maximotamanofichero="500000"; //en Bytes, "0" para ilimitado. 1000000 Bytes = 1000Kb = 1Mb
-										$tiposficheropermitidos="jpg,png"; //  Por ejemplo "jpg,doc,png", separados por comas y poner "0" para permitir todos los tipos
-										$limiteancho="200"; // En pÃ­xels, "0" significa cualquier tamaÃ±o permitido
-										$limitealto="200"; // En pÃ­xels, "0" significa cualquier tamaÃ±o permitido
+										$tiposficheropermitidos="jpg, png"; //  Por ejemplo "jpg,doc,png", separados por comas y poner "0" para permitir todos los tipos
+										$limiteancho="530"; // En píxels, "0" significa cualquier tamaño permitido
+										$limitealto="530"; // En píxels, "0" significa cualquier tamaño permitido
 
 										$cadenadeparametros="'".$nombrecampoimagen."','".$nombrecampoimagenmostrar."','".$nombrecarpetadestino."','".$nombrecampofichero."','".$nombrecampostatus."','".$nombrebarraprogreso."','".$maximotamanofichero."','".$tiposficheropermitidos."','".$limiteancho."','".$limitealto."'";
 
 										//$cadenadeparametros="";
-										
+
 
 																			  ?>
 										<div class="form-group">
@@ -416,42 +415,40 @@ $totalRows_DatosMarcas = mysqli_num_rows($DatosMarcas);
 											<progress id="<?php echo $nombrebarraprogreso;?>" value="0" max="100" style="width:100%;"></progress>
 											<h5 id="<?php echo $nombrecampostatus;?>"></h5>
 											<?php if ($row_DatosProducto["strImagen4"]!=""){?>
-											<img src="<?php echo $nombrecarpetadestino.$row_DatosConsulta["strImagen4"];?>" alt="Imagen producto 4" id="<?php echo $nombrecampoimagenmostrar;?>" width="200">
+											<img src="<?php echo $nombrecarpetadestino.$row_DatosProducto["strImagen4"];?>" alt="Imagen 4 del producto" id="<?php echo $nombrecampoimagenmostrar;?>" width="200">
 											<?php }
 											else
 											{?>
-											<img src="../images/users/nouser.jpg" alt="producto sin imagen" width="200"  id="<?php echo $nombrecampoimagenmostrar;?>">
+											<img src="../images/users/nouser.jpg" alt="Producto sin imagen" width="200"  id="<?php echo $nombrecampoimagenmostrar;?>">
 											<?php }?>
 										</div>   
 										<?php /*?>
 										//***********************
 										//***********************
-										//***********************									  
+										//***********************									  //***********************
+										// FIN BLOQUE INSERCION IMAGEN
+										<?php */?> 
+										<?php 
+										//BLOQUE INSERCION IMAGEN
 										//***********************
-										// FIN BLOQUE INSERCION IMAGEN 4
-										<?php */?>
-                               			<?php 
-										//BLOQUE INSERCION IMAGEN 5
 										//***********************
-										//***********************
-										//***********************									  
-										//***********************
-										//PARÃMETROS DE IMAGEN
+										//***********************									  //***********************
+										//PARÁMETROS DE IMAGEN
 										$nombrecampoimagen="strImagen5";
 										$nombrecampoimagenmostrar="strImagenpic5";
-										$nombrecarpetadestino="../images/uproducts/"; //carpeta destino con barra al final
+										$nombrecarpetadestino="../images/products/"; //carpeta destino con barra al final
 										$nombrecampofichero="file5";
 										$nombrecampostatus="status5";
 										$nombrebarraprogreso="progressBar5";
 										$maximotamanofichero="500000"; //en Bytes, "0" para ilimitado. 1000000 Bytes = 1000Kb = 1Mb
-										$tiposficheropermitidos="jpg,png"; //  Por ejemplo "jpg,doc,png", separados por comas y poner "0" para permitir todos los tipos
-										$limiteancho="200"; // En pÃ­xels, "0" significa cualquier tamaÃ±o permitido
-										$limitealto="200"; // En pÃ­xels, "0" significa cualquier tamaÃ±o permitido
+										$tiposficheropermitidos="jpg, png"; //  Por ejemplo "jpg,doc,png", separados por comas y poner "0" para permitir todos los tipos
+										$limiteancho="530"; // En píxels, "0" significa cualquier tamaño permitido
+										$limitealto="530"; // En píxels, "0" significa cualquier tamaño permitido
 
 										$cadenadeparametros="'".$nombrecampoimagen."','".$nombrecampoimagenmostrar."','".$nombrecarpetadestino."','".$nombrecampofichero."','".$nombrecampostatus."','".$nombrebarraprogreso."','".$maximotamanofichero."','".$tiposficheropermitidos."','".$limiteancho."','".$limitealto."'";
 
 										//$cadenadeparametros="";
-										
+
 
 																			  ?>
 										<div class="form-group">
@@ -470,19 +467,18 @@ $totalRows_DatosMarcas = mysqli_num_rows($DatosMarcas);
 											<progress id="<?php echo $nombrebarraprogreso;?>" value="0" max="100" style="width:100%;"></progress>
 											<h5 id="<?php echo $nombrecampostatus;?>"></h5>
 											<?php if ($row_DatosProducto["strImagen5"]!=""){?>
-											<img src="<?php echo $nombrecarpetadestino.$row_DatosConsulta["strImagen5"];?>" alt="Imagen producto 5" id="<?php echo $nombrecampoimagenmostrar;?>" width="200">
+											<img src="<?php echo $nombrecarpetadestino.$row_DatosProducto["strImagen5"];?>" alt="Imagen 5 del producto" id="<?php echo $nombrecampoimagenmostrar;?>" width="200">
 											<?php }
 											else
 											{?>
-											<img src="../images/users/nouser.jpg" alt="producto sin imagen" width="200"  id="<?php echo $nombrecampoimagenmostrar;?>">
+											<img src="../images/users/nouser.jpg" alt="Producto sin imagen" width="200"  id="<?php echo $nombrecampoimagenmostrar;?>">
 											<?php }?>
 										</div>   
 										<?php /*?>
 										//***********************
 										//***********************
-										//***********************									  
-										//***********************
-										// FIN BLOQUE INSERCION IMAGEN 5
+										//***********************									  //***********************
+										// FIN BLOQUE INSERCION IMAGEN
 										<?php */?>                                                                            
                                 	</div>                                <!-- /.col-lg-6 (nested) -->
                             	</div>

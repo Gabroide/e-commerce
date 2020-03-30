@@ -151,7 +151,8 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 										<div class="form-group">
 											<label>Imagen de logo</label>
 											<input class="form-control"  name="<?php echo $nombrecampoimagen;?>" id="<?php echo $nombrecampoimagen;?>" value="<?php echo $row_DatosConsulta["strLogo"];?>">
-										</div> 
+										</div
+										> 
 										<div class="form-group">
 											<div class="row">
 												<div class="col-lg-6">

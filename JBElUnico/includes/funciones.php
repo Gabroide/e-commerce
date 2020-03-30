@@ -250,8 +250,12 @@ function adminlevelcategory($padre, $pertenencia="")
 				<td><?php echo ShowState($row_ConsultaFuncion["intEstado"]);?></td>
 				<td><?php echo $row_ConsultaFuncion["intOrden"];?></td>
 				<td></td>
-				<td><a href="category-edit.php?id=<?php echo $row_ConsultaFuncion["idCategoria"];?>" class="btn btn-warning btn-circle" titel="Edición de Categoria">
-					<i class="fa fa-edit"></i></a></td>
+				<td>
+					<a href="category-edit.php?id=<?php echo $row_ConsultaFuncion["idCategoria"];?>" class="btn btn-warning btn-circle" titel="Edición de Categoria">
+					<i class="fa fa-edit"></i></a>
+					<a href="category-delete.php?id=<?php echo $row_ConsultaFuncion["idCategoria"];?>" class="btn btn-danger btn-circle" titel="Edición de Categoria">
+												<i class="fa fa-times-circle"></i></a>
+				</td>
 			</tr>
 		<?php	
 			adminlevelcategory($row_ConsultaFuncion["idCategoria"], "----- ");
@@ -555,6 +559,79 @@ function dropdowncategorylevel3ProductsEdit($padre, $seleccionado, $pertenencia 
 		do{
 		?>
 		<option value="<?php echo $row_ConsultaFuncion["idCategoria"] ?>" <?php if ($seleccionado==$row_ConsultaFuncion["idCategoria"]) echo "selected"; ?>><?php echo $pertenencia.$row_ConsultaFuncion["strNombre"] ?></option>
+		<?php
+		} while($row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion));
+	}
+	
+	mysqli_free_result($ConsultaFuncion);
+}
+
+function ShowProduct($id)
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT * FROM tblproducto WHERE idProducto=%s",GetSQLValueString($id, "int"));
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	$linkProduct="product-detail.php?id=".$row_ConsultaFuncion["idProducto"];
+?>
+
+	<div class="product-image-wrapper">
+		<div class="single-products">
+			<div class="productinfo text-center">
+				<?php if ($row_ConsultaFuncion["strImagen1"]!=""){?>
+					<a href="<?php echo $linkProduct; ?>">
+						<img src="images/products/<?php echo $row_ConsultaFuncion["strImagen1"];?>" alt="<?php echo $row_ConsultaFuncion["strNombre"];?>" title="<?php echo $row_ConsultaFuncion["strNombre"];?>">
+					</a>
+					<?php }
+					else
+					{?>
+					<a href="<?php echo $linkProduct;?>">
+						<img src="images/users/nouser.jpg" alt="producto sin imagen">
+					</a>
+				<?php }?>
+				<h2><?php echo $row_ConsultaFuncion["dblPrecio"]; ?>€</h2>
+				<p><?php echo $row_ConsultaFuncion["strNombre"]; ?></p>
+				<a href="<?php echo $linkProduct ;?>" class="btn btn-default add-to-cart"><i class="fa fa-cog"></i>Ver</a>
+				<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Añadir al carrito</a>
+			</div>									
+		</div>
+		<div class="choose">
+			<ul class="nav nav-pills nav-justified">
+				<li><a href="#"><i class="fa fa-plus-square"></i>Añadir a mis deseos</a></li>
+				<li><a href="#"><i class="fa fa-plus-square"></i>Añadir al comparador</a></li>
+			</ul>
+		</div>
+	</div>
+
+<?php		
+	mysqli_free_result($ConsultaFuncion);
+}
+
+function ProductosDependientes($cat)
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT idProducto, strNombre FROM tblproducto WHERE refCategoria1=%s OR refCategoria2=%s OR refCategoria3=%s OR refCategoria4=%s OR refCategoria5=%s", 
+								   GetSQLValueString($cat, "int"),
+								  GetSQLValueString($cat, "int"),
+								  GetSQLValueString($cat, "int"),
+								  GetSQLValueString($cat, "int"),
+								  GetSQLValueString($cat, "int"));
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	if ($totalRows_ConsultaFuncion>0) 
+	{
+		do{
+		?>
+		<a href="productlist.php?id=<?php echo $row_ConsultaFuncion["idProducto"]:?>"><?php echo $row_ConsultaFuncion["strNombre"];?></a><br>
+
 		<?php
 		} while($row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion));
 	}

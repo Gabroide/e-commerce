@@ -1,4 +1,3 @@
-
 <?php require_once('../Connections/conexion.php'); 
 RestringirAcceso("1, 100");?>
 
@@ -158,7 +157,7 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 			
            <div class="row">
                 <div class="col-lg-5">
-                	<a value="Añadir Categoria" href="category-add.php" class="btn btn-outline btn-primary">Añadir Categoría Principal</a>
+                	<a value="Añadir Categoria" href="category-add.php" class="btn btn-outline btn-primary">Añadir Categoría</a>
                 	<br>
                 	<br>
 			   </div>
@@ -253,8 +252,12 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 											<td><?php echo ShowState($row_DatosConsulta["intEstado"]);?></td>
 											<td><?php echo $row_DatosConsulta["intOrden"];?></td>
 									  		<td></td>
-										  	<td><a href="category-edit.php?id=<?php echo $row_DatosConsulta["idCategoria"];?>" class="btn btn-warning btn-circle" titel="Edición de Categoria">
-												<i class="fa fa-edit"></i></a></td>
+										  	<td>
+										  		<a href="category-edit.php?id=<?php echo $row_DatosConsulta["idCategoria"];?>" class="btn btn-warning btn-circle" titel="Edición de Categoria">
+												<i class="fa fa-edit"></i></a>
+												<a href="category-delete.php?id=<?php echo $row_DatosConsulta["idCategoria"];?>" class="btn btn-danger btn-circle" titel="Edición de Categoria">
+												<i class="fa fa-times-circle"></i></a>
+											</td>
 										</tr>
               		
               							<?php

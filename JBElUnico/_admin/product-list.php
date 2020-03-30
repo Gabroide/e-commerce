@@ -336,7 +336,7 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 											<td><?php echo $row_DatosConsulta["idProducto"];?></td>
 											<td>
 												<?php if($row_DatosConsulta["strImagen1"] != ""){?>
-													<img src="../images/products/<?php echo $row_DatosConsulta["strImagen"];?>" width="30" height="30" alt="imagen del producto">
+													<img src="../images/products/<?php echo $row_DatosConsulta["strImagen1"];?>" width="30" height="30" alt="imagen del producto">
 												<?php } else {?>
 													<img src="../images/users/nouser.jpg" width="30" height="30" alt="El poducto no tiene imagen"/>	
 												<?php }?>

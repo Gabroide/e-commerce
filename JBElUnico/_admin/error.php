@@ -62,6 +62,15 @@
 										<?php if ($_GET["error"]==3){?>
 											<div class="alert alert-danger">Usted no dispone de las credenciales para acceder a esta sección.</div>
 										<?php }?>
+										<?php if ($_GET["error"]==4){?>
+											<div class="alert alert-danger">No se puede eleminar una categoría si esta tiene categorías dependientes. <a href="category-list.php">Volver al listado de categorias.</a></div>
+										<?php }?>
+										<?php if ($_GET["error"]==5){?>
+											<div class="alert alert-danger">No se puede eleminar una categoría si esta tiene productos dependientes. <a href="category-list.php">Volver al listado de categorias.</a><br>
+											Productos relacionados:<br><br>
+											<?php ProductosDependientes($_GET["cat"]);  ?>
+											</div>
+										<?php }?>
 								  </div>
 									<!-- /.col-lg-6 (nested) -->
 

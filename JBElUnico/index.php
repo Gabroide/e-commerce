@@ -8,7 +8,7 @@ if (isset($VARIABLE)) {
   $variable_Consulta = $VARIABLE;
 }
 
-$query_DatosConsulta = sprintf("SELECT * FROM tblproducto");
+$query_DatosConsulta = sprintf("SELECT idProducto FROM tblproducto WHERE intEstado=1 AND intPrincipal=1");
 $DatosConsulta = mysqli_query($con,  $query_DatosConsulta) or die(mysqli_error($con));
 $row_DatosConsulta = mysqli_fetch_assoc($DatosConsulta);
 $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
@@ -52,30 +52,8 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 			 do { 
 				 ?>
 				 <div class="col-sm-4">
-								<div class="product-image-wrapper">
-									<div class="single-products">
-										<div class="productinfo text-center">
-											<img src="images/home/product1.jpg" alt="" />
-											<h2><?php echo $row_DatosConsulta["dblPrecio"]; ?>€</h2>
-											<p><?php echo $row_DatosConsulta["strNombre"]; ?></p>
-											<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-										</div>
-										<div class="product-overlay">
-											<div class="overlay-content">
-												<h2>$56</h2>
-												<p>Easy Polo Black Edition</p>
-												<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-											</div>
-										</div>
-								</div>
-								<div class="choose">
-									<ul class="nav nav-pills nav-justified">
-										<li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
-										<li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
+					<?php ShowProduct($row_DatosConsulta["idProducto"]); ?>			
+				</div>
 				 
 				 <?php
 			
