@@ -247,6 +247,9 @@
                             <a href="product-list.php"><i class="fa fa-archive fa-fw"></i> Productos</a>
                         </li>
                         <li>
+                            <a href="options-list.php"><i class="fa fa-gear fa-fw"></i> Opciones de Producto</a>
+                        </li>
+                       	<li>
                             <a href="settings.php"><i class="fa fa-gear fa-fw"></i> Configuración</a>
                         </li>
                         <li>

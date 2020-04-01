@@ -670,4 +670,39 @@ function CalculateProductCost($producto)
 	
 	mysqli_free_result($ConsultaFuncion);
 }
+
+function adminleveloption($padre, $pertenencia="")
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT * FROM tblopcion WHERE refPadre=%s ",GetSQLValueString($padre, "text"));
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	if ($totalRows_ConsultaFuncion>0) 
+	{
+		do{
+		?>
+			<tr>
+				<td><?php echo $row_ConsultaFuncion["idOpcion"];?></td>
+				<td><?php echo $pertenencia.$row_ConsultaFuncion["strNombre"];?></td>
+				<td><?php echo ShowState($row_ConsultaFuncion["intEstado"]);?></td>
+				<td><?php echo $row_ConsultaFuncion["intOrden"];?></td>
+				<td><?php echo $row_ConsultaFuncion["dblIncremento"];?></td>
+				<td></td>
+				<td>
+					<a href="optiondetail-edit.php?id=<?php echo $row_ConsultaFuncion["idOpcion"];?>" class="btn btn-warning btn-circle" title="Edición de la Opción">
+					<i class="fa fa-edit"></i></a>
+					<a href="optiondetail-delete.php?id=<?php echo $row_ConsultaFuncion["idCategoria"];?>" class="btn btn-danger btn-circle" titel="Edición de Categoria">
+												<i class="fa fa-times-circle"></i></a>
+				</td>
+			</tr>
+		<?php	
+		} while($row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion));
+	}
+	
+	mysqli_free_result($ConsultaFuncion);
+}
 ?>

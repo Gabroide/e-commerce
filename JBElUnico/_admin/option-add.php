@@ -11,17 +11,18 @@ if (isset($_SERVER['QUERY_STRING'])) {
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar")) {
 
-	$insertSQL = sprintf("INSERT INTO tblcategoria(strNombre, intEstado, refPadre, intOrden) VALUES (%s, %s, %s, %s)",
+	$insertSQL = sprintf("INSERT INTO tblopcion(strNombre, intEstado, refPadre, intOrden, dblIncremento) VALUES (%s, %s, %s, %s, %s)",
 						  GetSQLValueString($_POST["strNombre"], "text"),
 						  GetSQLValueString($_POST["intEstado"], "int"),
 						  GetSQLValueString($_POST["refPadre"], "int"),
-						  GetSQLValueString($_POST["intOrden"], "int"));
+						  GetSQLValueString($_POST["intOrden"], "int"),
+						  GetSQLValueString(ProcessComaCost($_POST["dblIncremento"]), "double"));
 
 
 	  $Result1 = mysqli_query($con,  $insertSQL) or die(mysqli_error($con));
 
 
-	  $insertGoTo = "category-list.php";
+	  $insertGoTo = "options-list.php";
 	  if (isset($_SERVER['QUERY_STRING'])) {
 		$insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
 		$insertGoTo .= $_SERVER['QUERY_STRING'];
@@ -67,11 +68,11 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar")) {
   <div id="page-wrapper">
      <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Gestión de Categorías</h1>
+                    <h1 class="page-header">Gestión de Opciones</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
-			<a href="category-list.php" class="btn btn-outline btn-info">Volver atrás</a>
+			<a href="options-list.php" class="btn btn-outline btn-info">Volver atrás</a>
 			<br>
 			<br>
            
@@ -83,13 +84,13 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar")) {
                         </div>
 `                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                        	Añadir Categoría
+                        	Añadir Opción
                         	<!-- /.table-responsive -->
                         </div>
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <form role="form" action="category-add.php" method="post" id="forminsert" name="forminsert" onSubmit="javascript:return validarcategoriaalta();">
+                                    <form role="form" action="option-add.php" method="post" id="forminsert" name="forminsert">
                                         <div class="form-group">
                                             <label for="strNombre">Nombre de Categoría</label>
                                             <input class="form-control" placeholder="Nombre" name="strNombre" id="strNombre">
