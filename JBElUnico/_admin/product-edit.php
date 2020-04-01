@@ -15,7 +15,7 @@ $esprincipal=0;
 	if ((isset($_POST["intPrincipal"])) && ($_POST["intPrincipal"]=="1"))
 		$esprincipal=1;
 	
-  $updateSQL = sprintf("UPDATE tblproducto SET strNombre=%s, refCategoria1=%s,  refCategoria2=%s,  refCategoria3=%s, refCategoria4=%s, refCategoria5=%s,  strImagen1=%s, strImagen2=%s, strImagen3=%s, strImagen4=%s, strImagen5=%s, strDescripcion=%s, dblPrecio=%s, intEstado=%s, refMarca=%s, intPrincipal=%s WHERE idProducto=%s",
+  $updateSQL = sprintf("UPDATE tblproducto SET strNombre=%s, refCategoria1=%s,  refCategoria2=%s,  refCategoria3=%s, refCategoria4=%s, refCategoria5=%s,  strImagen1=%s, strImagen2=%s, strImagen3=%s, strImagen4=%s, strImagen5=%s, strDescripcion=%s, dblPrecio=%s, intEstado=%s, refMarca=%s, intPrincipal=%s, intStock=%s WHERE idProducto=%s",
                        GetSQLValueString($_POST["strNombre"], "text"),
                        GetSQLValueString($_POST["refCategoria1"], "int"),
 					   GetSQLValueString($_POST["refCategoria2"], "int"),
@@ -32,8 +32,8 @@ $esprincipal=0;
 					   GetSQLValueString($_POST["intEstado"], "int"),
 					   GetSQLValueString($_POST["refMarca"], "int"),
 					   GetSQLValueString($esprincipal, "int"),
-					   GetSQLValueString($_POST["idProducto"], "int")
-					  );
+					  GetSQLValueString($_POST["intStock"], "int"),
+					   GetSQLValueString($_POST["idProducto"], "int"));
 
 //echo $updateSQL;
 $Result1 = mysqli_query($con, $updateSQL) or die(mysqli_error($con));
@@ -149,6 +149,10 @@ $totalRows_DatosMarcas = mysqli_num_rows($DatosMarcas);
 										<div class="form-group">
 											<label for="dblPrecio">Precio del Producto</label>
 											<input class="form-control" placeholder="Esctibir Precio del Producto" name="dblPrecio" id="dblPrecio" value="<?php echo $row_DatosProducto["dblPrecio"];?>">
+										</div>
+										<div class="form-group">
+											<label for="intStock">Productos en Stock</label>
+											<input class="form-control" placeholder="Esctibir Stock del Producto" name="intStock" id="intStock" value="<?php echo $row_DatosProducto["intStock"];?>">
 										</div>
 										<div class="form-group">
                                             <label>Mostrar en página principal</label>

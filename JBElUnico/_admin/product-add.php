@@ -15,7 +15,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar")) {
 	if(isset($_POST["intPrincipal"]) && ($_POST["intPrincipal"])=="1")
 		$esprincipal=1;
 	
-	  $insertSQL = sprintf("INSERT INTO tblproducto(strNombre, refCategoria1, strImagen1, strDescripcion, dblPrecio, intEstado, refMArca, refCategoria2, refCategoria3, refCategoria4, refCategoria5, strImagen2, strImagen3, strImagen4, strImagen5, intPrincipal) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+	  $insertSQL = sprintf("INSERT INTO tblproducto(strNombre, refCategoria1, strImagen1, strDescripcion, dblPrecio, intEstado, refMArca, refCategoria2, refCategoria3, refCategoria4, refCategoria5, strImagen2, strImagen3, strImagen4, strImagen5, intPrincipal, intStock) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
 						   GetSQLValueString($_POST["strNombre"], "text"),
 						  GetSQLValueString($_POST["refCategoria1"], "int"),
 						  GetSQLValueString($_POST["strImagen1"], "text"),
@@ -31,7 +31,8 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar")) {
 						  GetSQLValueString($_POST["strImagen3"], "text"),
 						  GetSQLValueString($_POST["strImagen4"], "text"),
 						  GetSQLValueString($_POST["strImagen5"], "text"),
-						  GetSQLValueString($esprincipal, "int"));
+						  GetSQLValueString($esprincipal, "int"),
+						  GetSQLValueString($_POST["intStock"], "int"));
 
 
 	  $Result1 = mysqli_query($con,  $insertSQL) or die(mysqli_error($con));
@@ -139,6 +140,10 @@ $totalRows_DatosMarcas = mysqli_num_rows($DatosMarcas);
 										<div class="form-group">
 											<label for="dblPrecio">Precio del Producto</label>
 											<input class="form-control" placeholder="Esctibir Precio del Producto" name="dblPrecio" id="dblPrecio">
+										</div>
+										<div class="form-group">
+											<label for="intStock">Productos en Stock</label>
+											<input class="form-control" placeholder="Esctibir Stock del Producto" name="intStock" id="intStock">
 										</div>
 										<div class="form-group">
                                             <label>Mostrar en página principal</label>

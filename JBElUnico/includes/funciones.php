@@ -593,7 +593,7 @@ function ShowProduct($id)
 						<img src="images/users/nouser.jpg" alt="producto sin imagen">
 					</a>
 				<?php }?>
-				<h2><?php echo $row_ConsultaFuncion["dblPrecio"]; ?>€</h2>
+				<h2><?php echo CalculateProductCost($row_ConsultaFuncion["idProducto"]); ?></h2>
 				<p><?php echo $row_ConsultaFuncion["strNombre"]; ?></p>
 				<a href="<?php echo $linkProduct ;?>" class="btn btn-default add-to-cart"><i class="fa fa-cog"></i>Ver</a>
 				<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Añadir al carrito</a>
@@ -666,7 +666,7 @@ function CalculateProductCost($producto)
 	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
 	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
 	
-	return $row_ConsultaFuncion["dblPrecio"];
+	return number_format($row_ConsultaFuncion["dblPrecio"], 2, ",", ".")."€";
 	
 	mysqli_free_result($ConsultaFuncion);
 }
