@@ -691,12 +691,9 @@ function adminleveloption($padre, $pertenencia="")
 				<td><?php echo ShowState($row_ConsultaFuncion["intEstado"]);?></td>
 				<td><?php echo $row_ConsultaFuncion["intOrden"];?></td>
 				<td><?php echo $row_ConsultaFuncion["dblIncremento"];?></td>
-				<td></td>
 				<td>
 					<a href="optiondetail-edit.php?id=<?php echo $row_ConsultaFuncion["idOpcion"];?>" class="btn btn-warning btn-circle" title="Edición de la Opción">
 					<i class="fa fa-edit"></i></a>
-					<a href="optiondetail-delete.php?id=<?php echo $row_ConsultaFuncion["idCategoria"];?>" class="btn btn-danger btn-circle" titel="Edición de Categoria">
-												<i class="fa fa-times-circle"></i></a>
 				</td>
 			</tr>
 		<?php	

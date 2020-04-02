@@ -16,7 +16,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar")) {
 						  GetSQLValueString($_POST["intEstado"], "int"),
 						  GetSQLValueString($_POST["refPadre"], "int"),
 						  GetSQLValueString($_POST["intOrden"], "int"),
-						  0);
+						  GetSQLValueString(ProcessComaCost($_POST["dblIncremento"]), "double"));
 
 
 	  $Result1 = mysqli_query($con,  $insertSQL) or die(mysqli_error($con));
@@ -90,7 +90,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar")) {
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <form role="form" action="option-add.php" method="post" id="forminsert" name="forminsert">
+                                    <form role="form" action="optiondetail-add.php" method="post" id="forminsert" name="forminsert">
                                         <div class="form-group">
                                             <label for="strNombre">Nombre de la Opción</label>
                                             <input class="form-control" placeholder="Escribir Nombre de la Opción" name="strNombre" id="strNombre">
@@ -102,8 +102,12 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar")) {
                                             <label for="intOrden">Orden de Opción</label>
                                             <input class="form-control" placeholder="Orden de la Opción" name="intOrden" id="intOrden">
                                         </div>
-                                        <div class="alert alert-danger hiddeit" id="errornombre">
+                                        <div class="alert alert-danger hiddeit" id="errororden">
                                         	El campo Orden de la Categoría es obligatorio.
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="dblIncremento">Incremento de Precio</label>
+                                            <input class="form-control" value="0" name="dblIncremento" id="dblIncremento">
                                         </div>
                                         <div class="form-group">
                                             <label for="intEstado">Estado</label>
@@ -114,7 +118,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar")) {
                                         </div>
                                                                             
                                         <button type="submit" class="btn btn-success" value="Añadir">Añadir</button>                                        
-                                    	<input type="hidden" name="refPadre" id="refPadre" value="0">
+                                    	<input type="hidden" name="refPadre" id="refPadre" value="<?php echo $_GET["id"]?>">
                                     	<input type="hidden" name="MM_insert" id="MM_insert" value="forminsertar">
                                     </form>
                                 </div>

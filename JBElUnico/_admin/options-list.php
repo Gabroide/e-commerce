@@ -254,11 +254,10 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 											<td><?php echo $row_DatosConsulta["intOrden"];?></td>
 									  		<td></td>
 										  	<td>
-										  		<a href="option-edit.php?id=<?php echo $row_DatosConsulta["idCategoria"];?>" class="btn btn-warning btn-circle" titel="Edición de Categoria">
+										  		<a href="option-edit.php?id=<?php echo $row_DatosConsulta["idOpcion"];?>" class="btn btn-warning btn-circle" title="Edición de la Opción">
 												<i class="fa fa-edit"></i></a>
-												<a href="option-delete.php?id=<?php echo $row_DatosConsulta["idCategoria"];?>" class="btn btn-danger btn-circle" titel="Edición de Categoria">
-												
-												<i class="fa fa-times-circle"></i></a>
+												<a href="optiondetail-add.php?id=<?php echo $row_DatosConsulta["idOpcion"];?>" class="btn btn-success btn-circle" title="Añadir elementos a la Opción">
+												<i class="fa fa-plus"></i></a>
 											</td>
 										</tr>
               		

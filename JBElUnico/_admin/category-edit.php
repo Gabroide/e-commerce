@@ -21,7 +21,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsert")) {
 //echo $updateSQL;
 $Result1 = mysqli_query($con, $updateSQL) or die(mysqli_error($con));
 
-  $updateGoTo = "categorY-list.php";
+  $updateGoTo = "category-list.php";
   if (isset($_SERVER['QUERY_STRING'])) {
     $updateGoTo .= (strpos($updateGoTo, '?')) ? "&" : "?";
     $updateGoTo .= $_SERVER['QUERY_STRING'];
@@ -90,32 +90,32 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
                         </div>
 `                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                        	Añadir Categoría
+                        	Editar Categoría
                         	<!-- /.table-responsive -->
                         </div>
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <form action="categorY-edit.php" method="post" id="forminsert" name="forminsert" role="form" onSubmit="javascript:return validarcategoriaalta();">
+                                    <form action="category-edit.php" method="post" id="forminsert" name="forminsert" role="form" onSubmit="javascript:return validarcategoriaalta();">
                                         <div class="form-group">
-                                            <label>Nombre de categoría</label>
+                                            <label for="strNOmbre">Nombre de categoría</label>
                                             <input class="form-control" placeholder="Escribir Nombre del categoría" name="strNombre" id="strNombre" value="<?php echo $row_DatosConsulta["strNombre"];?>">
                                         </div>
                                         <div class="alert alert-danger hiddeit" id="errornombre">eL CAMPO Nombre es obligatorio</div>
                                         <div class="form-group">
-                                        	<label>Orden de categoría</label>
+                                        	<label for="intOnden">Orden de categoría</label>
                                             <input class="form-control" placeholder="Escribir Orden de la categoría" name="intOrden" id="intOrden" value="<?php echo $row_DatosConsulta["intOrden"];?>">
                                         </div>
                                        	<div class="alert alert-danger hiddeit" id="errororden">Orden obligatorio</div>  
 										<div class="form-group">
-											<label>Categoría de la que depende</label>
+											<label for="refPadre">Categoría de la que depende</label>
 											<select name="refPadre" class="form-control" id="refPadre">
 												<option value="0" <?php if ($row_DatosConsulta["refPadre"]=="0") echo "selected"; ?>>Categoría Principal</option>
 												<?php dropdowncategoryupdate(0, $row_DatosConsulta["refPadre"]);?>
 											</select>
 										</div>
 									   <div class="form-group">
-											<label>Estado</label>
+											<label for="intEstado">Estado</label>
 											<select name="intEstado" class="form-control" id="intEstado">
 												<option value="0" <?php if ($row_DatosConsulta["intEstado"]=="0") echo "selected"; ?>>Inactivo</option>
 												<option value="1" <?php if ($row_DatosConsulta["intEstado"]=="1") echo "selected"; ?>>Activo</option>
