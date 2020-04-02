@@ -1,4 +1,4 @@
-<?php require_once('Connections/conexion.php'); ?>
+	<?php require_once('Connections/conexion.php'); ?>
 <?php
 //MySQLi Fragmentos por http://www.dreamweaver-tutoriales.com
 //Copyright Jorge Vila 2015
@@ -107,6 +107,8 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 										Añadir
 									</button>
 								</span>
+								<br>
+								<?php ShowOptions($row_DatosConsulta["idProducto"]);?>
 								<?php echo $row_DatosConsulta["strDescripcion"]; ?>
 								<!--<p><b>Availability:</b> In Stock</p>
 								<p><b>Condition:</b> New</p>

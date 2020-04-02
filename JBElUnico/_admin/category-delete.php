@@ -34,7 +34,7 @@ else
 	{
 		$query_Delete = sprintf("DELETE FROM tblcategoria WHERE idCategoria=%s",
 							   GetSQLValueString($_GET["id"], "int"));
-		$Result1 = mysqli_query($con, $query_Delete) or die(mysqli_error());
+		$Result1 = mysqli_query($con, $query_Delete) or die(mysqli_error($con));
 
 		  $insertGoTo = "category-list.php";
 		  header(sprintf("Location: %s", $insertGoTo));

@@ -717,10 +717,87 @@ function ShowOptionProductEdit($opcion, $producto)
 	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
 	
 	if ($totalRows_ConsultaFuncion==0) 
-		return '<button type="button" class="btn btn-error btn-danger"><i class="fa fa-times"></i></button>';
+		return '<a href="productooption-add.php?opcion='.$opcion.'&id='.$producto.'" title="Asignar al producto" type="button" class="btn btn-error btn-danger"><i class="fa fa-times"></i></a>';
 	else
-		return '<button type="button" class="btn btn-success btn-circle"><i class="fa fa-check"></i></button>';
+		return '<a href="productooption-delete.php?opcion='.$opcion.'&id='.$producto.'" title="No asignar al producto" type="button" class="btn btn-success btn-circle"><i class="fa fa-check"></i></a>';
 	
+	mysqli_free_result($ConsultaFuncion);
+}
+
+function ShowOptions($producto)
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT * FROM tblproductoopcion WHERE refProducto=%s", 
+								   GetSQLValueString($producto, "int"));
+	
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	if ($totalRows_ConsultaFuncion>0) 
+	{
+		do{
+			ShowOPtionsProductSubOption($row_ConsultaFuncion["refOpcion"]);
+		?>
+			
+			<br>
+
+		<?php
+		} while($row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion));
+	}
+	
+	mysqli_free_result($ConsultaFuncion);
+}
+
+function ShowOPtionsProductSubOption($opcion)
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT * FROM tblopcion WHERE refPadre=%s AND intEstado=1 ORDER BY intOrden ASC", 
+								   GetSQLValueString($opcion, "int"));
+	
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	if ($totalRows_ConsultaFuncion>0) 
+	{?>
+		<b><?php echo GetNameOption($opcion);
+			?></b>
+		
+			<select class="form-control" name="intOpcion-<?php echo $opcion;?>" id="intOpcion-<?php echo $opcion;?>">
+		
+		<?php
+		do{?>
+			<option value="<?php echo $row_ConsultaFuncion["idOpcion"];?>"><?php echo $row_ConsultaFuncion["strNombre"];?></option>
+		<?php
+		} while($row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion));
+		?>
+			</select>
+		<?php
+	}
+	
+	mysqli_free_result($ConsultaFuncion);
+}
+
+function GetNameOption($opcion)
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT strNombre FROM tblopcion WHERE idOpcion=%s",
+		 GetSQLValueString($opcion, "text"));
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	if ($totalRows_ConsultaFuncion>0)	
+		return $row_ConsultaFuncion["strNombre"].":";
+	else
+		return "----";
 	mysqli_free_result($ConsultaFuncion);
 }
 ?>
