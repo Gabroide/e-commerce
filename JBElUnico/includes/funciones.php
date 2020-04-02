@@ -800,4 +800,35 @@ function GetNameOption($opcion)
 		return "----";
 	mysqli_free_result($ConsultaFuncion);
 }
+
+function CharacLevelOption($padre, $pertenencia="")
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT * FROM tblcaracteristica WHERE refPadre=%s ",GetSQLValueString($padre, "text"));
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	if ($totalRows_ConsultaFuncion>0) 
+	{
+		do{
+		?>
+			<tr>
+				<td><?php echo $row_ConsultaFuncion["idCaracteristica"];?></td>
+				<td><?php echo $pertenencia.$row_ConsultaFuncion["strNombre"];?></td>
+				<td><?php echo ShowState($row_ConsultaFuncion["intEstado"]);?></td>
+				<td><?php echo $row_ConsultaFuncion["intOrden"];?></td>
+				<td>
+					<a href="characdetail-edit.php?id=<?php echo $row_ConsultaFuncion["idCaracteristica"];?>" class="btn btn-warning btn-circle" title="Edición de la Característica">
+					<i class="fa fa-edit"></i></a>
+				</td>
+			</tr>
+		<?php	
+		} while($row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion));
+	}
+	
+	mysqli_free_result($ConsultaFuncion);
+}
 ?>

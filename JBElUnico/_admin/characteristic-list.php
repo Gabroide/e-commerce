@@ -1,5 +1,7 @@
-<?php require_once('../Connections/conexion.php');
-RestringirAcceso("1");?><?php
+ 	<?php require_once('../Connections/conexion.php'); 
+RestringirAcceso("1, 100");?>
+
+<?php
 //MySQLi Fragmentos por http://www.dreamweaver-tutoriales.com
 //Copyright Jorge Vila 2015
 
@@ -10,23 +12,26 @@ if (isset($VARIABLE)) {
 
 /**************************************************************/
 /*ORDEN PARAMETROS*/
-/*ESTO CAMBIARÁ SEGÚN A QUÉ TABLA*/
+/*ESTO CAMBIARÃ SEGÃšN A QUÃ‰ TABLA*/
 if (isset($_GET["valor"]))
 {
 	switch ($_GET["valor"]) {
     case 1:
-        $parametro_orden= "idOpcion";
+        $parametro_orden= "idCaracteristica";
         break;
     case 2:
         $parametro_orden= "strNombre";
         break;
-	case 3:
-		$parametro_orden= "intOrden";
-		break;
+    case 3:
+        $parametro_orden= "intEstado";
+        break;
+    case 4:
+        $parametro_orden= "intOrden";
+        break;
     }
 }
 else
-	$parametro_orden= "idOpcion"; //POR DEFECTO
+	$parametro_orden= "strNombre"; //POR DEFECTO
 
 if (isset($_GET["orden"]))
 {
@@ -47,6 +52,7 @@ $cadenaOrden=" ORDER BY ".$parametro_orden." ".$parametro_ordena_sentido;
 /*ORDEN PARAMETROS*/
 /**************************************************************/
 
+
 /**************************************************************/
 /**********************************         PAGINACION         /
 /**************************************************************/
@@ -54,8 +60,8 @@ $cadenaOrden=" ORDER BY ".$parametro_orden." ".$parametro_ordena_sentido;
 			
             $currentPage = $_SERVER["PHP_SELF"];
             
-            $maxRows_DatosConsulta = 30; // Numero de registros por pagina
-            $pageNum_DatosConsulta = 0;  // Seleccion de página actual
+            $maxRows_DatosConsulta = 50; // Numero de registros por pagina
+            $pageNum_DatosConsulta = 0;  // Seleccion de pÃ¡gina actual
             $interval_page = 4; // desde la pagina actual - este valor hasta la pagina actual + este valor
             
             if (isset($_GET['pageNum_DatosConsulta'])) {
@@ -65,32 +71,8 @@ $cadenaOrden=" ORDER BY ".$parametro_orden." ".$parametro_ordena_sentido;
 /*************************************************************/
 /*************************************************************/
 /*************************************************************/
-$consultaextendidaparaordenacion="";
 
-if ((isset($_GET["MM_search"])) && ($_GET["MM_search"]=="formsearch"))
-{
-	$consultaextendida = "";
-		
-	$consultaextendidaparaordenacion="&MM_search=formsearch&strBuscar=".$_GET["strBuscar"];
-	
-	//(BLOQUE NOMBRE)
-	$porciones = explode(" ", $_GET["strBuscar"]);
-	$longitud = count($porciones);
-	$extramodelo=" strNombre LIKE '%".$_GET["strBuscar"] ."%'";
-	for($i=0; $i<$longitud; $i++)
-	{
-		$extramodelo.=" OR strNombre LIKE '%".$porciones[$i] ."%'";
-	}
-	//(FIN BLOQUE NOMBRE)
-
-	
-	$query_DatosConsulta = "SELECT * FROM tblopcion WHERE (".$extramodelo.") WHERE refPadre=0 AND intEstado=1 ".$consultaextendida.$cadenaOrden;
-	//echo $query_DatosConsulta;
-}
-else
-{
-	$query_DatosConsulta = sprintf("SELECT * FROM tblopcion WHERE refPadre=0 AND intEstado=1 ".$cadenaOrden);
-	}
+$query_DatosConsulta = sprintf("SELECT * FROM tblcaracteristica WHERE refPadre=0".$cadenaOrden);
 
 $query_limit_DatosConsulta = sprintf("%s LIMIT %d, %d", $query_DatosConsulta, $startRow_DatosConsulta, $maxRows_DatosConsulta);
 $DatosConsulta = mysqli_query($con,  $query_limit_DatosConsulta) or die(mysqli_error($con));
@@ -168,23 +150,17 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
   <div id="page-wrapper">
      <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Gestión de Opciones de Producto</h1>
+                    <h1 class="page-header">Gestión de Características</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
-            <a href="product-list.php" class="btn btn-outline btn-info">Volver atrás</a>
-			<br>
-			<br>
 			
            <div class="row">
                 <div class="col-lg-5">
-                
-                </div>
-                <div class="col-lg-7">
-                	<div class="well">
-						
-					</div>
-				</div>
+                	<a value="Añadir Característica" href="characteristic-add.php" class="btn btn-outline btn-primary">Añadir Caracerística</a>
+                	<br>
+                	<br>
+			   </div>
 	  		</div>
            
             <div class="row">
@@ -196,13 +172,14 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="table-responsive">
-                               <?php if ($totalRows_DatosConsulta > 0) {  ?>
+                               <?php if ($totalRows_DatosConsulta > 0) { ?>
                                 <table class="table table-striped">
                                     <thead>
                                         <tr>
                                             <th>Id <?php
-													//BLOQUE ORDENACIÓN
-													//SI HAY PARÁMETROS, HAY QUE SABER SI SON DE ORDEN
+													$consultaextendidaparaordenacion = "";
+													//BsLOQUE ORDENACIÃ“N
+													//SI HAY PARÃMETROS, HAY QUE SABER SI SON DE ORDEN
 													$parametroparaprocesar="1";
 													if (!isset($_GET["orden"])) {
 														$orden=0;
@@ -213,11 +190,11 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 														$valor=$_GET["valor"];
 													}
 													MostrarOrdenCampo($parametroparaprocesar, $orden, $valor,$currentPage, $consultaextendidaparaordenacion);
-												?></th>
-                                         
-                                            <th>Opción <?php
-													//BLOQUE ORDENACIÓN
-													//SI HAY PARÁMETROS, HAY QUE SABER SI SON DE ORDEN
+												?>
+                                           </th>
+                                            <th>Nombre <?php
+													//BLOQUE ORDENACIÃ“N
+													//SI HAY PARÃMETROS, HAY QUE SABER SI SON DE ORDEN
 													$parametroparaprocesar="2";
 													if (!isset($_GET["orden"])) {
 														$orden=0;
@@ -228,10 +205,11 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 														$valor=$_GET["valor"];
 													}
 													MostrarOrdenCampo($parametroparaprocesar, $orden, $valor,$currentPage, $consultaextendidaparaordenacion);
-												?></th>
-                                            <th>Orden <?php
-													//BLOQUE ORDENACIÓN
-													//SI HAY PARÁMETROS, HAY QUE SABER SI SON DE ORDEN
+												?>
+                                            </th>
+                                            <th>Estado <?php
+													//BLOQUE ORDENACIÃ“N
+													//SI HAY PARÃMETROS, HAY QUE SABER SI SON DE ORDEN
 													$parametroparaprocesar="3";
 													if (!isset($_GET["orden"])) {
 														$orden=0;
@@ -242,30 +220,52 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 														$valor=$_GET["valor"];
 													}
 													MostrarOrdenCampo($parametroparaprocesar, $orden, $valor,$currentPage, $consultaextendidaparaordenacion);
-												?></th>
-                                            <th>Vinculado</th>
-                                        </tr>
+												?> 
+                                            </th>
+                                            <th>Orden <?php
+													//BLOQUE ORDENACIÃ“N
+													//SI HAY PARÃMETROS, HAY QUE SABER SI SON DE ORDEN
+													$parametroparaprocesar="4";
+													if (!isset($_GET["orden"])) {
+														$orden=0;
+														$valor=0;
+													}
+													else {
+														$orden=$_GET["orden"];
+														$valor=$_GET["valor"];
+													}
+													MostrarOrdenCampo($parametroparaprocesar, $orden, $valor,$currentPage, $consultaextendidaparaordenacion);
+												?>
+                                            </th>
+                                            <th>Acciones </th>
+										</tr>                                        </tr>
                                     </thead>
                                     <tbody>
                                        <?php 
 										//AQUI ES DONDE SE SACAN LOS DATOS, SE COMPRUEBA QUE HAY RESULTADOS 
 											 do { 
-              							?>
+													?>
               		
-											<tr>
-												<td><?php echo $row_DatosConsulta["idOpcion"];?></td>
-												<td><?php echo $row_DatosConsulta["strNombre"];?></td>
-												<td><?php echo $row_DatosConsulta["intOrden"];?></td>
-												<td><?php echo ShowOptionProductEdit($row_DatosConsulta["idOpcion"], $_GET["id"]);?></td>
-												<td></td>
-											</tr>
-        	      		
-											<?php
+										<tr>
+											<td><?php echo $row_DatosConsulta["idCaracteristica"];?></td>
+											<td><strong><?php echo $row_DatosConsulta["strNombre"];?></strong></td>
+											<td><?php echo ShowState($row_DatosConsulta["intEstado"]);?></td>
+											<td><?php echo $row_DatosConsulta["intOrden"];?></td>
+									  		<td>
+										  		<a href="characteristic-list.php?id=<?php echo $row_DatosConsulta["idCaracteristica"];?>" class="btn btn-warning btn-circle" title="Edición de la Opción">
+												<i class="fa fa-edit"></i></a>
+												<a href="characdetail-add.php?id=<?php echo $row_DatosConsulta["idCaracteristica"];?>" class="btn btn-success btn-circle" title="Añadir elementos a la Opción">
+												<i class="fa fa-plus"></i></a>
+											</td>
+										</tr>
+              		
+              							<?php
+												 CharacLevelOption($row_DatosConsulta["idCaracteristica"], "-- ");
 											 } while ($row_DatosConsulta = mysqli_fetch_assoc($DatosConsulta)); 
-										?>
+											?> 
 									</tbody>
-								</table>
-								<ul class="pagination">
+                                </table>
+                                <ul class="pagination">
 		<?php if ($pageNum_DatosConsulta > 0) { // Show if not first page ?>
 			<li><a href="<?php printf("%s?pageNum_DatosConsulta=%d%s", $currentPage, 0, $queryString_DatosConsulta); ?>" title="Primero">Primero</a></li>
 		<?php } // Show if not first page ?>
