@@ -73,6 +73,7 @@ $consultaextendidaparaordenacion="";
 
 if ((isset($_GET["MM_search"])) && ($_GET["MM_search"]=="formsearch"))
 {
+	$consultaextendida = "";
 		
 	$consultaextendidaparaordenacion="&MM_search=formsearch&strBuscar=".$_GET["strBuscar"];
 	

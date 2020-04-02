@@ -69,6 +69,7 @@ $consultaextendidaparaordenacion="";
 
 if ((isset($_GET["MM_search"])) && ($_GET["MM_search"]=="formsearch"))
 {
+	$consultaextendida = "";
 		
 	$consultaextendidaparaordenacion="&MM_search=formsearch&strBuscar=".$_GET["strBuscar"];
 	
@@ -178,22 +179,7 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
                 </div>
                 <div class="col-lg-7">
                 	<div class="well">
-						<form role="form" action="brands-list.php" method="get" id="formsearch" name="formsearch">
-							<div class="row">
-								<div class="col-lg-4">
-									<div class="form-group">
-										<label for="strBuscar">Buscar</label>
-										<input class="form-control" placeholder="Buscar..." name="strBuscar"  id="strBuscar" value="<?php if (isset($_GET["strBuscar"]))
-											echo $_GET["strBuscar"];
-										?>">	
-									</div>
-								</div>
-								<div class="col-lg-2">
-									<button type="submit" class="btn btn-success" value="Buscar">Buscar</button>
-								</div>
-								<input type="hidden" name="MM_search" id="MM_search" value="formsearch">
-							</div>
-						</form>
+						
 					</div>
 				</div>
 	  		</div>
@@ -254,7 +240,7 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 													}
 													MostrarOrdenCampo($parametroparaprocesar, $orden, $valor,$currentPage, $consultaextendidaparaordenacion);
 												?></th>
-                                            <th>Acciones</th>
+                                            <th>Vinculado</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -267,7 +253,8 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 												<td><?php echo $row_DatosConsulta["idOpcion"];?></td>
 												<td><?php echo $row_DatosConsulta["strNombre"];?></td>
 												<td><?php echo $row_DatosConsulta["intOrden"];?></td>
-												<td><a href="productoption-edit.php?id=<?php echo $row_DatosConsulta["idOpcion"];?>" class="btn btn-warning btn-circle"><i class="fa fa-edit"></i></a></td>
+												<td><?php echo ShowOptionProductEdit($row_DatosConsulta["idOpcion"], $_GET["id"]);?></td>
+												<td></td>
 											</tr>
         	      		
 											<?php

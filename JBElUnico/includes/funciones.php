@@ -702,4 +702,25 @@ function adminleveloption($padre, $pertenencia="")
 	
 	mysqli_free_result($ConsultaFuncion);
 }
+
+function ShowOptionProductEdit($opcion, $producto)
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT * FROM tblproductoopcion WHERE refProducto=%s AND refOpcion=%s", 
+									 GetSQLValueString($producto, "intt"), 
+									 GetSQLValueString($opcion, "int"));
+	
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	if ($totalRows_ConsultaFuncion==0) 
+		return '<button type="button" class="btn btn-error btn-danger"><i class="fa fa-times"></i></button>';
+	else
+		return '<button type="button" class="btn btn-success btn-circle"><i class="fa fa-check"></i></button>';
+	
+	mysqli_free_result($ConsultaFuncion);
+}
 ?>
