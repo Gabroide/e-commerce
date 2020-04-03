@@ -46,49 +46,48 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 						<div class="col-sm-5">
 							<div class="view-product">
 								<?php if ($row_DatosConsulta["strImagen1"]!=""){?>
-									<img src="images/products/<?php echo $row_DatosConsulta["strImagen1"];?>" alt="<?php echo $row_DatosConsulta["strNombre"];?>" title="<?php echo $row_DatosConsulta["strNombre"];?>" id="">
+									<img id="placeholder" src="images/products/<?php echo $row_DatosConsulta["strImagen1"];?>" alt="<?php echo $row_DatosConsulta["strNombre"];?>" data-big="images/products/<?php echo $row_DatosConsulta["strImagen1"];?>" />
 								<?php }
 									else
 								{?>
 									<img src="../images/users/nouser.jpg" alt="Producto sin imagen" >
 								<?php }?>
-								<h3>ZOOM</h3>
 							</div>
 							<div class="row">
-								<div class="col-sm-3">
-									<a href="">
-										<?php if ($row_DatosConsulta["strImagen1"]!=""){?>
-											<img src="images/products/<?php echo $row_DatosConsulta["strImagen1"];?>" alt="<?php echo $row_DatosConsulta["strNombre"];?>" title="<?php echo $row_DatosConsulta["strNombre"];?>" id="" width="100%">
-										<?php }?>
-									</a>
+								<div class="col-xs-4">
+									<?php if ($row_DatosConsulta["strImagen1"]!=""){?>
+										<a onclick="return showPic(this)" href="images/products/<?php echo $row_DatosConsulta["strImagen1"];?>" title="Mostrar esta imagen">
+											<img src="images/products/<?php echo $row_DatosConsulta["strImagen1"];?>" alt="<?php echo $row_DatosConsulta["strNombre"];?>" id="" width="100%" >
+										</a>
+									<?php }?>
 								</div>
-								<div class="col-sm-3">
-									<a href="">
-										<?php if ($row_DatosConsulta["strImagen2"]!=""){?>
+								<div class="col-xs-4">
+									<?php if ($row_DatosConsulta["strImagen2"]!=""){?>
+										<a onclick="return showPic(this)" href="images/products/<?php echo $row_DatosConsulta["strImagen2"];?>" title="Mostrar esta imagen">
 											<img src="images/products/<?php echo $row_DatosConsulta["strImagen2"];?>" alt="<?php echo $row_DatosConsulta["strNombre"];?>" title="<?php echo $row_DatosConsulta["strNombre"];?>" id="" width="100%">
-										<?php }?>
-									</a>
+										</a>
+									<?php }?>
 								</div>
-								<div class="col-sm-3">
-									<a href="">
-										<?php if ($row_DatosConsulta["strImagen3"]!=""){?>
+								<div class="col-xs-4">
+									<?php if ($row_DatosConsulta["strImagen3"]!=""){?>
+										<a onclick="return showPic(this)" href="images/products/<?php echo $row_DatosConsulta["strImagen3"];?>" title="Mostrar esta imagen">
 											<img src="images/products/<?php echo $row_DatosConsulta["strImagen3"];?>" alt="<?php echo $row_DatosConsulta["strNombre"];?>" title="<?php echo $row_DatosConsulta["strNombre"];?>" id="" width="100%">
-										<?php }?>
-									</a>
+										</a>
+									<?php }?>
 								</div>
-								<div class="col-sm-3">
-									<a href="">
-										<?php if ($row_DatosConsulta["strImagen4"]!=""){?>
+								<div class="col-xs-4">
+									<?php if ($row_DatosConsulta["strImagen4"]!=""){?>
+										<a onclick="return showPic(this)" href="images/products/<?php echo $row_DatosConsulta["strImagen4"];?>" title="Mostrar esta imagen">
 											<img src="images/products/<?php echo $row_DatosConsulta["strImagen4"];?>" alt="<?php echo $row_DatosConsulta["strNombre"];?>" title="<?php echo $row_DatosConsulta["strNombre"];?>" id="" width="100%">
-										<?php }?>
-									</a>
+										</a>
+									<?php }?>
 								</div>
-								<div class="col-sm-3">
-									<a href="">
-										<?php if ($row_DatosConsulta["strImagen5"]!=""){?>
+								<div class="col-xs-4">
+									<?php if ($row_DatosConsulta["strImagen5"]!=""){?>
+										<a onclick="return showPic(this)" href="images/products/<?php echo $row_DatosConsulta["strImagen5"];?>" title="Mostrar esta imagen">
 											<img src="images/products/<?php echo $row_DatosConsulta["strImagen5"];?>" alt="<?php echo $row_DatosConsulta["strNombre"];?>" title="<?php echo $row_DatosConsulta["strNombre"];?>" id="" width="100%">
+										</a>
 										<?php }?>
-									</a>
 								</div>
 							</div>
 						</div>
@@ -362,6 +361,48 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 </section>
 <?php include("includes/footer.php"); ?>
 <?php include("includes/footerjs.php"); ?>
+<script type="text/javascript" src="js/jquery.mlens-1.6.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function()
+{
+    $("#placeholder").mlens(
+    {
+        imgSrc: $("#placeholder").attr("data-big"),   // path of the hi-res version of the image
+        lensShape: "circle",                // shape of the lens (circle/square)
+        lensSize: 180,                  // size of the lens (in px)
+        borderSize: 4,                  // size of the lens border (in px)
+        borderColor: "#fff",                // color of the lens border (#hex)
+        borderRadius: 0,                // border radius (optional, only if the shape is square)
+		responsive: true      
+    });
+});
+
+</script>
+<script type="text/javascript" language="javascript">
+function showPic (whichpic) {
+ if (document.getElementById) {
+  document.getElementById('placeholder').src = whichpic.href;
+	 document.getElementById('placeholder').setAttribute("data-big", whichpic.href);
+	 
+	  $("#placeholder").mlens(
+    {
+        imgSrc: $("#placeholder").attr("data-big"),   // path of the hi-res version of the image
+        lensShape: "circle",                // shape of the lens (circle/square)
+        lensSize: 180,                  // size of the lens (in px)
+        borderSize: 4,                  // size of the lens border (in px)
+        borderColor: "#fff",                // color of the lens border (#hex)
+        borderRadius: 0,                // border radius (optional, only if the shape is square)
+		responsive: true      
+    });
+	 
+	 
+	 //$("#placeholder").attr("data-big") = whichpic.href;
+  return false;
+ } else {
+  return true;
+ }
+}
+</script>
 <!-- InstanceEndEditable -->
 </body>
 <!-- InstanceEnd --></html> 

@@ -590,7 +590,7 @@ function ShowProduct($id)
 					else
 					{?>
 					<a href="<?php echo $linkProduct;?>">
-						<img src="images/users/nouser.jpg" alt="producto sin imagen">
+						<img src="images/products/nodisponible.jpg" alt="Producto sin Imagen">
 					</a>
 				<?php }?>
 				<h2><?php echo CalculateProductCost($row_ConsultaFuncion["idProducto"]); ?></h2>
