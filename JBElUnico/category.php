@@ -8,6 +8,8 @@ if (isset($VARIABLE)) {
   $variable_Consulta = $VARIABLE;
 }
 
+$categoriaparaver=$_GET["id"];
+
 $resultadosporclick=6;
 
 $query_DatosConsulta = sprintf("SELECT idProducto FROM tblproducto WHERE intEstado=1 AND intPrincipal=1 ORDER BY idProducto ASC LIMIT 0,".$resultadosporclick);
@@ -36,7 +38,7 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 <body>
 <!-- InstanceBeginEditable name="contenido" -->
 <?php include("includes/header.php"); ?>
-<?php include("includes/slider.php"); ?>
+<?php //include("includes/slider.php"); ?>
 <section>
   <div class="container">
     <div class="row">
@@ -80,8 +82,8 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 								
 					</div>
        
-        <?php include("includes/categories.php"); ?>
-        <?php include("includes/recomended.php"); ?>
+        <?php //include("includes/categories.php"); ?>
+        <?php //include("includes/recomended.php"); ?>
       </div>
     </div>
   </div>
