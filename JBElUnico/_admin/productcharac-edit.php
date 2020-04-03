@@ -12,8 +12,8 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsert"))
 {
 	//PRIMERO BORRAMOS LAS CARACTERISTICAS ACTUALES
 	$query_Delete = sprintf("DELETE FROM tblproductocaracteristica WHERE refProducto=%s",
-							   GetSQLValueString($_POST["id "], "int"));
-	$Result1 = mysqli_query($con, $query_Delete) or die(mysqli_error($con));
+                       GetSQLValueString($_POST["id"], "int"));
+    $Result1 = mysqli_query($con, $query_Delete) or die(mysqli_error($con));
 	
 	//SEGUNDO SELECCIONAMOS LAS CARARESTICAS
 	$query_DatosCaracteristicaLista = sprintf("SELECT * FROM tblcaracteristica WHERE refPadre=0 AND intEstado=1 ");
