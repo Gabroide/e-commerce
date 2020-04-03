@@ -349,6 +349,8 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 												<i class="fa fa-edit"></i></a>
 												<a href="productoption-edit.php?id=<?php echo $row_DatosConsulta["idProducto"];?>" class="btn btn-warning btn-circle" title="Editar Opciones">
 												<i class="fa fa-circle-o"></i></a>
+												<a href="productcharac-edit.php?id=<?php echo $row_DatosConsulta["idProducto"];?>" class="btn btn-warning btn-circle" title="Editar Características">
+												<i class="fa fa-camera"></i></a>
 											</td>
 										</tr>
               		

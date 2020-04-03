@@ -831,4 +831,54 @@ function CharacLevelOption($padre, $pertenencia="")
 	
 	mysqli_free_result($ConsultaFuncion);
 }
+
+function ShowCharacProductEdit($caracteristica, $producto)
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT * FROM tblcaracteristica WHERE refPadre=%s AND intEstado=1 ORDER BY intOrden ASC", 
+								   GetSQLValueString($caracteristica, "int"));
+	
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	if ($totalRows_ConsultaFuncion>0) 
+	{
+		//echo GetNameCharac($caracteristica);
+			?>
+		
+			<select class="form-control" name="intCaracteristica-<?php echo $caracteristica;?>" id="intCaracteristica-<?php echo $caracteristica;?>">
+			<option value="0">No disponible</option>
+		<?php
+		do{?>
+			<option value="<?php echo $row_ConsultaFuncion["idCaracteristica"];?>"><?php echo $row_ConsultaFuncion["strNombre"];?></option>
+		<?php
+		} while($row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion));
+		?>
+			</select>
+		<?php
+	}
+	
+	mysqli_free_result($ConsultaFuncion);
+}
+
+function GetNameCharac($caracteristica)
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT strNombre FROM tblcaracteristica WHERE idCaracteristica=%s",
+		 GetSQLValueString($caracteristica, "int"));
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	if ($totalRows_ConsultaFuncion>0)	
+		return $row_ConsultaFuncion["strNombre"].":";
+	else
+		return "----";
+	mysqli_free_result($ConsultaFuncion);
+}
 ?>

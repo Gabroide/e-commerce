@@ -2,7 +2,7 @@
 RestringirAcceso("1, 100");?>
 <?php
 //MySQLi Fragmentos por http://www.dreamweaver-tutoriales.com
-//Copyright Jorge Vila 2015
+//Copyright Jorge Vila 2015char
 
 $editFormAction = $_SERVER['PHP_SELF'];
 if (isset($_SERVER['QUERY_STRING'])) {
@@ -11,18 +11,17 @@ if (isset($_SERVER['QUERY_STRING'])) {
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar")) {
 
-	$insertSQL = sprintf("INSERT INTO tblopcion(strNombre, intEstado, refPadre, intOrden, dblIncremento) VALUES (%s, %s, %s, %s, %s)",
+	$insertSQL = sprintf("INSERT INTO tblcaracteristica(strNombre, intEstado, refPadre, intOrden) VALUES (%s, %s, %s, %s)",
 						  GetSQLValueString($_POST["strNombre"], "text"),
 						  GetSQLValueString($_POST["intEstado"], "int"),
 						  GetSQLValueString($_POST["refPadre"], "int"),
-						  GetSQLValueString($_POST["intOrden"], "int"),
-						  GetSQLValueString(ProcessComaCost($_POST["dblIncremento"]), "double"));
+						  GetSQLValueString($_POST["intOrden"], "int"));
 
 
 	  $Result1 = mysqli_query($con,  $insertSQL) or die(mysqli_error($con));
 
 
-	  $insertGoTo = "options-list.php";
+	  $insertGoTo = "characteristic-list.php";
 	  if (isset($_SERVER['QUERY_STRING'])) {
 		$insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
 		$insertGoTo .= $_SERVER['QUERY_STRING'];
@@ -68,11 +67,11 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar")) {
   <div id="page-wrapper">
      <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Gestión de Opciones</h1>
+                    <h1 class="page-header">Gestión de Características</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
-			<a href="options-list.php" class="btn btn-outline btn-info">Volver atrás</a>
+			<a href="characteristic-list.php" class="btn btn-outline btn-info">Volver atrás</a>
 			<br>
 			<br>
            
@@ -84,30 +83,26 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar")) {
                         </div>
 `                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                        	Añadir Opción
+                        	Añadir Característica
                         	<!-- /.table-responsive -->
                         </div>
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <form role="form" action="optiondetail-add.php" method="post" id="forminsert" name="forminsert">
+                                    <form role="form" action="characdetail-add.php" method="post" id="forminsert" name="forminsert">
                                         <div class="form-group">
-                                            <label for="strNombre">Nombre de la Opción</label>
-                                            <input class="form-control" placeholder="Escribir Nombre de la Opción" name="strNombre" id="strNombre">
+                                            <label for="strNombre">Nombre de la Caracerística</label>
+                                            <input class="form-control" placeholder="Escribir Nombre de la Caracterítisca" name="strNombre" id="strNombre">
                                         </div>
                                         <div class="alert alert-danger hiddeit" id="errornombre">
                                         	El campo Nombre de Categoría es obligatorio.
                                         </div>
                                         <div class="form-group">
-                                            <label for="intOrden">Orden de Opción</label>
-                                            <input class="form-control" placeholder="Orden de la Opción" name="intOrden" id="intOrden">
+                                            <label for="intOrden">Orden de Característica</label>
+                                            <input class="form-control" placeholder="Orden de la Caracteristica" name="intOrden" id="intOrden">
                                         </div>
                                         <div class="alert alert-danger hiddeit" id="errororden">
-                                        	El campo Orden de la Categoría es obligatorio.
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="dblIncremento">Incremento de Precio</label>
-                                            <input class="form-control" value="0" name="dblIncremento" id="dblIncremento">
+                                        	El campo Orden de la Característica es obligatorio.
                                         </div>
                                         <div class="form-group">
                                             <label for="intEstado">Estado</label>

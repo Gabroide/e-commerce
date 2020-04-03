@@ -252,7 +252,7 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 											<td><?php echo ShowState($row_DatosConsulta["intEstado"]);?></td>
 											<td><?php echo $row_DatosConsulta["intOrden"];?></td>
 									  		<td>
-										  		<a href="characteristic-list.php?id=<?php echo $row_DatosConsulta["idCaracteristica"];?>" class="btn btn-warning btn-circle" title="Edición de la Opción">
+										  		<a href="characteristic-edit.php?id=<?php echo $row_DatosConsulta["idCaracteristica"];?>" class="btn btn-warning btn-circle" title="Edición de la Opción">
 												<i class="fa fa-edit"></i></a>
 												<a href="characdetail-add.php?id=<?php echo $row_DatosConsulta["idCaracteristica"];?>" class="btn btn-success btn-circle" title="Añadir elementos a la Opción">
 												<i class="fa fa-plus"></i></a>
