@@ -131,7 +131,7 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 							<div class="tab-pane fade active in" id="details" >
 								<div class="col-sm-12">
 								
-								AQUIIIIIIIIIIIIIII
+								<?php echo ShowCharacFrontEnd($row_DatosConsulta["idProducto"]);?>
 								
 								</div>
 							</div>

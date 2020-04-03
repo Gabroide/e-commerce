@@ -847,13 +847,15 @@ function ShowCharacProductEdit($caracteristica, $producto)
 	if ($totalRows_ConsultaFuncion>0) 
 	{
 		//echo GetNameCharac($caracteristica);
-			?>
+		$actual=GetProductSelectedCharac($caracteristica, $producto);
+		?>
 		
 			<select class="form-control" name="intCaracteristica-<?php echo $caracteristica;?>" id="intCaracteristica-<?php echo $caracteristica;?>">
-			<option value="0">No disponible</option>
+			<option value="0" <?php if ($actual=="0") echo "selected"; ?>>No disponible</option>
+			
 		<?php
 		do{?>
-			<option value="<?php echo $row_ConsultaFuncion["idCaracteristica"];?>"><?php echo $row_ConsultaFuncion["strNombre"];?></option>
+			<option value="<?php echo $row_ConsultaFuncion["idCaracteristica"];?>" <?php if ($actual==$row_ConsultaFuncion["idCaracteristica"]) echo "selected"; ?>><?php echo $row_ConsultaFuncion["strNombre"];?></option>
 		<?php
 		} while($row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion));
 		?>
@@ -876,9 +878,54 @@ function GetNameCharac($caracteristica)
 	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
 	
 	if ($totalRows_ConsultaFuncion>0)	
-		return $row_ConsultaFuncion["strNombre"].":";
+		return $row_ConsultaFuncion["strNombre"];
 	else
 		return "----";
+	mysqli_free_result($ConsultaFuncion);
+}
+
+function GetProductSelectedCharac($caracteristica, $producto)
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT refSeleccionada FROM tblproductocaracteristica WHERE refProducto=%s AND refCaracteristica=%s",
+		 GetSQLValueString($producto, "int"),
+		 GetSQLValueString($caracteristica, "int"));
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	if ($totalRows_ConsultaFuncion>0)	
+		return $row_ConsultaFuncion["refSeleccionada"];
+	else
+		return "0";
+	mysqli_free_result($ConsultaFuncion);
+}
+
+function ShowCharacFrontEnd($producto)
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT * FROM tblproductocaracteristica WHERE refProducto=%s", 
+								   GetSQLValueString($producto, "int"));
+	
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	if ($totalRows_ConsultaFuncion>0) 
+	{
+		do
+		{
+			echo "<strong>".GetNameCharac($row_ConsultaFuncion["refCaracteristica"]).":</strong>";
+			echo GetNameCharac($row_ConsultaFuncion["refSeleccionada"]);
+			echo "<br>";
+			//$actual=GetProductSelectedCharac($caracteristica, $producto);
+		} while($row_ConsultaFuncion=mysqli_fetch_assoc($ConsultaFuncion));
+	}
+	
 	mysqli_free_result($ConsultaFuncion);
 }
 ?>
