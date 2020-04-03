@@ -12,7 +12,7 @@ $categoriaparaver=$_GET["id"];
 
 $resultadosporclick=6;
 
-$query_DatosConsulta = sprintf("SELECT idProducto FROM tblproducto WHERE intEstado=1 AND intPrincipal=1 ORDER BY idProducto ASC LIMIT 0,".$resultadosporclick);
+$query_DatosConsulta = sprintf("SELECT idProducto FROM tblproducto WHERE intEstado=1 AND intPrincipal=1 AND (refCategoria1=".$categoriaparaver." OR refCategoria2=".$categoriaparaver." OR refCategoria3=".$categoriaparaver." OR refCategoria4=".$categoriaparaver." OR refCategoria5=".$categoriaparaver.") ORDER BY idProducto ASC LIMIT 0,".$resultadosporclick);
 $DatosConsulta = mysqli_query($con,  $query_DatosConsulta) or die(mysqli_error($con));
 $row_DatosConsulta = mysqli_fetch_assoc($DatosConsulta);
 $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
@@ -46,7 +46,14 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
         <?php include("includes/leftsidebar.php"); ?>
       </div>
       <div class="col-sm-9 padding-right">
-       
+      	<?php ShowBreadcrumbs($categoriaparaver);?>
+       	<div class="breadcrumbs">
+				<ol class="breadcrumb">
+				  <li><a href="#">Home</a></li>
+				  <li class="active">Check out</li>
+				</ol>
+			</div>
+       	
         <div class="features_items"><!--features_items-->
 						<h2 class="title text-center">Features Items</h2>
 						
@@ -100,7 +107,7 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 			$.ajax({
 				type:'POST',
 				url:'ajax_more.php',
-				data:'id='+ID+'&max=<?php echo $resultadosporclick;?>',
+				data:'id='+ID+'&max=<?php echo $resultadosporclick;?>'+'&cat=<?php echo $categoriaparaver;?>',
 				success:function(html){
 					$('#show_more_main'+ID).remove();
 					$('.features_items').append(html);

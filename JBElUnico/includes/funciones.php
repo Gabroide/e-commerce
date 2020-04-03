@@ -928,4 +928,22 @@ function ShowCharacFrontEnd($producto)
 	
 	mysqli_free_result($ConsultaFuncion);
 }
+
+function ShowBreadcrumbs($categoria)
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT * FROM tblcategoria WHERE idCategoria=%s",
+		 GetSQLValueString($categoria, "int"));
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	if ($totalRows_ConsultaFuncion>0)	
+		return $row_ConsultaFuncion["strMarca"];
+	else
+		return "No usado";
+	mysqli_free_result($ConsultaFuncion);
+}
 ?>
