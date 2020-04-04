@@ -10,6 +10,13 @@ if (isset($VARIABLE)) {
 
 $resultadosporclick=6;
 
+$query_DatosConsultaTotales = sprintf("SELECT COUNT(idProducto) AS TotalProductosConsulta FROM tblproducto WHERE intEstado=1 AND intPrincipal=1 ORDER BY idProducto ASC");
+$DatosConsultaTotales = mysqli_query($con,  $query_DatosConsultaTotales) or die(mysqli_error($con));
+$row_DatosConsultaTotales = mysqli_fetch_assoc($DatosConsultaTotales);
+$totalRows_DatosConsultaTorales = mysqli_num_rows($DatosConsultaTotales);
+
+$totalresltados=$row_DatosConsultaTotales["TotalProductosConsulta"];
+
 $query_DatosConsulta = sprintf("SELECT idProducto FROM tblproducto WHERE intEstado=1 AND intPrincipal=1 ORDER BY idProducto ASC LIMIT 0,".$resultadosporclick);
 $DatosConsulta = mysqli_query($con,  $query_DatosConsulta) or die(mysqli_error($con));
 $row_DatosConsulta = mysqli_fetch_assoc($DatosConsulta);
@@ -62,7 +69,10 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
                   
               		 } while ($row_DatosConsulta = mysqli_fetch_assoc($DatosConsulta));
 			
-			$tutorial_id=1;?>
+			$tutorial_id=1;
+			
+			if($totalresltados>$resultadosporclick)
+			{?>
 			
 			<div style="text-align: center">
 				<div class="btn btn-default add-to-cart" id="show_more_main<?php echo $tutorial_id; ?>">
@@ -71,7 +81,9 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
     			</div>
     		</div>
 			
-		 <?php} 
+		 <?php
+			}
+		}
 		else
 		 { //MOSTRAR SI NO HAY RESULTADOS ?>
                 No hay resultados.
