@@ -933,17 +933,78 @@ function ShowBreadcrumbs($categoria)
 {
 	global $con;
 	
-	$query_ConsultaFuncion = sprintf("SELECT * FROM tblcategoria WHERE idCategoria=%s",
+	$nivel1="";
+	$nivel2="";
+	$nivel3="";
+	
+	$query_ConsultaFuncion = sprintf("SELECT * FROM tblcategoria WHERE idCategoria = %s",
 		 GetSQLValueString($categoria, "int"));
 	//echo $query_ConsultaFuncion;
 	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
 	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
 	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
 	
-	if ($totalRows_ConsultaFuncion>0)	
-		return $row_ConsultaFuncion["strMarca"];
+	if ($row_ConsultaFuncion["refPadre"]!="0")
+	{
+		//ES DE SEGUNDO O TERCER NIVEL
+		$query_ConsultaFuncion2 = sprintf("SELECT * FROM tblcategoria WHERE idCategoria = %s",
+		 GetSQLValueString($row_ConsultaFuncion["refPadre"], "int"));
+		//echo $query_ConsultaFuncion;
+		$ConsultaFuncion2 = mysqli_query($con,  $query_ConsultaFuncion2) or die(mysqli_error($con));
+		$row_ConsultaFuncion2 = mysqli_fetch_assoc($ConsultaFuncion2);
+		$totalRows_ConsultaFuncion2 = mysqli_num_rows($ConsultaFuncion2);
+		
+		if ($row_ConsultaFuncion2["refPadre"]!="0")
+		{
+			//CONSIDERAMOS NIVEL 3
+			$nivel2=$row_ConsultaFuncion2["strNombre"];
+			$nivel3=$row_ConsultaFuncion["strNombre"];
+			
+			$query_ConsultaFuncion3 = sprintf("SELECT * FROM tblcategoria WHERE idCategoria = %s",
+		 GetSQLValueString($row_ConsultaFuncion2["refPadre"], "int"));
+		//echo $query_ConsultaFuncion;
+		$ConsultaFuncion3 = mysqli_query($con,  $query_ConsultaFuncion3) or die(mysqli_error($con));
+		$row_ConsultaFuncion3 = mysqli_fetch_assoc($ConsultaFuncion3);
+		$totalRows_ConsultaFuncion3 = mysqli_num_rows($ConsultaFuncion3);
+			
+			$nivel1=$row_ConsultaFuncion3["strNombre"];
+			
+			
+		}
+		else
+		{
+			//CONSIDERAMOS NIVEL 2
+			$nivel1=$row_ConsultaFuncion2["strNombre"];
+			$nivel2=$row_ConsultaFuncion["strNombre"];
+		}
+		
+		
+		
+	}
 	else
-		return "No usado";
+	{
+		//ES DE PRIMER NIVEL
+		$nivel1=$row_ConsultaFuncion["strNombre"];
+	}
+	
+	?>
+	 <div class="breadcrumbs">
+				<ol class="breadcrumb">
+				  <li><a href="index.php">Inicio</a></li>
+				  <?php if ($nivel1!="") 
+					echo '<li >'.$nivel1.'</li>'
+					?>
+					 <?php if ($nivel2!="") 
+					echo '<li >'.$nivel2.'</li>'
+					?>
+					 <?php if ($nivel3!="") 
+					echo '<li >'.$nivel3.'</li>'
+					?>
+				  
+				</ol>
+			</div>
+	<?php
+	
 	mysqli_free_result($ConsultaFuncion);
 }
 ?>

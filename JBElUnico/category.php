@@ -54,12 +54,6 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
       </div>
       <div class="col-sm-9 padding-right">
       	<?php ShowBreadcrumbs($categoriaparaver);?>
-       	<div class="breadcrumbs">
-				<ol class="breadcrumb">
-				  <li><a href="#">Home</a></li>
-				  <li class="active">Check out</li>
-				</ol>
-			</div>
        	
         <div class="features_items"><!--features_items-->
 						<h2 class="title text-center">Features Items</h2>
