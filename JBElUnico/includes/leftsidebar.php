@@ -70,7 +70,7 @@
 					<?php 
 						do{
 					?>
-						<li><a href="#"> <span class="pull-right">(<?php echo BrandsItems($row_DatosConsultaMarcas["idMarca"]); ?>)</span><?php echo $row_DatosConsultaMarcas["strMarca"];?></a></li>
+					<li><a href="category.php?brand=<?php echo $row_DatosConsultaMarcas["idMarca"]?>"> <span class="pull-right">(<?php echo BrandsItems($row_DatosConsultaMarcas["idMarca"]); ?>)</span><?php echo $row_DatosConsultaMarcas["strMarca"];?></a></li>
 					<?php
 						} while ($row_DatosConsultaMarcas = mysqli_fetch_assoc($DatosConsultaMarcas)); 
 					?>	

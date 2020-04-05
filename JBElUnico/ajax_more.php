@@ -8,11 +8,22 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
 		$extraconsulta="AND (refCategoria1=".$_POST['cat']." OR refCategoria2=".$_POST['cat']." OR refCategoria3=".$_POST['cat']." OR refCategoria4=".$_POST['cat']." OR refCategoria5=".$_POST['cat']." )";
 	}
 	
+	$extraprincipal="";
+	
+	if(isset($_POST["principal"]) && !empty($_POST["principal"])){
+		$extraprincipal="AND intPrincipal=1";
+	}
+	
+	$extramarcas="";
+	
+	if(isset($_POST["brand"]) && !empty($_POST["brand"])){
+		$extramarcas="AND intMarca=".$_POST["brand"];
+	}
 	
 //Mostrados hasta ahora 
 	$Totalmostrados = $_POST["id"]*$_POST["max"];
 //Contar resultados menos los mostrados hasta ahora
-$query_DatosConsulta = sprintf("SELECT COUNT(idProducto) AS Totalconsulta FROM tblproducto WHERE intEstado=1 AND intPrincipal=1".$extraconsulta);
+$query_DatosConsulta = sprintf("SELECT COUNT(idProducto) AS Totalconsulta FROM tblproducto WHERE intEstado=1 ".$extramarcas." ".$extraprincipal." ".$extraconsulta);
 $DatosConsulta = mysqli_query($con,  $query_DatosConsulta) or die(mysqli_error($con));
 $row_DatosConsulta = mysqli_fetch_assoc($DatosConsulta);
 $allRows = $row_DatosConsulta["Totalconsulta"]-$Totalmostrados;	
@@ -20,7 +31,7 @@ $allRows = $row_DatosConsulta["Totalconsulta"]-$Totalmostrados;
 
 //Hacer consulta para bloque siguiente
 	
-$query_DatosConsulta = sprintf("SELECT idProducto FROM tblproducto WHERE intEstado=1 AND intPrincipal=1 ".$extraconsulta." ORDER BY idProducto ASC LIMIT %s OFFSET %s", $_POST["max"], $Totalmostrados);
+$query_DatosConsulta = sprintf("SELECT idProducto FROM tblproducto WHERE intEstado=1 ".$extramarcas." ".$extraprincipal." ".$extraconsulta." ORDER BY idProducto ASC LIMIT %s OFFSET %s", $_POST["max"], $Totalmostrados);
 	//echo $query_DatosConsulta;
 $DatosConsulta = mysqli_query($con,  $query_DatosConsulta) or die(mysqli_error($con));
 $row_DatosConsulta = mysqli_fetch_assoc($DatosConsulta);

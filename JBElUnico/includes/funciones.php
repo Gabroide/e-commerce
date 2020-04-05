@@ -988,21 +988,21 @@ function ShowBreadcrumbs($categoria)
 	}
 	
 	?>
-	 <div class="breadcrumbs">
-				<ol class="breadcrumb">
-				  <li><a href="index.php">Inicio</a></li>
-				  <?php if ($nivel1!="") 
-					echo '<li >'.$nivel1.'</li>'
-					?>
-					 <?php if ($nivel2!="") 
-					echo '<li >'.$nivel2.'</li>'
-					?>
-					 <?php if ($nivel3!="") 
-					echo '<li >'.$nivel3.'</li>'
-					?>
-				  
-				</ol>
-			</div>
+	 	<div class="breadcrumbs">
+			<ol class="breadcrumb">
+			  <li><a href="index.php">Inicio</a></li>
+			  <?php if ($nivel1!="") 
+				echo '<li >'.$nivel1.'</li>'
+				?>
+				 <?php if ($nivel2!="") 
+				echo '<li >'.$nivel2.'</li>'
+				?>
+				 <?php if ($nivel3!="") 
+				echo '<li >'.$nivel3.'</li>'
+				?>
+
+			</ol>
+		</div>
 	<?php
 	
 	mysqli_free_result($ConsultaFuncion);

@@ -8,23 +8,46 @@ if (isset($VARIABLE)) {
   $variable_Consulta = $VARIABLE;
 }
 
-$categoriaparaver=$_GET["id"];
-
 $resultadosporclick=6;
 
-$query_DatosConsultaTotales = sprintf("SELECT COUNT(idProducto) AS TotalProductosConsulta FROM tblproducto WHERE intEstado=1 AND intPrincipal=1 AND (refCategoria1=".$categoriaparaver." OR refCategoria2=".$categoriaparaver." OR refCategoria3=".$categoriaparaver." OR refCategoria4=".$categoriaparaver." OR refCategoria5=".$categoriaparaver.") ORDER BY idProducto ASC");
-$DatosConsultaTotales = mysqli_query($con,  $query_DatosConsultaTotales) or die(mysqli_error($con));
-$row_DatosConsultaTotales = mysqli_fetch_assoc($DatosConsultaTotales);
-$totalRows_DatosConsultaTorales = mysqli_num_rows($DatosConsultaTotales);
+if(isset($_GET["id"]) && !empty($_GET["id"]))
+{
+	$categoriaparaver=$_GET["id"];
 
-$totalresltados=$row_DatosConsultaTotales["TotalProductosConsulta"];
+	$query_DatosConsultaTotales = sprintf("SELECT COUNT(idProducto) AS TotalProductosConsulta FROM tblproducto WHERE intEstado=1 AND (refCategoria1=".$categoriaparaver." OR refCategoria2=".$categoriaparaver." OR refCategoria3=".$categoriaparaver." OR refCategoria4=".$categoriaparaver." OR refCategoria5=".$categoriaparaver.") ORDER BY idProducto ASC");
+	$DatosConsultaTotales = mysqli_query($con,  $query_DatosConsultaTotales) or die(mysqli_error($con));
+	$row_DatosConsultaTotales = mysqli_fetch_assoc($DatosConsultaTotales);
+	$totalRows_DatosConsultaTorales = mysqli_num_rows($DatosConsultaTotales);
 
-$query_DatosConsulta = sprintf("SELECT idProducto FROM tblproducto WHERE intEstado=1 AND intPrincipal=1 AND (refCategoria1=".$categoriaparaver." OR refCategoria2=".$categoriaparaver." OR refCategoria3=".$categoriaparaver." OR refCategoria4=".$categoriaparaver." OR refCategoria5=".$categoriaparaver.") ORDER BY idProducto ASC LIMIT 0,".$resultadosporclick);
-$DatosConsulta = mysqli_query($con,  $query_DatosConsulta) or die(mysqli_error($con));
-$row_DatosConsulta = mysqli_fetch_assoc($DatosConsulta);
-$totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
+	$totalresltados=$row_DatosConsultaTotales["TotalProductosConsulta"];
+
+	$query_DatosConsulta = sprintf("SELECT idProducto FROM tblproducto WHERE intEstado=1 AND (refCategoria1=".$categoriaparaver." OR refCategoria2=".$categoriaparaver." OR refCategoria3=".$categoriaparaver." OR refCategoria4=".$categoriaparaver." OR refCategoria5=".$categoriaparaver.") ORDER BY idProducto ASC LIMIT 0,".$resultadosporclick);
+	$DatosConsulta = mysqli_query($con,  $query_DatosConsulta) or die(mysqli_error($con));
+	$row_DatosConsulta = mysqli_fetch_assoc($DatosConsulta);
+	$totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
+}
 
 //FINAL DE LA PARTE SUPERIOR
+
+//PROCESAMIENTO DE MARCA
+if(isset($_GET["brand"]) && !empty($_GET["brand"]))
+{
+	//$categoriaparaver=$_GET["id"];
+
+	$query_DatosConsultaTotales = sprintf("SELECT COUNT(idProducto) AS TotalProductosConsulta FROM tblproducto WHERE intEstado=1 AND refMarca=%s ORDER BY idProducto ASC",
+										 GetSQLvalueString($_GET["brand"],"int"));
+	
+	$DatosConsultaTotales = mysqli_query($con,  $query_DatosConsultaTotales) or die(mysqli_error($con));
+	$row_DatosConsultaTotales = mysqli_fetch_assoc($DatosConsultaTotales);
+	$totalRows_DatosConsultaTorales = mysqli_num_rows($DatosConsultaTotales);
+
+	$totalresltados=$row_DatosConsultaTotales["TotalProductosConsulta"];
+
+	$query_DatosConsulta = sprintf("SELECT idProducto FROM tblproducto WHERE intEstado=1 AND refMarca=%s ORDER BY idProducto ASC LIMIT 0,".$resultadosporclick, GetSQLvalueString($_GET["brand"],"int"));
+	$DatosConsulta = mysqli_query($con,  $query_DatosConsulta) or die(mysqli_error($con));
+	$row_DatosConsulta = mysqli_fetch_assoc($DatosConsulta);
+	$totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
+}
 ?>
 <!DOCTYPE html>
 <html lang="es"><!-- InstanceBegin template="/Templates/principal.dwt.php" codeOutsideHTMLIsLocked="false" -->
@@ -53,8 +76,22 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
         <?php include("includes/leftsidebar.php"); ?>
       </div>
       <div class="col-sm-9 padding-right">
-      	<?php ShowBreadcrumbs($categoriaparaver);?>
-       	
+      	
+      	<?php
+		  if(isset($_GET["id"]) && !empty($_GET["id"])){
+		  	ShowBreadcrumbs($categoriaparaver);
+		  }?>
+      	<?php
+		  if(isset($_GET["brand"]) && !empty($_GET["brand"])){
+		?>
+  		<div class="breadcrumbs">
+			<ol class="breadcrumb">
+			  <li><a href="index.php">Inicio</a></li>
+			  <?php echo '<li>'.ShowBrand($_GET["brand"]).'</li>';?>
+			</ol>
+		</div>
+  		<?php }?>
+	  	
         <div class="features_items"><!--features_items-->
 						<h2 class="title text-center">Features Items</h2>
 						
@@ -113,7 +150,15 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 			$.ajax({
 				type:'POST',
 				url:'ajax_more.php',
-				data:'id='+ID+'&max=<?php echo $resultadosporclick;?>'+'&cat=<?php echo $categoriaparaver;?>',
+
+				<?php if(isset($_GET["id"]) && !empty($_GET["id"])){ ?>
+					data:'id='+ID+'&max=<?php echo $resultadosporclick;?>'+'&cat=<?php echo $categoriaparaver;?>',
+				<?php }?>
+				
+				<?php if(isset($_GET["brand"]) && !empty($_GET["brand"])){ ?>
+					data:'id='+ID+'&max=<?php echo $resultadosporclick;?>'+'&brand=<?php echo $_GET["brand"];?>',
+				<?php }?>
+				
 				success:function(html){
 					$('#show_more_main'+ID).remove();
 					$('.features_items').append(html);

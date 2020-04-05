@@ -110,7 +110,7 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 			$.ajax({
 				type:'POST',
 				url:'ajax_more.php',
-				data:'id='+ID+'&max=<?php echo $resultadosporclick;?>',
+				data:'id='+ID+'&max=<?php echo $resultadosporclick;?>'+'&principal=1',
 				success:function(html){
 					$('#show_more_main'+ID).remove();
 					$('.features_items').append(html);
