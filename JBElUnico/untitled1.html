@@ -5,8 +5,8 @@
 					<div class="col-sm-6">
 						<div class="contactinfo">
 							<ul class="nav nav-pills">
-								<li><a href="#"><i class="fa fa-phone"></i> <?php echo _telefono; ?></a></li>
-								<li><a href="mailto"><i class="fa fa-envelope"></i> <?php echo _email; ?></li>
+								<li><a href="#"><i class="fa fa-phone"></i> <?php echo _telefono;?></a></li>
+								<li><a href="mailto:<?php echo _email;?>"><i class="fa fa-envelope"></i> <?php echo _email;?></a></li>
 							</ul>
 						</div>
 					</div>
@@ -30,7 +30,7 @@
 				<div class="row">
 					<div class="col-sm-4">
 						<div class="logo pull-left">
-							<a href="index.php"><img src="images/<?php echo _logo; ?>" alt="Logo de la empresa" /></a>
+							<a href="index.php"><img src="images/<?php echo _logo;?>" alt="" /></a>
 						</div>
 						<div class="btn-group pull-right">
 							<div class="btn-group">
@@ -59,14 +59,15 @@
 					<div class="col-sm-8">
 						<div class="shop-menu pull-right">
 							<ul class="nav navbar-nav">
-								<li><a href="user-wishlist.php" class="destinodeseos" title="Ir a mis deseos"><i class="fa fa-heart"></i> Lista de Deseos</a></li>
-								<li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Carrito</a></li>
-								<?php if(!isset($_SESSION['tienda2020Front_UserId'])){?>
-									<li><a href="login.php"><i class="fa fa-lock"></i> Acceso</a></li>
+								
+								<li><a href="usuario-lista-deseos.php" class="destinodeseos"><i class="fa fa-heart"></i> Deseos</a></li>
+								<li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cesta</a></li>
+								<?php if (!isset($_SESSION['tienda2017Front_UserId'])){?>
+								<li><a href="login.php"><i class="fa fa-lock"></i> Acceso</a></li>
 								<?php }
-								else{
-									echo '<li><a href="#" title="#"><i class="fa fa-user"></i> '.GetUserName($_SESSION['tienda2020Front_UserId']).'</a></li>';
-									echo '<li><a href="logout.php" title="#"><i class="fa fa-sign-out fa-fw"></i> Salir</a></li>';
+								else {
+									echo '<li><a href="#"><i class="fa fa-user"></i> '. ObtenerNombreUsuario($_SESSION['tienda2017Front_UserId']).'</a></li>';
+									echo '<li><a href="logout.php"><i class="fa fa-times-circle  "></i> Salir</a></li>';
 								}?>
 							</ul>
 						</div>

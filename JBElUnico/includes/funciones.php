@@ -584,13 +584,13 @@ function ShowProduct($id)
 			<div class="productinfo text-center">
 				<?php if ($row_ConsultaFuncion["strImagen1"]!=""){?>
 					<a href="<?php echo $linkProduct; ?>">
-						<img src="images/products/<?php echo $row_ConsultaFuncion["strImagen1"];?>" alt="<?php echo $row_ConsultaFuncion["strNombre"];?>" title="<?php echo $row_ConsultaFuncion["strNombre"];?>">
+						<img src="images/products/<?php echo $row_ConsultaFuncion["strImagen1"];?>" alt="<?php echo $row_ConsultaFuncion["strNombre"];?>" title="<?php echo $row_ConsultaFuncion["strNombre"];?>" id="imagenproducto<?php echo $row_ConsultaFuncion["idProducto"];?>">
 					</a>
 					<?php }
 					else
 					{?>
 					<a href="<?php echo $linkProduct;?>">
-						<img src="images/products/nodisponible.jpg" alt="Producto sin Imagen">
+						<img src="images/products/nodisponible.jpg" alt="Producto sin Imagen" id="imagenproducto<?php echo $row_ConsultaFuncion["idProducto"];?>">
 					</a>
 				<?php }?>
 				<h2><?php echo CalculateProductCost($row_ConsultaFuncion["idProducto"]); ?></h2>
@@ -600,10 +600,30 @@ function ShowProduct($id)
 			</div>									
 		</div>
 		<div class="choose">
-			<ul class="nav nav-pills nav-justified">
-				<li><a href="#"><i class="fa fa-plus-square"></i>Añadir a mis deseos</a></li>
-				<li><a href="#"><i class="fa fa-plus-square"></i>Añadir al comparador</a></li>
-			</ul>
+			<ul class="nav nav-pills nav-justified" id="deseolista<?php echo $row_ConsultaFuncion["idProducto"];?>">
+		<?php if (isset($_SESSION['tienda2020Front_UserId'])){
+			if (!IsAWish($row_ConsultaFuncion["idProducto"])){?>
+			<li id="deseoli<?php echo $row_ConsultaFuncion["idProducto"];?>"><a href="javascript:void(0);" class="Adeseos" id="deseo<?php echo $row_ConsultaFuncion["idProducto"];?>"><i class="fa fa-plus-square"></i>Añadir a mis deseos</a></li>
+			<?php
+			}
+			else
+			{
+				?>
+				<li><a href="user-wishlist.php" style="color:#FF0004"><i class="fa fa-heart"></i>En mis deseos</a></li>
+				
+				<?php
+			
+				}
+			 }
+			else
+			
+			{?>
+				<li id="deseoli<?php echo $row_ConsultaFuncion["idProducto"];?>"><a title="Debes registrarte para poder guardar tus deseos" href="javascript:void(0);" id="deseo<?php echo $row_ConsultaFuncion["idProducto"];?>"><i class="fa fa-plus-square"></i>A mis deseos</a></li>
+				
+				<?php
+			}?>
+			<li><a href="#"><i class="fa fa-plus-square"></i>Al comparador</a></li>
+		</ul>
 		</div>
 	</div>
 
@@ -1004,6 +1024,41 @@ function ShowBreadcrumbs($categoria)
 			</ol>
 		</div>
 	<?php
+	
+	mysqli_free_result($ConsultaFuncion);
+}
+
+function GetUserName($usuario)
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT strNombre FROM tblusuario WHERE idUsuario=%s",GetSQLValueString($usuario, "int"));
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	return $row_ConsultaFuncion["strNombre"];
+		
+	mysqli_free_result($ConsultaFuncion);
+}
+
+function IsAWish($producto)
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT idDeseo FROM tbldeseo WHERE refUsuario=%s AND refProducto=%s",
+									 GetSQLValueString($_SESSION['tienda2020Front_UserId'], "int"),
+									GetSQLValueString($producto, "int"));
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	if ($totalRows_ConsultaFuncion>=1) 
+		return true;
+	else
+		return false;
 	
 	mysqli_free_result($ConsultaFuncion);
 }
