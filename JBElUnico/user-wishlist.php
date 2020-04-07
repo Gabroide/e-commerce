@@ -61,8 +61,8 @@ $resultadosporclick=6;
 		if ($totalRows_DatosConsulta > 0) {  
 			 do { 
 				 ?>
-				 <div class="col-sm-4">
-					<?php ShowProduct($row_DatosConsulta["refProducto"]); ?>			
+				 <div class="col-sm-4" id="deseomostrado<?php echo $row_DatosConsulta["refProducto"];?>">
+					<?php ShowProduct($row_DatosConsulta["refProducto"], 1); ?>			
 				</div>
 				 
 				 <?php

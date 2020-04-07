@@ -67,3 +67,22 @@
 		});
 	});
 </script>
+
+
+<script type="text/javascript">
+	function DeleteWish(producto){
+		$.ajax({
+			type: "POST",
+			url:"ajax_quitar_deseo.php",
+			data: 'id='+producto,
+			success: function(resp)
+			{  
+				if (resp==1)
+				{
+					 $("#deseomostrado"+producto).hide("slow");
+				}
+			}
+			});
+
+	}
+</script>

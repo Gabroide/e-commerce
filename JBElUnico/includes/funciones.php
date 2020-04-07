@@ -566,7 +566,7 @@ function dropdowncategorylevel3ProductsEdit($padre, $seleccionado, $pertenencia 
 	mysqli_free_result($ConsultaFuncion);
 }
 
-function ShowProduct($id)
+function ShowProduct($id, $tipomuestra=0)
 {
 	global $con;
 	
@@ -622,9 +622,17 @@ function ShowProduct($id)
 				
 				<?php
 			}?>
-			<li><a href="#"><i class="fa fa-plus-square"></i>Al comparador</a></li>
-		</ul>
+				<li><a href="#"><i class="fa fa-plus-square"></i>Al comparador</a></li>
+			</ul>
 		</div>
+		
+		<?php if($tipomuestra==1){ ?>
+		<div class="choose">
+			<ul class="nav nav-pills nav-justified" id="deseolista<?php echo $row_ConsultaFuncion["idProducto"];?>">
+				<li><a href="javascript:void(0)" onClick="javascript:DeleteWish(<?php echo $row_ConsultaFuncion["idProducto"] ?>)" title="Eliminar el producto de mis deseos"><i class="fa fa-times-circle"> Eliminar de mis deseos</i></a></li>
+			</ul>
+		</div>
+		<?php }?>
 	</div>
 
 <?php		
