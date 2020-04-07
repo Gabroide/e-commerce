@@ -60,6 +60,7 @@
 						<div class="shop-menu pull-right">
 							<ul class="nav navbar-nav">
 								<li><a href="user-wishlist.php" class="destinodeseos" title="Ir a mis deseos"><i class="fa fa-heart"></i> Lista de Deseos</a></li>
+								<li><a href="user-compare.php" class="destinocomparar" title="Ir al comparador de productos"><i class="fa fa-bars"></i> Comparador</a></li>
 								<li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Carrito</a></li>
 								<?php if(!isset($_SESSION['tienda2020Front_UserId'])){?>
 									<li><a href="login.php"><i class="fa fa-lock"></i> Acceso</a></li>

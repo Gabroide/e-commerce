@@ -86,3 +86,54 @@
 
 	}
 </script>
+
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('.Acomparar').on('click',function(){
+			//Scroll to top if cart icon is hidden on top
+			$('html, body').animate({
+				'scrollTop' : $(".destinocomparar").position().top
+			}); 
+			//Select item image and pass to the function
+
+			var elemento = $(this).attr("id");
+			var elemento = elemento.substring(8, elemento.length);
+			//alert(elemento);
+			var itemImg = document.getElementById("imagenproducto"+elemento);
+			//alert(elemento);
+			//var itemImg = $(this).parent().find('img').eq(0);
+			flyToElement($(itemImg), $('.destinocomparar'));
+			//INSERTAR COMO DESEO
+			$.ajax({
+				type:'POST',
+				url:'ajax_comparar.php',
+				data:'id='+elemento,
+				success:function(html){
+					$('#compararli'+elemento).remove();
+					//alert(html);
+					$('#deseolista'+elemento).append(html);
+				}
+			}); 
+
+		});
+	});
+</script>
+
+<script type="text/javascript">
+	function DeleteCompare(producto){
+		$.ajax({
+			type: "POST",
+			url:"ajax_quitar_comparar.php",
+			data: 'id='+producto,
+			success: function(resp)
+			{  
+				if (resp==1)
+				{
+					 $("#deseomostrado"+producto).hide("slow");
+				}
+			}
+			});
+
+	}
+</script>
