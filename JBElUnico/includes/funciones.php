@@ -1166,4 +1166,36 @@ function GetCharacValue($caracteristica, $producto)
 		return "--<br>";
 	mysqli_free_result($ConsultaFuncion);
 }
+
+function InsertarUsuarioTemporal(){
+	global $con;
+	
+	$insertSQL = sprintf("INSERT INTO tblusuario (strNombre, strEmail, intEstado, strPassword, fchAlta) VALUES (%s, %s, %s, %s, NOW())",
+                       GetSQLValueString("", "text"),
+                       GetSQLValueString("", "text"),
+                       GetSQLValueString(1, "int"),
+                       GetSQLValueString("", "text"));
+  $Result1 = mysqli_query($con, $insertSQL) or die(mysqli_error($con));
+  return mysqli_insert_id($con);
+}
+
+function ImportarCarritoTemporal($valortemporal)
+{
+	
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT idContador FROM tblcarrito WHERE tblcarrito.refUsuario=%s AND tblcarrito.intTransaccionEfectuada = 0", GetSQLValueString($_SESSION['MM2_Temporal'], "int"));
+	$ConsultaFuncion = mysqli_query($conexionzapatos, $query_ConsultaFuncion) or die(mysqli_error());
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	if ($totalRows_ConsultaFuncion>0){
+		do{
+		
+		$updateSQL = sprintf("UPDATE tblcarrito SET refUsuario=%s WHERE intContador=%s AND intTransaccionEfectuada = 0",         $valortemporal, $row_ConsultaFuncion["idContador"]);
+  
+  		$Result1 = mysqli_query($con, $updateSQL) or die(mysqli_error($con));
+		
+		} while ($row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion));
+	}
+}
 ?>

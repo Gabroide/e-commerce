@@ -97,22 +97,25 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 								<h2><?php echo $row_DatosConsulta["strNombre"];?></h2>
 								<!--<p>Web ID: 1089772</p>-->
 								<img src="images/product-details/rating.png" alt="" />
-								<span>
-									<span><?php echo CalculateProductCost($row_DatosConsulta["idProducto"]);?></span>
-									<label>Cantidad:</label>
-									<input type="text" value="1" />
-									<button type="button" class="btn btn-fefault cart">
-										<i class="fa fa-shopping-cart"></i>
-										Añadir
-									</button>
-								</span>
-								<br>
-								<?php ShowOptions($row_DatosConsulta["idProducto"]);?>
-								<?php echo $row_DatosConsulta["strDescripcion"]; ?>
-								<!--<p><b>Availability:</b> In Stock</p>
-								<p><b>Condition:</b> New</p>
-								<p><b>Brand:</b> E-SHOPPER</p>-->
-								<a href=""><img src="images/product-details/share.png" class="share img-responsive"  alt="" /></a>
+								<form name="formcompra" id="formcompra" method="post" action="cart-add.php">
+									<span>
+										<span><?php echo CalculateProductCost($row_DatosConsulta["idProducto"]);?></span>
+										<label>Cantidad:</label>
+										<input id="intCantidad" name="intCantidad" type="number" value="1" />
+										<input id="refProducto" name="refProducto" type="hidden" value="<?php echo $row_DatosConsulta["idProducto"];?>"/>
+										<button type="button" class="btn btn-fefault cart" onClick="document.formcompra.submit()">
+											<i class="fa fa-shopping-cart"></i>
+											Añadir
+										</button>
+									</span>
+									<br>
+									<?php ShowOptions($row_DatosConsulta["idProducto"]);?>
+									<?php echo $row_DatosConsulta["strDescripcion"]; ?>
+									<!--<p><b>Availability:</b> In Stock</p>
+									<p><b>Condition:</b> New</p>
+									<p><b>Brand:</b> E-SHOPPER</p>-->
+									<a href=""><img src="images/product-details/share.png" class="share img-responsive"  alt="" /></a>
+								</form>
 							</div><!--/product-information-->
 						</div>
 					</div><!--/product-details-->

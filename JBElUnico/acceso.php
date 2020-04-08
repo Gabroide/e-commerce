@@ -44,9 +44,10 @@ if (isset($_POST['strEmail'])) {
     $_SESSION['tienda2020Front_Nivel'] = mysqli_result($LoginRS,0,'intNivel');
 	
 	if (isset($_SESSION['MM2_Temporal'])){ 	
-		//ImportarCarritoTemporal($_SESSION['MM_IdUsuario']);
+		
+		ImportarCarritoTemporal($_SESSION['MM_IdUsuario']);
 	}
-	$_SESSION['tienda2020Front_Temporal']="ELEVADO";
+	$_SESSION['MM2_Temporal']="ELEVADO";
     if (isset($_SESSION['PrevUrl']) && false) {
       $MM_redirectLoginSuccess = $_SESSION['PrevUrl'];	
     }
