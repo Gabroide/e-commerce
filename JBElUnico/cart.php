@@ -1,4 +1,20 @@
-<?php require_once('Connections/conexion.php'); ?>
+<?php require_once('Connections/conexion.php'); 
+
+	if(isset($_SESSION['tienda2020Front_UserId']) || (isset($_SESSION['MM2_Temporal'])))
+	{
+		$query_DatosConsulta = sprintf("SELECT * FROM tblcarrito WHERE refUsuario=%s AND intTransaccionEfectuada=0",
+									   $_SESSION['tienda2020Front_UserId']);
+
+		$DatosConsulta = mysqli_query($con,  $query_DatosConsulta) or die(mysqli_error($con));
+		$row_DatosConsulta = mysqli_fetch_assoc($DatosConsulta);
+		$totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
+	}
+	else
+	{
+		
+	}
+
+?>
 
 <!DOCTYPE html>
 <html lang="es"><!-- InstanceBegin template="/Templates/principal.dwt.php" codeOutsideHTMLIsLocked="false" -->
@@ -24,102 +40,82 @@
 		<div class="container">
 			<div class="breadcrumbs">
 				<ol class="breadcrumb">
-				  <li><a href="#">Home</a></li>
-				  <li class="active">Shopping Cart</li>
+				  <li><a href="#">Inicio</a></li>
+				  <li class="active">Carrito de Compra</li>
 				</ol>
 			</div>
-			<div class="table-responsive cart_info">
-				<table class="table table-condensed">
-					<thead>
-						<tr class="cart_menu">
-							<td class="image">Item</td>
-							<td class="description"></td>
-							<td class="price">Price</td>
-							<td class="quantity">Quantity</td>
-							<td class="total">Total</td>
-							<td></td>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td class="cart_product">
-								<a href=""><img src="images/cart/one.png" alt=""></a>
-							</td>
-							<td class="cart_description">
-								<h4><a href="">Colorblock Scuba</a></h4>
-								<p>Web ID: 1089772</p>
-							</td>
-							<td class="cart_price">
-								<p>$59</p>
-							</td>
-							<td class="cart_quantity">
-								<div class="cart_quantity_button">
-									<a class="cart_quantity_up" href=""> + </a>
-									<input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-									<a class="cart_quantity_down" href=""> - </a>
-								</div>
-							</td>
-							<td class="cart_total">
-								<p class="cart_total_price">$59</p>
-							</td>
-							<td class="cart_delete">
-								<a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
-							</td>
-						</tr>
+			<?php if($totalRows_DatosConsulta>0){ ?>
+				<div class="table-responsive cart_info">
+					<table class="table table-condensed">
+						<thead>
+							<tr class="cart_menu">
+								<td class="image">Producto</td>
+								<td class="description"></td>
+								<td class="price">Precio</td>
+								<td class="quantity">Cantidad</td>
+								<td class="total">Total</td>
+								<td></td>
+							</tr>
+						</thead>
+						<tbody>
+						
+						<?php 
+						$totalcarrito=0;
+						
+						do{ 
+							$query_DatosConsultaProducto = sprintf("SELECT * FROM tblproducto WHERE idProducto=%s",
+									   $row_DatosConsulta['refProducto']);
 
-						<tr>
-							<td class="cart_product">
-								<a href=""><img src="images/cart/two.png" alt=""></a>
-							</td>
-							<td class="cart_description">
-								<h4><a href="">Colorblock Scuba</a></h4>
-								<p>Web ID: 1089772</p>
-							</td>
-							<td class="cart_price">
-								<p>$59</p>
-							</td>
-							<td class="cart_quantity">
-								<div class="cart_quantity_button">
-									<a class="cart_quantity_up" href=""> + </a>
-									<input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-									<a class="cart_quantity_down" href=""> - </a>
-								</div>
-							</td>
-							<td class="cart_total">
-								<p class="cart_total_price">$59</p>
-							</td>
-							<td class="cart_delete">
-								<a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
-							</td>
-						</tr>
-						<tr>
-							<td class="cart_product">
-								<a href=""><img src="images/cart/three.png" alt=""></a>
-							</td>
-							<td class="cart_description">
-								<h4><a href="">Colorblock Scuba</a></h4>
-								<p>Web ID: 1089772</p>
-							</td>
-							<td class="cart_price">
-								<p>$59</p>
-							</td>
-							<td class="cart_quantity">
-								<div class="cart_quantity_button">
-									<a class="cart_quantity_up" href=""> + </a>
-									<input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-									<a class="cart_quantity_down" href=""> - </a>
-								</div>
-							</td>
-							<td class="cart_total">
-								<p class="cart_total_price">$59</p>
-							</td>
-							<td class="cart_delete">
-								<a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
+							$DatosConsultaProducto = mysqli_query($con,  $query_DatosConsultaProducto) or die(mysqli_error($con));
+							$row_DatosConsultaProducto = mysqli_fetch_assoc($DatosConsultaProducto);
+							$totalRows_DatosConsultaProducto = mysqli_num_rows($DatosConsultaProducto);
+	
+							$linkProduct="product-detail.php?id=".$row_DatosConsultaProducto["idProducto"];
+							?>
+							<tr>
+								<td class="cart_product">
+									<?php if ($row_DatosConsultaProducto["strImagen1"]!=""){?>
+										<a href="<?php echo $linkProduct; ?>">
+											<img src="images/products/<?php echo $row_DatosConsultaProducto["strImagen1"];?>" alt="<?php echo $row_DatosConsultaProducto["strNombre"];?>" title="<?php echo $row_DatosConsultaProducto["strNombre"];?>" id="imagenproducto<?php echo $row_DatosConsultaProducto["idProducto"];?>" width="30%">
+										</a>
+										<?php }
+										else
+										{?>
+										<a href="<?php echo $linkProduct;?>">
+											<img src="images/products/nodisponible.jpg" alt="Producto sin Imagen" id="imagenproducto<?php echo $row_DatosConsultaProducto["idProducto"];?>" width="30%">
+										</a>
+									<?php }?>
+								</td>
+								<td class="cart_description">
+									<h4><a href="<?php echo $linkProduct; ?>"><?php echo $row_DatosConsultaProducto["strNombre"];?></a></h4>
+									<p>Web ID: 1089772</p>
+								</td>
+								<td class="cart_price">
+									<p><?php $precioproducto=CalculateProductCost($row_DatosConsultaProducto["idProducto"]); echo $precioproducto;?></p>
+								</td>
+								<td class="cart_quantity">
+									<div class="cart_quantity_button">
+										<a class="cart_quantity_up" href="sum-cart.php?id=<?php echo $row_DatosConsulta["idContador"];?>" title="Añadir"> + </a>
+										<input class="cart_quantity_input" type="text" name="quantity" value="<?php echo $row_DatosConsulta["intCantidad"];?>" autocomplete="off" size="2">
+										<a class="cart_quantity_down" href="rest-cart.php?id=<?php echo $row_DatosConsulta["idContador"];?>" title="Restar"> - </a>
+									</div>
+								</td>
+								<td class="cart_total">
+									<p class="cart_total_price"><?php $precioproductounidades=$precioproducto * $row_DatosConsulta["intCantidad"]; echo number_format($precioproductounidades, 2, ",", ".")."€"; $totalcarrito=$totalcarrito+$precioproductounidades;?></p>
+								</td>
+								<td class="cart_delete">
+									<a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
+								</td>
+							</tr>
+						<?php
+								} while($row_DatosConsulta=mysqli_fetch_assoc($DatosConsulta)); ?>						
+						</tbody>
+					</table>
+				</div>
+			<?php }
+			else
+				echo "No tiene ningún producto en el carrito.";
+			?>
 		</div>
 	</section> <!--/#cart_items-->
 	
@@ -187,9 +183,9 @@
 				<div class="col-sm-6">
 					<div class="total_area">
 						<ul>
-							<li>Cart Sub Total <span>$59</span></li>
-							<li>Eco Tax <span>$2</span></li>
-							<li>Shipping Cost <span>Free</span></li>
+							<li>SubTotal <span><?php echo number_format($totalcarrito, 2, ",", ".")."€"; ?></span></li>
+							<li>IVA <span>$2</span></li>
+							<li>Envío <span>Free</span></li>
 							<li>Total <span>$61</span></li>
 						</ul>
 							<a class="btn btn-default update" href="">Update</a>
