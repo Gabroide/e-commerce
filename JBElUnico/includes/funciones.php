@@ -1167,7 +1167,8 @@ function GetCharacValue($caracteristica, $producto)
 	mysqli_free_result($ConsultaFuncion);
 }
 
-function InsertarUsuarioTemporal(){
+function InsertarUsuarioTemporal()
+{
 	global $con;
 	
 	$insertSQL = sprintf("INSERT INTO tblusuario (strNombre, strEmail, intEstado, strPassword, fchAlta) VALUES (%s, %s, %s, %s, NOW())",
@@ -1198,4 +1199,127 @@ function ImportarCarritoTemporal($valortemporal)
 		} while ($row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion));
 	}
 }
+
+function AddOptionsToCart($idcarrito, $producto)
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT * FROM tblopcion WHERE intEstado=1 AND refPadre=0 ");
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	if ($totalRows_ConsultaFuncion>0)	{
+		do { 
+			//BUSCO SOBRE tblproductoopcion para ver si tiene esa opcion activada
+			
+			$query_ConsultaOpcion = sprintf("SELECT * FROM tblproductoopcion WHERE refProducto=%s AND refOpcion=%s", 
+					$producto,
+					$row_ConsultaFuncion["idOpcion"]);
+			//echo $query_ConsultaOpcion;
+			$ConsultaOpcion = mysqli_query($con,  $query_ConsultaOpcion) or die(mysqli_error($con));
+			$row_ConsultaOpcion = mysqli_fetch_assoc($ConsultaOpcion);
+			$totalRows_ConsultaOpcion = mysqli_num_rows($ConsultaOpcion);
+			
+			//SI EXISTE COMO OPCION, HAY QUE AGREGARLA A LA TABLA RELACIONADA
+			if ($totalRows_ConsultaOpcion==1)
+				AddOptionToProduct($idcarrito, $row_ConsultaFuncion["idOpcion"]);
+			
+			 } while ($row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion)); 
+		
+	}
+	mysqli_free_result($ConsultaFuncion);
+}
+
+function AddOptionToProduct($idcarrito, $opcion)
+{
+	global $con;
+	
+	$insertSQL = sprintf("INSERT INTO tblcarritodetalle (refCarrito, refOpcion, refOpcionSeleccionada) VALUES (%s, %s, %s)",
+                       GetSQLValueString($idcarrito, "int"),
+                       GetSQLValueString($opcion, "int"),
+                       GetSQLValueString($_POST["intOpcion-".$opcion], "int"));
+  $Result1 = mysqli_query($con, $insertSQL) or die(mysqli_error($con));
+}
+
+function comprobarexistencia($idproducto, $idusuario)
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT * FROM tblcarrito WHERE refUsuario = %s AND refProducto=%s AND intTransaccionEfectuada = 0", $idusuario,$idproducto );
+	$ConsultaFuncion = mysqli_query($con, $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	if ($totalRows_ConsultaFuncion >0) 
+	{
+		do{
+		$valor=TestCartOptions($idproducto, $row_ConsultaFuncion["idContador"]);
+		//EL PRODUCTO YA EXISTE EN EL CARRITO PENDIENTE, HAY QUE COMPROBAR QUE LAS OPCIONES SON LAS MISMAS
+		if ($valor==1){
+			return $row_ConsultaFuncion["idContador"];
+			exit;
+		}
+		 } while ($row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion)); 
+	}
+	else
+	return 0;
+	mysqli_free_result($ConsultaFuncion);
+}
+
+function TestCartOptions($producto, $idcompra)
+{
+	global $con;
+	
+	$coincide=1;
+	
+	$query_ConsultaFuncion = sprintf("SELECT * FROM tblopcion WHERE intEstado=1 AND refPadre=0 ");
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	if ($totalRows_ConsultaFuncion>0)	{
+		do { 
+			//BUSCO SOBRE tblproductoopcion para ver si tiene esa opcion activada
+			
+			$query_ConsultaOpcion = sprintf("SELECT * FROM tblproductoopcion WHERE refProducto=%s AND refOpcion=%s", 
+					$producto,
+					$row_ConsultaFuncion["idOpcion"]);
+			//echo $query_ConsultaOpcion;
+			$ConsultaOpcion = mysqli_query($con,  $query_ConsultaOpcion) or die(mysqli_error($con));
+			$row_ConsultaOpcion = mysqli_fetch_assoc($ConsultaOpcion);
+			$totalRows_ConsultaOpcion = mysqli_num_rows($ConsultaOpcion);
+			
+			//SI EXISTE COMO OPCION, HAY QUE COMPROBAR SI TIENE EL MISMO VALOR QUE LA QUE ESTAMOS INTENTANDO INSERTAR
+			if ($totalRows_ConsultaOpcion==1)
+			{
+				
+				$query_ConsultaOpcion2 = sprintf("SELECT * FROM tblcarritodetalle WHERE refCarrito=%s AND refOpcion=%s", 
+					$idcompra,
+					$row_ConsultaFuncion["idOpcion"]);
+			//echo $query_ConsultaOpcion;
+			$ConsultaOpcion2 = mysqli_query($con,  $query_ConsultaOpcion2) or die(mysqli_error($con));
+			$row_ConsultaOpcion2 = mysqli_fetch_assoc($ConsultaOpcion2);
+			$totalRows_ConsultaOpcion2 = mysqli_num_rows($ConsultaOpcion2);
+				
+			$seleccionada=$row_ConsultaOpcion2["refOpcionSeleccionada"];
+				if ($seleccionada!=$_POST["intOpcion-".$row_ConsultaFuncion["idOpcion"]])
+				 {
+					$coincide=0;
+				 }
+
+			}
+	
+				//AgregarOpcionAProducto($idcarrito, $row_ConsultaFuncion["idOpcion"]);
+			
+			 } while ($row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion)); 
+		
+	}
+	
+	mysqli_free_result($ConsultaFuncion);
+	return $coincide;
+}
+
 ?>

@@ -26,12 +26,18 @@ if ($_SESSION['MM2_Temporal']=="ELEVADO")
     $insertGoTo = "index.php";//"prealta.php";
 }	
 
-//$valorrespuesta = comprobarexistencia($_GET['recordID'],$_GET['FTalla'],$usuariotempoactivo );
-$valorrespuesta=0;
+$valorrespuesta = comprobarexistencia($_POST['refProducto'],$usuariotempoactivo );
+
+//$valorrespuesta=0;
 if ($valorrespuesta!=0){
 	//UPDATE
-  $insertSQL = sprintf("UPDATE tblcarrito SET intCantidad = intCantidad + %s WHERE intContador = %s",$_GET['intCantidad'],
+  $insertSQL = sprintf("UPDATE tblcarrito SET intCantidad = intCantidad + %s WHERE idContador = %s",$_POST['intCantidad'],
 					   $valorrespuesta);
+	
+	$Result1 = mysqli_query($con, $insertSQL) or die(mysqli_error($con));
+  	$ultimoidinsertadodecarrito=mysqli_insert_id($con);
+
+	AddOptionsToCart($ultimoidinsertadodecarrito, $_POST["refProducto"]);
 }
 else
 {
@@ -39,11 +45,14 @@ else
                        GetSQLValueString($usuariotempoactivo, "int"),
                        GetSQLValueString($_POST['refProducto'], "int"),
 					   GetSQLValueString($_POST['intCantidad'], "int"));
+	
+	$Result1 = mysqli_query($con, $insertSQL) or die(mysqli_error($con));
+  	$ultimoidinsertadodecarrito=mysqli_insert_id($con);
+
+	AddOptionsToCart($ultimoidinsertadodecarrito, $_POST["refProducto"]);
 }
   
-  $Result1 = mysqli_query($con, $insertSQL) or die(mysqli_error($con));
-
-
+  
   if (isset($_SERVER['QUERY_STRING'])) {
     $insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
     $insertGoTo .= $_SERVER['QUERY_STRING'];
