@@ -45,7 +45,7 @@ if (isset($_POST['strEmail'])) {
 	
 	if (isset($_SESSION['MM2_Temporal'])){ 	
 		
-		ImportarCarritoTemporal($_SESSION['MM_IdUsuario']);
+		ImportarCarritoTemporal($_SESSION['tienda2020Front_UserId']);
 	}
 	$_SESSION['MM2_Temporal']="ELEVADO";
     if (isset($_SESSION['PrevUrl']) && false) {
