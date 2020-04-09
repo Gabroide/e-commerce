@@ -256,6 +256,9 @@
                             <a href="settings.php"><i class="fa fa-gear fa-fw"></i> Configuración</a>
                         </li>
                         <li>
+                            <a href="taxes-list.php"><i class="fa fa-gear fa-fw"></i> Impuestos</a>
+                        </li>
+                        <li>
                             <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>

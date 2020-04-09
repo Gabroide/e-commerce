@@ -15,7 +15,7 @@ $esprincipal=0;
 	if ((isset($_POST["intPrincipal"])) && ($_POST["intPrincipal"]=="1"))
 		$esprincipal=1;
 	
-  $updateSQL = sprintf("UPDATE tblproducto SET strNombre=%s, refCategoria1=%s,  refCategoria2=%s,  refCategoria3=%s, refCategoria4=%s, refCategoria5=%s,  strImagen1=%s, strImagen2=%s, strImagen3=%s, strImagen4=%s, strImagen5=%s, strDescripcion=%s, dblPrecio=%s, intEstado=%s, refMarca=%s, intPrincipal=%s, intStock=%s WHERE idProducto=%s",
+  $updateSQL = sprintf("UPDATE tblproducto SET strNombre=%s, refCategoria1=%s,  refCategoria2=%s,  refCategoria3=%s, refCategoria4=%s, refCategoria5=%s,  strImagen1=%s, strImagen2=%s, strImagen3=%s, strImagen4=%s, strImagen5=%s, strDescripcion=%s, dblPrecio=%s, intEstado=%s, refMarca=%s, intPrincipal=%s, intStock=%s, refImpuesto=%s, dblPeso=%s WHERE idProducto=%s",
                        GetSQLValueString($_POST["strNombre"], "text"),
                        GetSQLValueString($_POST["refCategoria1"], "int"),
 					   GetSQLValueString($_POST["refCategoria2"], "int"),
@@ -32,11 +32,13 @@ $esprincipal=0;
 					   GetSQLValueString($_POST["intEstado"], "int"),
 					   GetSQLValueString($_POST["refMarca"], "int"),
 					   GetSQLValueString($esprincipal, "int"),
-					  GetSQLValueString($_POST["intStock"], "int"),
+					   GetSQLValueString($_POST["intStock"], "int"),
+					   GetSQLValueString($_POST["refImpuesto"], "int"),
+					   GetSQLValueString(ProcessComaCost($_POST["dblPeso"]), "double"),
 					   GetSQLValueString($_POST["idProducto"], "int"));
 
-//echo $updateSQL;
-$Result1 = mysqli_query($con, $updateSQL) or die(mysqli_error($con));
+	//echo $updateSQL;
+	$Result1 = mysqli_query($con, $updateSQL) or die(mysqli_error($con));
 	
 
 
@@ -59,7 +61,14 @@ $query_DatosMarcas = sprintf("SELECT * FROM tblmarca WHERE intEstado=1 ORDER BY 
 $DatosMarcas = mysqli_query($con,  $query_DatosMarcas) or die(mysqli_error($con));
 $row_DatosMarcas = mysqli_fetch_assoc($DatosMarcas);
 $totalRows_DatosMarcas = mysqli_num_rows($DatosMarcas);
+
+$query_DatosImpuestos = sprintf("SELECT * FROM tblimpuesto ORDER BY strNombre");
+
+$DatosImpuestos = mysqli_query($con,  $query_DatosImpuestos) or die(mysqli_error($con));
+$row_DatosImpuestos = mysqli_fetch_assoc($DatosImpuestos);
+$totalRows_DatosImpuestos = mysqli_num_rows($DatosImpuestos);
 ?>
+
 <!DOCTYPE html>
 <html lang="es"><!-- InstanceBegin template="/Templates/Administracion.dwt.php" codeOutsideHTMLIsLocked="false" -->
 
@@ -149,6 +158,18 @@ $totalRows_DatosMarcas = mysqli_num_rows($DatosMarcas);
 										<div class="form-group">
 											<label for="dblPrecio">Precio del Producto</label>
 											<input class="form-control" placeholder="Esctibir Precio del Producto" name="dblPrecio" id="dblPrecio" value="<?php echo $row_DatosProducto["dblPrecio"];?>">
+										</div>
+										<div class="form-group">
+											<label for="refImpuesto">Impuesto</label>
+											<select class="form-control" name="refImpuesto" id="refImpuesto">
+												<?php do{?>
+												<option value="<?php echo $row_DatosImpuestos["idImpuesto"];?>"<?php if($row_DatosProducto["refImpuesto"]==$row_DatosImpuestos["idImpuesto"]) echo "selected"; ?>><?php echo $row_DatosImpuestos["strNombre"];?></option>
+												<?php } while($row_DatosImpuestos=mysqli_fetch_assoc($DatosImpuestos));?>
+											</select>
+										</div>
+										<div class="form-group">
+											<label for="dblPeso">Peso del Producto</label>
+											<input class="form-control" name="dblPeso" id="dblPeso" value="<?php echo $row_DatosProducto["dblPeso"];?>">
 										</div>
 										<div class="form-group">
 											<label for="intStock">Productos en Stock</label>

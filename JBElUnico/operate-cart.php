@@ -14,7 +14,7 @@ else
 switch($_GET["op"])
 {
 	case 1:
-		$updateSQL = sprintf("UPDATE tblcarrito SET intCantidad=intCantidad+1 WHERE idContador=%s AND refUsuario=%s",
+		$updateSQL = sprintf("UPDATE tblcarrito SET intCantidad=intCantidad+1 WHERE idContador=%s AND refUsuario=%s AND intTransaccionEfectuada=0",
                        			GetSQLValueString($_GET["id"], "int"),
 							   	$usuariotempoactivo);
 
@@ -29,7 +29,7 @@ switch($_GET["op"])
 	case 2:
 		if($_GET["actual"]==1)
 		{
-			$query_Delete = sprintf("DELETE FROM tblcarrito WHERE idContador=%s AND refUsuario=%s",
+			$query_Delete = sprintf("DELETE FROM tblcarrito WHERE idContador=%s AND refUsuario=%s AND intTransaccionEfectuada=0",
 							   GetSQLValueString($_GET["id"], "int"),
 							   $usuariotempoactivo);
 			$Result1 = mysqli_query($con, $query_Delete) or die(mysqli_error($con));
@@ -37,7 +37,7 @@ switch($_GET["op"])
 		}
 		else
 		{
-			$updateSQL = sprintf("UPDATE tblcarrito SET intCantidad=intCantidad-1 WHERE idContador=%s AND refUsuario=%s",
+			$updateSQL = sprintf("UPDATE tblcarrito SET intCantidad=intCantidad-1 WHERE idContador=%s AND refUsuario=%s AND intTransaccionEfectuada=0",
                        			GetSQLValueString($_GET["id"], "int"),
 							   	$usuariotempoactivo);
 
@@ -51,7 +51,7 @@ switch($_GET["op"])
 		
 		break;
 	case 3:
-		$query_Delete = sprintf("DELETE FROM tblcarrito WHERE idContador=%s AND refUsuario=%s",
+		$query_Delete = sprintf("DELETE FROM tblcarrito WHERE idContador=%s AND refUsuario=%s AND intTransaccionEfectuada=0",
 							   GetSQLValueString($_GET["id"], "int"),
 							   $usuariotempoactivo);
 		$Result1 = mysqli_query($con, $query_Delete) or die(mysqli_error($con));
@@ -62,8 +62,7 @@ switch($_GET["op"])
 		
 		break;
 	case 4:
-	$query_Delete = sprintf("DELETE FROM tblcarrito WHERE idContador=%s AND refUsuario=%s",
-						   GetSQLValueString($_GET["id"], "int"),
+	$query_Delete = sprintf("DELETE FROM tblcarrito WHERE  refUsuario=%s",
 						   $usuariotempoactivo);
 	$Result1 = mysqli_query($con, $query_Delete) or die(mysqli_error($con));
 

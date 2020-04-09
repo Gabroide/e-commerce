@@ -803,7 +803,7 @@ function ShowOptions($producto)
 	if ($totalRows_ConsultaFuncion>0) 
 	{
 		do{
-			ShowOPtionsProductSubOption($row_ConsultaFuncion["refOpcion"]);
+			ShowOptionsProductSubOption($row_ConsultaFuncion["refOpcion"]);
 		?>
 			
 			<br>
@@ -815,7 +815,7 @@ function ShowOptions($producto)
 	mysqli_free_result($ConsultaFuncion);
 }
 
-function ShowOPtionsProductSubOption($opcion)
+function ShowOptionsProductSubOption($opcion)
 {
 	global $con;
 	
@@ -1320,6 +1320,68 @@ function TestCartOptions($producto, $idcompra)
 	
 	mysqli_free_result($ConsultaFuncion);
 	return $coincide;
+}
+
+function GetTax($idImpuesto)
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT dblImpuesto FROM tblimpuesto WHERE idImpuesto=%s", 
+								   GetSQLValueString($idImpuesto, "int"));
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	return $row_ConsultaFuncion["dblImpuesto"];
+	
+	mysqli_free_result($ConsultaFuncion);
+}
+
+function CalculateProductTax($producto)
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT dblPrecio, refImpuesto FROM tblproducto WHERE idProducto=%s", 
+								   GetSQLValueString($producto, "int"));
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	$impuesto=GetTax($row_ConsultaFuncion["refImpuesto"]);
+	
+	return number_format($row_ConsultaFuncion["dblPrecio"]*($impuesto/100), 2, ",", ".");
+	
+	mysqli_free_result($ConsultaFuncion);
+}
+
+function ShowProductOptionsCart($lineacarrito)
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT * FROM tblcarritodetalle WHERE refCarrito=%s", 
+								   GetSQLValueString($lineacarrito, "int"));
+	
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	if ($totalRows_ConsultaFuncion>0) 
+	{
+		do{
+			echo GetNameOption($row_ConsultaFuncion["refOpcion"]).": ";
+			echo GetNameOption($row_ConsultaFuncion["refOpcionSeleccionada"]);
+		?>
+			
+			<br>
+
+		<?php
+		} while($row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion));
+	}
+	
+	mysqli_free_result($ConsultaFuncion);
 }
 
 ?>
