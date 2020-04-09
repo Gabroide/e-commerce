@@ -2,8 +2,19 @@
 
 	if(isset($_SESSION['tienda2020Front_UserId']) || (isset($_SESSION['MM2_Temporal'])))
 	{
+		if ($_SESSION['MM2_Temporal']=="ELEVADO")
+		{
+			$usuariotempoactivo=$_SESSION['tienda2020Front_UserId'];
+			$insertGoTo = "index.php";//"cart_list.php";
+		}
+		else
+		{
+			$usuariotempoactivo=$_SESSION['MM2_Temporal'];
+			$insertGoTo = "index.php";//"prealta.php";
+		}	
+		
 		$query_DatosConsulta = sprintf("SELECT * FROM tblcarrito WHERE refUsuario=%s AND intTransaccionEfectuada=0",
-									   $_SESSION['tienda2020Front_UserId']);
+									   $usuariotempoactivo);
 
 		$DatosConsulta = mysqli_query($con,  $query_DatosConsulta) or die(mysqli_error($con));
 		$row_DatosConsulta = mysqli_fetch_assoc($DatosConsulta);
@@ -73,10 +84,10 @@
 							$linkProduct="product-detail.php?id=".$row_DatosConsultaProducto["idProducto"];
 							?>
 							<tr>
-								<td class="cart_product">
+								<td width="40%">
 									<?php if ($row_DatosConsultaProducto["strImagen1"]!=""){?>
 										<a href="<?php echo $linkProduct; ?>">
-											<img src="images/products/<?php echo $row_DatosConsultaProducto["strImagen1"];?>" alt="<?php echo $row_DatosConsultaProducto["strNombre"];?>" title="<?php echo $row_DatosConsultaProducto["strNombre"];?>" id="imagenproducto<?php echo $row_DatosConsultaProducto["idProducto"];?>" width="30%">
+											<img src="images/products/<?php echo $row_DatosConsultaProducto["strImagen1"];?>" alt="<?php echo $row_DatosConsultaProducto["strNombre"];?>" title="<?php echo $row_DatosConsultaProducto["strNombre"];?>" id="imagenproducto<?php echo $row_DatosConsultaProducto["idProducto"];?>" width="70%">
 										</a>
 										<?php }
 										else
@@ -95,16 +106,16 @@
 								</td>
 								<td class="cart_quantity">
 									<div class="cart_quantity_button">
-										<a class="cart_quantity_up" href="sum-cart.php?id=<?php echo $row_DatosConsulta["idContador"];?>" title="Añadir"> + </a>
+										<a class="cart_quantity_up" href="operate-cart.php?id=<?php echo $row_DatosConsulta["idContador"];?>&op=1" title="Añadir"> + </a>
 										<input class="cart_quantity_input" type="text" name="quantity" value="<?php echo $row_DatosConsulta["intCantidad"];?>" autocomplete="off" size="2">
-										<a class="cart_quantity_down" href="rest-cart.php?id=<?php echo $row_DatosConsulta["idContador"];?>" title="Restar"> - </a>
+										<a class="cart_quantity_down" href="operate-cart.php?id=<?php echo $row_DatosConsulta["idContador"];?>&op=2&actual=<?php echo $row_DatosConsulta["intCantidad"];?>" title="Restar"> - </a>
 									</div>
 								</td>
 								<td class="cart_total">
 									<p class="cart_total_price"><?php $precioproductounidades=$precioproducto * $row_DatosConsulta["intCantidad"]; echo number_format($precioproductounidades, 2, ",", ".")."€"; $totalcarrito=$totalcarrito+$precioproductounidades;?></p>
 								</td>
 								<td class="cart_delete">
-									<a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
+									<a class="cart_quantity_delete" href="operate-cart.php?id=<?php echo $row_DatosConsulta["idContador"];?>&op=4" title="Eliminar el producto del carrito">Vaciar el Carrito</a>
 								</td>
 							</tr>
 						<?php
@@ -112,6 +123,7 @@
 						</tbody>
 					</table>
 				</div>
+				<a class="cart_quantity_delete" href="operate-cart.php?id=<?php echo $row_DatosConsulta["idContador"];?>&op=3" title="Eliminar el producto del carrito"><i class="fa fa-times"></i></a>
 			<?php }
 			else
 				echo "No tiene ningún producto en el carrito.";

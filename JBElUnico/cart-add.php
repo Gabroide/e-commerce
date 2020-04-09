@@ -7,7 +7,7 @@ if ((isset($_SESSION['MM2_Temporal'])) && ($_SESSION['MM2_Temporal'] != ""))
 else
 {
 	$_SESSION['MM2_Temporal'] = InsertarUsuarioTemporal();
-	}
+}
 
 $editFormAction = $_SERVER['PHP_SELF'];
 if (isset($_SERVER['QUERY_STRING'])) {
@@ -20,8 +20,8 @@ if ($_SESSION['MM2_Temporal']=="ELEVADO")
 	$usuariotempoactivo=$_SESSION['tienda2020Front_UserId'];
     $insertGoTo = "index.php";//"cart_list.php";
 }
-	else
-	{
+else
+{
 	$usuariotempoactivo=$_SESSION['MM2_Temporal'];
     $insertGoTo = "index.php";//"prealta.php";
 }	
