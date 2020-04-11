@@ -15,7 +15,7 @@ $esprincipal=0;
 	if ((isset($_POST["intPrincipal"])) && ($_POST["intPrincipal"]=="1"))
 		$esprincipal=1;
 	
-  $updateSQL = sprintf("UPDATE tblproducto SET strNombre=%s, refCategoria1=%s,  refCategoria2=%s,  refCategoria3=%s, refCategoria4=%s, refCategoria5=%s,  strImagen1=%s, strImagen2=%s, strImagen3=%s, strImagen4=%s, strImagen5=%s, strDescripcion=%s, dblPrecio=%s, intEstado=%s, refMarca=%s, intPrincipal=%s, intStock=%s, refImpuesto=%s, dblPeso=%s WHERE idProducto=%s",
+  $updateSQL = sprintf("UPDATE tblproducto SET strNombre=%s, refCategoria1=%s,  refCategoria2=%s,  refCategoria3=%s, refCategoria4=%s, refCategoria5=%s,  strImagen1=%s, strImagen2=%s, strImagen3=%s, strImagen4=%s, strImagen5=%s, strDescripcion=%s, dblPrecio=%s, dblPrecioAnterior=%s, intEstado=%s, refMarca=%s, intPrincipal=%s, intStock=%s, refImpuesto=%s, dblPeso=%s WHERE idProducto=%s",
                        GetSQLValueString($_POST["strNombre"], "text"),
                        GetSQLValueString($_POST["refCategoria1"], "int"),
 					   GetSQLValueString($_POST["refCategoria2"], "int"),
@@ -29,6 +29,7 @@ $esprincipal=0;
 					   GetSQLValueString($_POST["strImagen5"], "text"),
                        GetSQLValueString($_POST["strDescripcion"], "text"),
                        GetSQLValueString(ProcessComaCost($_POST["dblPrecio"]), "double"),
+					   GetSQLValueString(ProcessComaCost($_POST["dblPrecioAnterior"]), "double"),
 					   GetSQLValueString($_POST["intEstado"], "int"),
 					   GetSQLValueString($_POST["refMarca"], "int"),
 					   GetSQLValueString($esprincipal, "int"),
@@ -158,6 +159,10 @@ $totalRows_DatosImpuestos = mysqli_num_rows($DatosImpuestos);
 										<div class="form-group">
 											<label for="dblPrecio">Precio del Producto</label>
 											<input class="form-control" placeholder="Esctibir Precio del Producto" name="dblPrecio" id="dblPrecio" value="<?php echo $row_DatosProducto["dblPrecio"];?>">
+										</div>
+										<div class="form-group">
+											<label for="dblPrecioAnterior">Precio Anterior del Producto</label>
+											<input class="form-control" placeholder="Esctibir Precio Anterior del Producto" name="dblPrecioAnterior" id="dblPrecioAnterior" value="<?php echo $row_DatosProducto["dblPrecioAnterior"];?>">
 										</div>
 										<div class="form-group">
 											<label for="refImpuesto">Impuesto</label>

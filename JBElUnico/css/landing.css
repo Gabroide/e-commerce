@@ -3,3 +3,10 @@
 	padding-left: 25px;
 	padding-right: 25px;
 }
+
+.preciotachado
+{
+	font-size: 20px !important;
+	text-decoration: line-through !important;
+	color: #6B5B5B !important;
+}

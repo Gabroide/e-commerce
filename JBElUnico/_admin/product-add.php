@@ -15,12 +15,13 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar")) {
 	if(isset($_POST["intPrincipal"]) && ($_POST["intPrincipal"])=="1")
 		$esprincipal=1;
 	
-	  $insertSQL = sprintf("INSERT INTO tblproducto(strNombre, refCategoria1, strImagen1, strDescripcion, dblPrecio, intEstado, refMArca, refCategoria2, refCategoria3, refCategoria4, refCategoria5, strImagen2, strImagen3, strImagen4, strImagen5, intPrincipal, intStock, refImpuesto, dblPeso) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+	  $insertSQL = sprintf("INSERT INTO tblproducto(strNombre, refCategoria1, strImagen1, strDescripcion, dblPrecio, dblPrecioAnterior, intEstado, refMArca, refCategoria2, refCategoria3, refCategoria4, refCategoria5, strImagen2, strImagen3, strImagen4, strImagen5, intPrincipal, intStock, refImpuesto, dblPeso) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
 						   GetSQLValueString($_POST["strNombre"], "text"),
 						  GetSQLValueString($_POST["refCategoria1"], "int"),
 						  GetSQLValueString($_POST["strImagen1"], "text"),
 						  GetSQLValueString($_POST["strDescripcion"], "text"),
 						  GetSQLValueString(ProcessComaCost($_POST["dblPrecio"]), "double"),
+						   GetSQLValueString(ProcessComaCost($_POST["dblPrecioAnterior"]), "double"),
 						  GetSQLValueString($_POST["intEstado"], "int"),
 						  GetSQLValueString($_POST["refMarca"], "int"),
 						  GetSQLValueString($_POST["refCategoria2"], "int"),
@@ -148,6 +149,10 @@ $totalRows_DatosImpuestos = mysqli_num_rows($DatosImpuestos);
 										<div class="form-group">
 											<label for="dblPrecio">Precio del Producto</label>
 											<input class="form-control" placeholder="Esctibir Precio del Producto" name="dblPrecio" id="dblPrecio">
+										</div>
+										<div class="form-group">
+											<label for="dblPrecioAnterior">Precio Anterior del Producto</label>
+											<input class="form-control" placeholder="Esctibir Precio Anterior del Producto" name="dblPrecioAnterior" id="dblPrecioAnterior">
 										</div>
 										<div class="form-group">
 											<label for="refImpuesto">Impuesto</label>

@@ -400,6 +400,7 @@ function ConfigIni()
 		define("_email", $row_ConsultaFuncion["strEmail"]);
 		define("_telefono", $row_ConsultaFuncion["strTelefono"]);
 		define("_marcas", $row_ConsultaFuncion["intMarcas"]);
+		define("_mostrarimpuesto", $row_ConsultaFuncion["intImpuesto"]);
 	}
 	
 	mysqli_free_result($ConsultaFuncion);
@@ -859,7 +860,7 @@ function GetNameOption($opcion)
 	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
 	
 	if ($totalRows_ConsultaFuncion>0)	
-		return $row_ConsultaFuncion["strNombre"].":";
+		return $row_ConsultaFuncion["strNombre"];
 	else
 		return "----";
 	mysqli_free_result($ConsultaFuncion);
@@ -1384,4 +1385,60 @@ function ShowProductOptionsCart($lineacarrito)
 	mysqli_free_result($ConsultaFuncion);
 }
 
+function ShowCartQuantity()
+{
+	global $con;
+	
+	if ((isset($_SESSION['tienda2020Front_UserId'])) || (isset($_SESSION['MM2_Temporal'])))
+	{
+		if ($_SESSION['MM2_Temporal']=="ELEVADO")
+			$usuariotempoactivo=$_SESSION['tienda2020Front_UserId'];
+		else
+			$usuariotempoactivo=$_SESSION['MM2_Temporal'];
+	}
+	
+	$query_ConsultaFuncion = sprintf("SELECT SUM(intCantidad) AS Total FROM tblcarrito WHERE refUsuario = %s AND intTransaccionEfectuada=0 ", 
+	   GetSQLValueString($usuariotempoactivo, "int"));
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	echo "(".$row_ConsultaFuncion["Total"].")";	
+	
+	mysqli_free_result($ConsultaFuncion);
+}
+
+function ZoneAdminLevelOption($padre, $pertenencia="")
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT * FROM tblzona WHERE refPadre=%s ",GetSQLValueString($padre, "text"));
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	if ($totalRows_ConsultaFuncion>0) 
+	{
+		do{
+		?>
+			<tr>
+				<td><?php echo $row_ConsultaFuncion["idZona"];?></td>
+				<td><?php echo $pertenencia.$row_ConsultaFuncion["strNombre"];?></td>
+				<td><?php echo ShowState($row_ConsultaFuncion["intEstado"]);?></td>
+				<td><?php echo $row_ConsultaFuncion["dblInferior"];?></td>
+				<td><?php echo $row_ConsultaFuncion["dblSuperior"];?></td>
+				<td><?php echo $row_ConsultaFuncion["dblIncremento"];?></td>
+				<td>
+					<a href="zonedetail-edit.php?id=<?php echo $row_ConsultaFuncion["idZona"];?>" class="btn btn-warning btn-circle" title="Edición de la Zona">
+					<i class="fa fa-edit"></i></a>
+				</td>
+			</tr>
+		<?php	
+		} while($row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion));
+	}
+	
+	mysqli_free_result($ConsultaFuncion);
+}
 ?>

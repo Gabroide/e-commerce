@@ -50,7 +50,7 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 								<?php }
 									else
 								{?>
-									<img src="../images/users/nouser.jpg" alt="Producto sin imagen" >
+									<img src="images/products/nodisponible.jpg" alt="Producto sin imagen" >
 								<?php }?>
 							</div>
 							<div class="row">
@@ -99,6 +99,11 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 								<img src="images/product-details/rating.png" alt="" />
 								<form name="formcompra" id="formcompra" method="post" action="cart-add.php">
 									<span>
+										<?php if($row_DatosConsulta["dblPrecioAnterior"]!=0){?>
+											<span class="preciotachado"><?php echo $row_DatosConsulta["dblPrecioAnterior"]."€";?></span>
+											<br>
+											<br>
+										<?php }?>
 										<span><?php echo CalculateProductCost($row_DatosConsulta["idProducto"]);?></span>
 										<label>Cantidad:</label>
 										<input id="intCantidad" name="intCantidad" type="number" value="1" />

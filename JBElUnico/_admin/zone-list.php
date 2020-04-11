@@ -1,4 +1,4 @@
- 	<?php require_once('../Connections/conexion.php'); 
+<?php require_once('../Connections/conexion.php'); 
 RestringirAcceso("1, 100");?>
 
 <?php
@@ -17,16 +17,13 @@ if (isset($_GET["valor"]))
 {
 	switch ($_GET["valor"]) {
     case 1:
-        $parametro_orden= "idOpcion";
+        $parametro_orden= "idZona";
         break;
     case 2:
         $parametro_orden= "strNombre";
         break;
     case 3:
         $parametro_orden= "intEstado";
-        break;
-    case 4:
-        $parametro_orden= "intOrden";
         break;
     }
 }
@@ -72,7 +69,7 @@ $cadenaOrden=" ORDER BY ".$parametro_orden." ".$parametro_ordena_sentido;
 /*************************************************************/
 /*************************************************************/
 
-$query_DatosConsulta = sprintf("SELECT * FROM tblopcion WHERE refPadre=0".$cadenaOrden);
+$query_DatosConsulta = sprintf("SELECT * FROM tblzona WHERE refPadre=0".$cadenaOrden);
 
 $query_limit_DatosConsulta = sprintf("%s LIMIT %d, %d", $query_DatosConsulta, $startRow_DatosConsulta, $maxRows_DatosConsulta);
 $DatosConsulta = mysqli_query($con,  $query_limit_DatosConsulta) or die(mysqli_error($con));
@@ -150,14 +147,14 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
   <div id="page-wrapper">
      <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Gestión de Opciones</h1>
+                    <h1 class="page-header">Gestión de Zonas</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
 			
            <div class="row">
                 <div class="col-lg-5">
-                	<a value="Añadir Opción" href="option-add.php" class="btn btn-outline btn-primary">Añadir Opción</a>
+                	<a value="Añadir Zona" href="zone-add.php" class="btn btn-outline btn-primary">Añadir Zona</a>
                 	<br>
                 	<br>
 			   </div>
@@ -222,21 +219,8 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 													MostrarOrdenCampo($parametroparaprocesar, $orden, $valor,$currentPage, $consultaextendidaparaordenacion);
 												?> 
                                             </th>
-                                            <th>Orden <?php
-													//BLOQUE ORDENACIÃ“N
-													//SI HAY PARÃMETROS, HAY QUE SABER SI SON DE ORDEN
-													$parametroparaprocesar="4";
-													if (!isset($_GET["orden"])) {
-														$orden=0;
-														$valor=0;
-													}
-													else {
-														$orden=$_GET["orden"];
-														$valor=$_GET["valor"];
-													}
-													MostrarOrdenCampo($parametroparaprocesar, $orden, $valor,$currentPage, $consultaextendidaparaordenacion);
-												?>
-                                            </th>
+                                            <th>Inferior </th>
+                                            <th>Superior </th>
                                             <th>Incremento </th>
                                             <th>Acciones </th>
 										</tr>                                        </tr>
@@ -248,21 +232,22 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 													?>
               		
 										<tr>
-											<td><?php echo $row_DatosConsulta["idOpcion"];?></td>
+											<td><?php echo $row_DatosConsulta["idZona"];?></td>
 											<td><strong><?php echo $row_DatosConsulta["strNombre"];?></strong></td>
 											<td><?php echo ShowState($row_DatosConsulta["intEstado"]);?></td>
-											<td><?php echo $row_DatosConsulta["intOrden"];?></td>
+											<td></td>
 									  		<td></td>
+									  		<th></th>
 										  	<td>
-										  		<a href="option-edit.php?id=<?php echo $row_DatosConsulta["idOpcion"];?>" class="btn btn-warning btn-circle" title="Edición de la Opción">
+										  		<a href="zone-edit.php?id=<?php echo $row_DatosConsulta["idZona"];?>" class="btn btn-warning btn-circle" title="Edición de la Zona">
 												<i class="fa fa-edit"></i></a>
-												<a href="optiondetail-add.php?id=<?php echo $row_DatosConsulta["idOpcion"];?>" class="btn btn-success btn-circle" title="Añadir elementos a la Opción">
+												<a href="zonedetail-add.php?id=<?php echo $row_DatosConsulta["idZona"];?>" class="btn btn-success btn-circle" title="Añadir elementos a la Zona">
 												<i class="fa fa-plus"></i></a>
 											</td>
 										</tr>
               		
               							<?php
-												 adminleveloption($row_DatosConsulta["idOpcion"], "-- ");
+												 ZoneAdminLevelOption($row_DatosConsulta["idZona"], "-- ");
 											 } while ($row_DatosConsulta = mysqli_fetch_assoc($DatosConsulta)); 
 											?> 
 									</tbody>

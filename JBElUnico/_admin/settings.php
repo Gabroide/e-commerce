@@ -14,15 +14,19 @@ $msgsuccess=0;
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsert")) {
 
 	$marcas=0;
+	$impuesto=0;
 	
 	if(isset($_POST["intMarcas"]) && ($_POST["intMarcas"])=="1")
 		$marcas=1;
+	if(isset($_POST["intImpuesto"]) && ($_POST["intImpuesto"])=="1")
+		$impuesto=1;
 	
-  $updateSQL = sprintf("UPDATE tblconfiguracion SET strTelefono=%s, strEmail=%s, strLogo=%s, intMarcas=%s WHERE idConfiguracion=%s",
+  $updateSQL = sprintf("UPDATE tblconfiguracion SET strTelefono=%s, strEmail=%s, strLogo=%s, intMarcas=%s, intImpuesto=%s WHERE idConfiguracion=%s",
                        GetSQLValueString($_POST["strTelefono"], "text"),
 					   GetSQLValueString($_POST["strEmail"], "text"),
 					   GetSQLValueString($_POST["strLogo"], "text"),
 					   GetSQLValueString($marcas, "int"),
+					   GetSQLValueString($impuesto, "int"),
 					   GetSQLValueString($_POST["idConfiguracion"], "int"));
 
 //echo $updateSQL;
@@ -124,6 +128,15 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 												<label>
 													<input type="checkbox" value="1" name="intMarcas" id="intMarcas" <?php if ($row_DatosConsulta["intMarcas"]==1){ ?>checked="checked" <?php }?>>
 													Marcar para mostrar el apartado de marcas en el menú de la izquierda
+												</label>
+											</div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Precios con Impuestos</label>
+ 											<div class="checkbox">
+												<label>
+													<input type="checkbox" value="1" name="intImpuesto" id="intImpuesto" <?php if ($row_DatosConsulta["intMarcas"]==1){ ?>checked="checked" <?php }?>>
+													Marcar para mostrar el precio con los Impuestos añadidos.
 												</label>
 											</div>
                                         </div>                                    
