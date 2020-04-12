@@ -250,7 +250,7 @@
                             <a href="options-list.php"><i class="fa fa-ellipsis-h fa-fw"></i> Opciones de Producto</a>
                         </li>
                         <li>
-                            <a href="zone-list.php"><i class="fa fa-map-marker fa-fw"></i> Zonas</a>
+                            <a href="zone-list.php"><i class="fa fa-globe fa-fw"></i> Zonas</a>
                         </li>
                         <li>
                             <a href="characteristic-list.php"><i class="fa fa-gears fa-fw"></i> Características del Producto</a>
@@ -259,7 +259,10 @@
                             <a href="settings.php"><i class="fa fa-gear fa-fw"></i> Configuración</a>
                         </li>
                         <li>
-                            <a href="taxes-list.php"><i class="fa fa-gear fa-fw"></i> Impuestos</a>
+                            <a href="taxes-list.php"><i class="fa fa-bank fa-fw"></i> Impuestos</a>
+                        </li>
+                        <li>
+                            <a href="coin-list.php"><i class="fa fa-money fa-fw"></i> Moneda</a>
                         </li>
                         <li>
                             <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>

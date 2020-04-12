@@ -135,7 +135,7 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
                                             <label>Precios con Impuestos</label>
  											<div class="checkbox">
 												<label>
-													<input type="checkbox" value="1" name="intImpuesto" id="intImpuesto" <?php if ($row_DatosConsulta["intMarcas"]==1){ ?>checked="checked" <?php }?>>
+													<input type="checkbox" value="1" name="intImpuesto" id="intImpuesto" <?php if ($row_DatosConsulta["intImpuesto"]==1){ ?>checked="checked" <?php }?>>
 													Marcar para mostrar el precio con los Impuestos añadidos.
 												</label>
 											</div>

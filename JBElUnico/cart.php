@@ -105,7 +105,7 @@
 									<p><?php ShowProductOptionsCart($row_DatosConsulta["idContador"]);?></p>
 								</td>
 								<td width="10%"><!-- class="cart_price">-->
-									<p><?php $precioproducto=CalculateProductCost($row_DatosConsultaProducto["idProducto"]); echo $precioproducto;?></p>
+									<p><?php $precioproducto=CalculateProductCost($row_DatosConsultaProducto["idProducto"]); echo $precioproducto."€";?></p>
 								</td>
 								<td width="10%">
 									<p><?php $impuestoproducto=CalculateProductTax($row_DatosConsultaProducto["idProducto"]); $totalimpuestos=$totalimpuestos+($impuestoproducto*$row_DatosConsulta["intCantidad"]); echo $impuestoproducto;?></p>

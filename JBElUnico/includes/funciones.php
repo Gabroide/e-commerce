@@ -720,18 +720,34 @@ function BrandsItems($marca)
 	mysqli_free_result($ConsultaFuncion);
 }
 
-function CalculateProductCost($producto)
+function CalculateProductCost($producto, $opcion=0)
 {
 	global $con;
 	
-	$query_ConsultaFuncion = sprintf("SELECT dblPrecio FROM tblproducto WHERE idProducto=%s", 
+	$query_ConsultaFuncion = sprintf("SELECT dblPrecio, refImpuesto FROM tblproducto WHERE idProducto=%s", 
 								   GetSQLValueString($producto, "int"));
 	//echo $query_ConsultaFuncion;
 	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
 	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
 	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
 	
-	return number_format($row_ConsultaFuncion["dblPrecio"], 2, ",", ".")."€";
+	if($opcion==0)	
+	{
+		$impuesto=0;
+	
+		if(_mostrarimpuesto==0)
+		{
+			$datoimpuesto=GetTax($row_ConsultaFuncion["refImpuesto"]);
+			$impuesto=$row_ConsultaFuncion["dblPrecio"]*($datoimpuesto/100);
+		}
+
+		return number_format($row_ConsultaFuncion["dblPrecio"]+$impuesto, 2, ",", ".")."€";
+	}
+	
+	if($opcion==1)	
+	{
+		return $row_ConsultaFuncion["dblPrecio"];
+	}
 	
 	mysqli_free_result($ConsultaFuncion);
 }
