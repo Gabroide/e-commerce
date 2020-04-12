@@ -28,7 +28,7 @@
 		<div class="header-middle"><!--header-middle-->
 			<div class="container">
 				<div class="row">
-					<div class="col-sm-4">
+					<div class="col-sm-5">
 						<div class="logo pull-left">
 							<a href="index.php"><img src="images/<?php echo _logo; ?>" alt="Logo de la empresa" /></a>
 						</div>
@@ -44,19 +44,10 @@
 								</ul>
 							</div>
 							
-							<div class="btn-group">
-								<button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
-									DOLLAR
-									<span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu">
-									<li><a href="#">Canadian Dollar</a></li>
-									<li><a href="#">Pound</a></li>
-								</ul>
-							</div>
+							<?php CoinBlock(); ?>
 						</div>
 					</div>
-					<div class="col-sm-8">
+					<div class="col-sm-7">
 						<div class="shop-menu pull-right">
 							<ul class="nav navbar-nav">
 								<li><a href="user-wishlist.php" class="destinodeseos" title="Ir a mis deseos"><i class="fa fa-heart"></i> Lista de Deseos</a></li>

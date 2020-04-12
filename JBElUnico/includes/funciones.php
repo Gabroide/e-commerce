@@ -407,6 +407,7 @@ function ConfigIni()
 }
 
 ConfigIni();
+if(isset($_GET["moneda"])) $_SESSION["monedaactiva"]=$_GET["moneda"]; 
 
 function ShowBrand($idMarca)
 {
@@ -738,15 +739,15 @@ function CalculateProductCost($producto, $opcion=0)
 		if(_mostrarimpuesto==0)
 		{
 			$datoimpuesto=GetTax($row_ConsultaFuncion["refImpuesto"]);
-			$impuesto=$row_ConsultaFuncion["dblPrecio"]*($datoimpuesto/100);
+			$impuesto=$row_ConsultaFuncion["dblPrecio"]*($datoimpuesto/100)*$_SESSION["monedavalor"];
 		}
 
-		return number_format($row_ConsultaFuncion["dblPrecio"]+$impuesto, 2, ",", ".")."€";
+		return number_format(($row_ConsultaFuncion["dblPrecio"]*$_SESSION["monedavalor"])+$impuesto, 2, ",", ".").$_SESSION["monedasimbolo"];
 	}
 	
 	if($opcion==1)	
 	{
-		return $row_ConsultaFuncion["dblPrecio"];
+		return $row_ConsultaFuncion["dblPrecio"]*$_SESSION["monedavalor"];
 	}
 	
 	mysqli_free_result($ConsultaFuncion);
@@ -1457,4 +1458,60 @@ function ZoneAdminLevelOption($padre, $pertenencia="")
 	
 	mysqli_free_result($ConsultaFuncion);
 }
+
+function CoinBlock()
+{
+	global $con;
+	
+	if (!isset($_SESSION["monedaactiva"]))
+	{
+	
+		$query_ConsultaFuncion = sprintf("SELECT * FROM tblmoneda WHERE intPrincipal = 1 ");
+		$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+		$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+		$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+		
+		$_SESSION["monedaactiva"]=$row_ConsultaFuncion["idMoneda"];
+		$_SESSION["monedasimbolo"]=$row_ConsultaFuncion["strSimbolo"];
+		$_SESSION["monedavalor"]=$row_ConsultaFuncion["dblValor"];
+		
+	}
+	
+	$query_ConsultaFuncion = sprintf("SELECT * FROM tblmoneda WHERE idMoneda=%s ", $_SESSION["monedaactiva"]);
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	$_SESSION["monedasimbolo"]=$row_ConsultaFuncion["strSimbolo"];
+	$_SESSION["monedavalor"]=$row_ConsultaFuncion["dblValor"];
+	
+?>
+	<div class="btn-group">
+		<button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
+			<?php echo $row_ConsultaFuncion["strNombre"];?>
+			<span class="caret"></span>
+		</button>
+	<?php 
+	
+	$query_ConsultaFuncion2 = sprintf("SELECT * FROM tblmoneda WHERE idMoneda<>%s ORDER BY strNombre ASC", $_SESSION["monedaactiva"]);
+	$ConsultaFuncion2 = mysqli_query($con,  $query_ConsultaFuncion2) or die(mysqli_error($con));
+	$row_ConsultaFuncion2 = mysqli_fetch_assoc($ConsultaFuncion2);
+	$totalRows_ConsultaFuncion2 = mysqli_num_rows($ConsultaFuncion2);
+	
+	if ($totalRows_ConsultaFuncion2>0){
+	?>
+		<ul class="dropdown-menu">
+			<?php
+			do { ?>
+
+				<li><a href="index.php?moneda=<?php echo $row_ConsultaFuncion2["idMoneda"];?>" title="Utilizar la moneda <?php echo $row_ConsultaFuncion2["strNombre"];?>"><?php echo $row_ConsultaFuncion2["strNombre"];?></a></li>
+			<?php
+			} while ($row_ConsultaFuncion2 = mysqli_fetch_assoc($ConsultaFuncion2)); 
+			?>
+		</ul>
+	</div>
+	<?php
+	}	
+}
+
 ?>

@@ -100,7 +100,7 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 								<form name="formcompra" id="formcompra" method="post" action="cart-add.php">
 									<span>
 										<?php if($row_DatosConsulta["dblPrecioAnterior"]!=0){?>
-											<span class="preciotachado"><?php echo $row_DatosConsulta["dblPrecioAnterior"]."€";?></span>
+											<span class="preciotachado"><?php echo $row_DatosConsulta["dblPrecioAnterior"]*$_SESSION["monedavalor"].$_SESSION["monedasimbolo"];?></span>
 											<br>
 											<br>
 										<?php }?>

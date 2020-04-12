@@ -2,9 +2,13 @@
 RestringirAcceso("1, 100");?>
                       
 <?php
-	 $updateSQL = sprintf("UPDATE tblmoneda SET intPrincipal=1 WHERE idMoneda=%s", GetSQLValueString($_GET["id"], "int"));
+	 $updateSQL = sprintf("UPDATE tblmoneda SET intPrincipal=0");
 
 	//echo $updateSQL;
+	$Result1 = mysqli_query($con, $updateSQL) or die(mysqli_error($con));
+
+	$updateSQL = sprintf("UPDATE tblmoneda SET intPrincipal=1 WHERE idMoneda=%s", GetSQLValueString($_GET["id"], "int"));
+
 	$Result1 = mysqli_query($con, $updateSQL) or die(mysqli_error($con));
 
   	$updateGoTo = "coin-list.php";

@@ -18,13 +18,19 @@
 
 		$DatosConsulta = mysqli_query($con,  $query_DatosConsulta) or die(mysqli_error($con));
 		$row_DatosConsulta = mysqli_fetch_assoc($DatosConsulta);
-		$totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
-	}
-	else
-	{
-		
+		$totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);	
 	}
 
+	if(!isset($_SESSION["zonaactiva"]))
+		$_SESSION["zonaactiva"]=0;
+	if(isset($_GET["zona"]))
+		$_SESSION["zonaactiva"]=$_GET["zona"];
+	
+	$query_DatosZona = sprintf("SELECT * FROM tblzona WHERE intEstado=1 AND refPadre=0 ORDER BY strNombre");
+
+	$DatosZona = mysqli_query($con,  $query_DatosZona) or die(mysqli_error($con));
+	$row_DatosZona = mysqli_fetch_assoc($DatosZona);
+	$totalRows_DatosZona = mysqli_num_rows($DatosZona);
 ?>
 
 <!DOCTYPE html>
@@ -40,6 +46,12 @@
 <!-- InstanceEndEditable -->
     <?php include("includes/head.php"); ?>
     <!-- InstanceBeginEditable name="head" -->
+    <script type="text/javascript">
+		function MM_jumpMenu(targ,selObj,restore){ //v3.0
+		  eval(targ+".location='cart.php?zona="+selObj.options[selObj.selectedIndex].value+"'");
+		  if (restore) selObj.selectedIndex=0;
+		}
+    </script>
     <!-- InstanceEndEditable -->
 </head><!--/head-->
 
@@ -105,7 +117,7 @@
 									<p><?php ShowProductOptionsCart($row_DatosConsulta["idContador"]);?></p>
 								</td>
 								<td width="10%"><!-- class="cart_price">-->
-									<p><?php $precioproducto=CalculateProductCost($row_DatosConsultaProducto["idProducto"]); echo $precioproducto."€";?></p>
+									<p><?php $precioproducto=CalculateProductCost($row_DatosConsultaProducto["idProducto"], 1); echo number_format($precioproducto, 2, ",", ".").$_SESSION["monedasimbolo"];?></p>
 								</td>
 								<td width="10%">
 									<p><?php $impuestoproducto=CalculateProductTax($row_DatosConsultaProducto["idProducto"]); $totalimpuestos=$totalimpuestos+($impuestoproducto*$row_DatosConsulta["intCantidad"]); echo $impuestoproducto;?></p>
@@ -118,7 +130,7 @@
 									</div>
 								</td>
 								<td width="20%"><!--class="cart_total">-->
-									<p class="cart_total_price"><?php $precioproductounidades=($precioproducto+$impuestoproducto) * $row_DatosConsulta["intCantidad"]; $totalsinimpuestos=$totalsinimpuestos+($precioproducto * $row_DatosConsulta["intCantidad"]); echo number_format($precioproductounidades, 2, ",", ".")."€"; $totalcarrito=$totalcarrito+$precioproductounidades;?></p>
+									<p class="cart_total_price"><?php $precioproductounidades=($precioproducto+$impuestoproducto) * $row_DatosConsulta["intCantidad"]; $totalsinimpuestos=$totalsinimpuestos+($precioproducto * $row_DatosConsulta["intCantidad"]); echo number_format($precioproductounidades, 2, ",", ".").$_SESSION["monedasimbolo"]; $totalcarrito=$totalcarrito+$precioproductounidades;?></p>
 								</td>
 								<td width="5%"> <!--class="cart_delete">-->
 									<a class="cart_quantity_delete" href="operate-cart.php?id=<?php echo $row_DatosConsulta["idContador"];?>&op=3" title="Eliminar el producto del carrito"><i class="fa fa-times"></a>
@@ -129,7 +141,7 @@
 						</tbody>
 					</table>
 				</div>
-				<a href="operate-cart.php?id=<?php echo $row_DatosConsulta["idContador"];?>&op=4" title="class="cart_quantity_delete"">Vaciar el Carrito</a>
+				<a href="operate-cart.php?id=<?php echo $row_DatosConsulta["idContador"];?>&op=4" title="Vaciar el carrito" class="cart_quantity_delete"><b>Vaciar el Carrito</b></a>
 			<?php }
 			else
 				echo "<br><br><h2>No tiene ningún producto en el carrito.</h2><br><br>";
@@ -141,13 +153,12 @@
 		<section id="do_action">
 			<div class="container">
 				<div class="heading">
-					<h3>What would you like to do next?</h3>
-					<p>Choose if you have a discount code or reward points you want to use or would like to estimate your delivery cost.</p>
 				</div>
 				<div class="row">
 					<div class="col-sm-6">
 						<div class="chose_area">
 							<ul class="user_option">
+								<h3>Vales y descuentos</h3>
 								<li>
 									<input type="checkbox">
 									<label>Use Coupon Code</label>
@@ -162,32 +173,19 @@
 								</li>
 							</ul>
 							<ul class="user_info">
+								<h3>Seleccionar Zona para envío</h3>
 								<li class="single_field">
-									<label>Country:</label>
-									<select>
-										<option>United States</option>
-										<option>Bangladesh</option>
-										<option>UK</option>
-										<option>India</option>
-										<option>Pakistan</option>
-										<option>Ucrane</option>
-										<option>Canada</option>
-										<option>Dubai</option>
+									<label>Zona:</label>
+									<select name="intZona" class="form-control" id="intZona" onChange="MM_jumpMenu('parent',this,0)">
+										<option value="0" <?php if($_SESSION["zonaactiva"]==0) echo "selected";?>>Selecciona la zona de envío</option>
+										<?php do{ ?>
+											<option value="<?php echo $row_DatosZona["idZona"]?>" <?php if ($row_DatosZona["idZona"]==$_SESSION["zonaactiva"]) echo "selected"; ?>><?php echo $row_DatosZona["strNombre"]; ?></option>
+										<?php }while($row_DatosZona=mysqli_fetch_assoc($DatosZona));?>
 									</select>
-
 								</li>
 								<li class="single_field">
 									<label>Region / State:</label>
-									<select>
-										<option>Select</option>
-										<option>Dhaka</option>
-										<option>London</option>
-										<option>Dillih</option>
-										<option>Lahore</option>
-										<option>Alaska</option>
-										<option>Canada</option>
-										<option>Dubai</option>
-									</select>
+									
 
 								</li>
 								<li class="single_field zip-field">
@@ -202,10 +200,10 @@
 					<div class="col-sm-6">
 						<div class="total_area">
 							<ul>
-								<li>SubTotal <span><?php echo number_format($totalsinimpuestos, 2, ",", ".")."€"; ?></span></li>
-								<li>Impuestos <span><?php echo number_format($totalimpuestos, 2, ",", ".")."€";?></span></li>
+								<li>SubTotal <span><?php echo number_format($totalsinimpuestos, 2, ",", ".").$_SESSION["monedasimbolo"]; ?></span></li>
+								<li>Impuestos <span><?php echo number_format($totalimpuestos, 2, ",", ".").$_SESSION["monedasimbolo"];?></span></li>
 								<li>Envío <span>Free</span></li>
-								<li>Total <span><?php echo number_format($totalcarrito, 2, ",", ".")."€"; ?></span></li>
+								<li>Total <span><?php echo number_format($totalcarrito, 2, ",", ".").$_SESSION["monedasimbolo"]; ?></span></li>
 							</ul>
 								<a class="btn btn-default update" href="">Update</a>
 								<a class="btn btn-default check_out" href="">Check Out</a>
