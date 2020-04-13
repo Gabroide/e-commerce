@@ -87,6 +87,7 @@
 						$totalcarrito=0;
 						$totalsinimpuestos=0;
 						$totalimpuestos=0;
+						$totalpeso=0;
 						
 						do{ 
 							$query_DatosConsultaProducto = sprintf("SELECT * FROM tblproducto WHERE idProducto=%s",
@@ -117,7 +118,9 @@
 									<p><?php ShowProductOptionsCart($row_DatosConsulta["idContador"]);?></p>
 								</td>
 								<td width="10%"><!-- class="cart_price">-->
-									<p><?php $precioproducto=CalculateProductCost($row_DatosConsultaProducto["idProducto"], 1); echo number_format($precioproducto, 2, ",", ".").$_SESSION["monedasimbolo"];?></p>
+									<p><?php 
+									$pesoproducto=$row_DatosConsultaProducto["dblPeso"]*$row_DatosConsulta["intCantidad"];
+									$precioproducto=CalculateProductCost($row_DatosConsultaProducto["idProducto"], 1); echo number_format($precioproducto, 2, ",", ".").$_SESSION["monedasimbolo"];?></p>
 								</td>
 								<td width="10%">
 									<p><?php $impuestoproducto=CalculateProductTax($row_DatosConsultaProducto["idProducto"]); $totalimpuestos=$totalimpuestos+($impuestoproducto*$row_DatosConsulta["intCantidad"]); echo $impuestoproducto;?></p>
@@ -137,6 +140,7 @@
 								</td>
 							</tr>
 						<?php
+									$totalpeso=$totalpeso+$pesoproducto;
 								} while($row_DatosConsulta=mysqli_fetch_assoc($DatosConsulta)); ?>						
 						</tbody>
 					</table>
@@ -202,7 +206,7 @@
 							<ul>
 								<li>SubTotal <span><?php echo number_format($totalsinimpuestos, 2, ",", ".").$_SESSION["monedasimbolo"]; ?></span></li>
 								<li>Impuestos <span><?php echo number_format($totalimpuestos, 2, ",", ".").$_SESSION["monedasimbolo"];?></span></li>
-								<li>Envío <span>Free</span></li>
+								<li>Envío <span><?php echo $totalpeso; ?></span></li>
 								<li>Total <span><?php echo number_format($totalcarrito, 2, ",", ".").$_SESSION["monedasimbolo"]; ?></span></li>
 							</ul>
 								<a class="btn btn-default update" href="">Update</a>
