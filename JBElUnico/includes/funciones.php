@@ -1514,4 +1514,30 @@ function CoinBlock()
 	}	
 }
 
+function CalculateDelivering($peso, $zona)
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT * FROM tblzona WHERE refPadre=%s ",GetSQLValueString($zona, "int"));
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	$coste=0;
+	
+	if ($totalRows_ConsultaFuncion>0) 
+	{
+		do{
+			if(($peso>$row_ConsultaFuncion["dblInferior"]) && ($peso<=$row_ConsultaFuncion["dblSuperior"]))
+			{
+				$coste=$row_ConsultaFuncion["dblIncremento"]*$_SESSION["monedavalor"];
+			}
+		} while($row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion));
+	}
+	
+	mysqli_free_result($ConsultaFuncion);
+	
+	return $coste;
+}
 ?>

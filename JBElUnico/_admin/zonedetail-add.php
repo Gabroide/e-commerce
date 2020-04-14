@@ -100,7 +100,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar")) {
                                         </div>
                                         <div class="form-group">
                                             <label for="dblInferior">Peso Inferior</label>
-                                            <input class="form-control" value="0" name="dblInferior" id="dblInferior">
+                                            <input class="form-control" value="-1" name="dblInferior" id="dblInferior">
                                         </div>
                                         <div class="form-group">
                                             <label for="dblSuperior">Peso Superior</label>

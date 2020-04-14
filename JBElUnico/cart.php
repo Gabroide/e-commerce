@@ -206,8 +206,8 @@
 							<ul>
 								<li>SubTotal <span><?php echo number_format($totalsinimpuestos, 2, ",", ".").$_SESSION["monedasimbolo"]; ?></span></li>
 								<li>Impuestos <span><?php echo number_format($totalimpuestos, 2, ",", ".").$_SESSION["monedasimbolo"];?></span></li>
-								<li>Envío <span><?php echo $totalpeso; ?></span></li>
-								<li>Total <span><?php echo number_format($totalcarrito, 2, ",", ".").$_SESSION["monedasimbolo"]; ?></span></li>
+								<li>Envío <span><?php $portescalculados=CalculateDelivering($totalpeso, $_SESSION["zonaactiva"]); echo number_format($portescalculados, 2, ",", ".").$_SESSION["monedasimbolo"]; ?></span></li>
+								<li>Total <span><?php echo number_format($totalcarrito+$portescalculados, 2, ",", ".").$_SESSION["monedasimbolo"]; ?></span></li>
 							</ul>
 								<a class="btn btn-default update" href="">Update</a>
 								<a class="btn btn-default check_out" href="">Check Out</a>
