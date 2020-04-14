@@ -128,7 +128,7 @@
 								<td width="15%"><!--class="cart_quantity">-->
 									<div class="cart_quantity_button">
 										<a class="cart_quantity_up" href="operate-cart.php?id=<?php echo $row_DatosConsulta["idContador"];?>&op=1" title="Añadir"> + </a>
-										<input class="cart_quantity_input" type="text" name="quantity" value="<?php echo $row_DatosConsulta["intCantidad"];?>" autocomplete="off" size="2">
+										<input readonly class="cart_quantity_input" type="text" name="quantity" value="<?php echo $row_DatosConsulta["intCantidad"];?>" autocomplete="off" size="2">
 										<a class="cart_quantity_down" href="operate-cart.php?id=<?php echo $row_DatosConsulta["idContador"];?>&op=2&actual=<?php echo $row_DatosConsulta["intCantidad"];?>" title="Restar"> - </a>
 									</div>
 								</td>
@@ -160,62 +160,70 @@
 				</div>
 				<div class="row">
 					<div class="col-sm-6">
-						<div class="chose_area">
+					<div class="chose_area">
+						<ul class="user_option">
+							<li>
+								<h3><label for="intZona">Seleccionar Zona para envío</label></h3>
+							</li>
+							<li>							
+								<select name="intZona" class="form-control" id="intZona" onChange="MM_jumpMenu('parent',this,0)">
+									<option value="0" <?php if ($_SESSION["zonaactiva"]==0) echo "selected";?> >Selecciona la Zona de envío</option>
+									<?php do { ?>
+									<option value="<?php echo $row_DatosZona["idZona"]?>" <?php if ($row_DatosZona["idZona"]==$_SESSION["zonaactiva"]) echo "selected"; ?>><?php echo $row_DatosZona["strNombre"]?></option>
+				
+									<?php } while ($row_DatosZona = mysqli_fetch_assoc($DatosZona)); ?>
+								</select>
+							<li>
+						</ul>
+						<form action="pay.php" method="post">
 							<ul class="user_option">
-								<h3>Vales y descuentos</h3>
-								<li>
-									<input type="checkbox">
-									<label>Use Coupon Code</label>
+								<li><label for="strNombre">Nombre Completo:</label>
+									<input name="strNombre"  type="text" id="strNombre"  class="form-control"/>
+						  		</li>
+								<li><label for="strDireccion">Dirección:</label>
+									<input name="strDireccion"  type="text" id="strDireccion"  class="form-control"/>
 								</li>
-								<li>
-									<input type="checkbox">
-									<label>Use Gift Voucher</label>
+								<li><label for="strProvincia">Provincia:</label>
+									<input name="strProvincia"  type="text" id="strProvincia"  class="form-control"/>
 								</li>
-								<li>
-									<input type="checkbox">
-									<label>Estimate Shipping & Taxes</label>
+								<li><lable for="strPais">Pais:</label>
+									<input name="strPais"  type="text" id="strPais"  class="form-control"/>
 								</li>
+								<li><label for="intCP">Código Postal:</label>
+									<input name="intCP"  type="number" id="intCP"  class="form-control"/>
+								</li>
+								<li><label for="strEmail">E-mail:</label> 
+									<input name="strEmail"  type="mail" id="strEmail"  class="form-control"/>
+								</li>
+								<li><label for="intTelefono">Teléfono:</label>
+									<input name="intTelefono"  type="number" id="intTelefono"  class="form-control"/>
+								</li><br>
+								<li><label for="intPago">Forma de Pago:</label><br>
+									<input name="intPago" type="radio" value="1" checked="checked"> Transferencia Bancaria<br>
+									<input name="intPago" type="radio" value="2"> Paypal<br>
+									<input name="intPago" type="radio" value="3"> VISA Santander<br>
+									<input name="intPago" type="radio" value="4"> VISA Caixa
+								</li>	
 							</ul>
-							<ul class="user_info">
-								<h3>Seleccionar Zona para envío</h3>
-								<li class="single_field">
-									<label>Zona:</label>
-									<select name="intZona" class="form-control" id="intZona" onChange="MM_jumpMenu('parent',this,0)">
-										<option value="0" <?php if($_SESSION["zonaactiva"]==0) echo "selected";?>>Selecciona la zona de envío</option>
-										<?php do{ ?>
-											<option value="<?php echo $row_DatosZona["idZona"]?>" <?php if ($row_DatosZona["idZona"]==$_SESSION["zonaactiva"]) echo "selected"; ?>><?php echo $row_DatosZona["strNombre"]; ?></option>
-										<?php }while($row_DatosZona=mysqli_fetch_assoc($DatosZona));?>
-									</select>
-								</li>
-								<li class="single_field">
-									<label>Region / State:</label>
-									
-
-								</li>
-								<li class="single_field zip-field">
-									<label>Zip Code:</label>
-									<input type="text">
-								</li>
-							</ul>
-							<a class="btn btn-default update" href="">Get Quotes</a>
-							<a class="btn btn-default check_out" href="">Continue</a>
-						</div>
-					</div> 
-					<div class="col-sm-6">
-						<div class="total_area">
-							<ul>
-								<li>SubTotal <span><?php echo number_format($totalsinimpuestos, 2, ",", ".").$_SESSION["monedasimbolo"]; ?></span></li>
-								<li>Impuestos <span><?php echo number_format($totalimpuestos, 2, ",", ".").$_SESSION["monedasimbolo"];?></span></li>
-								<li>Envío <span><?php $portescalculados=CalculateDelivering($totalpeso, $_SESSION["zonaactiva"]); echo number_format($portescalculados, 2, ",", ".").$_SESSION["monedasimbolo"]; ?></span></li>
-								<li>Total <span><?php echo number_format($totalcarrito+$portescalculados, 2, ",", ".").$_SESSION["monedasimbolo"]; ?></span></li>
-							</ul>
-								<a class="btn btn-default update" href="">Update</a>
-								<a class="btn btn-default check_out" href="">Check Out</a>
-						</div>
+						<input name="botonpagar" type="submit" class="btn btn-default update" value="Pagar">
+						</form>		
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<div class="total_area">
+						<ul>
+							<li>SubTotal<span><?php echo number_format($totalsinimpuestos, 2, ",", ".").$_SESSION["monedasimbolo"];?></span></li>
+							<li>Impuesto<span><?php echo number_format($totalimpuestos, 2, ",", ".").$_SESSION["monedasimbolo"];?></span></li>
+							<li>Transporte <span><?php $portescalculados=CalculateDelivering($totalpeso, $_SESSION["zonaactiva"]); echo number_format($portescalculados, 2, ",", ".").$_SESSION["monedasimbolo"];
+								?></span></li>
+							<li>Total <span><?php echo number_format($totalcarrito+$portescalculados, 2, ",", ".").$_SESSION["monedasimbolo"];?></span></li>
+						</ul>
 					</div>
 				</div>
 			</div>
-		</section><!--/#do_action-->
+		</div>
+	</section>
+<!--/#do_action-->
 	<?php }?>
 <?php include("includes/footer.php"); ?>
 <?php include("includes/footerjs.php"); ?>
