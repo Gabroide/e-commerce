@@ -401,6 +401,24 @@ function ConfigIni()
 		define("_telefono", $row_ConsultaFuncion["strTelefono"]);
 		define("_marcas", $row_ConsultaFuncion["intMarcas"]);
 		define("_mostrarimpuesto", $row_ConsultaFuncion["intImpuesto"]);
+		define("_strPaypal_url", $row_ConsultaFuncion["strPaypal_url"]);
+		define("_strPaypal_email", $row_ConsultaFuncion["strPaypal_email"]);
+		define("_strCaixa_url", $row_ConsultaFuncion["strCaixa_url"]);
+		define("_strCaixa_fuc", $row_ConsultaFuncion["strCaixa_fuc"]);
+		define("_strCaixa_terminal", $row_ConsultaFuncion["strCaixa_terminal"]);
+		define("_strCaixa_version", $row_ConsultaFuncion["strCaixa_version"]);
+		define("_strCaixa_clave", $row_ConsultaFuncion["strCaixa_clave"]);
+		define("_strSantander_url", $row_ConsultaFuncion["strSantander_url"]);
+		define("_strSantander_merchantid", $row_ConsultaFuncion["strSantander_merchantid"]);
+		define("_strSantander_secret", $row_ConsultaFuncion["strSantander_secret"]);
+		define("_strSantander_account", $row_ConsultaFuncion["strSantander_account"]);
+		define("_intTransferencia", $row_ConsultaFuncion["intTransferencia"]);
+		define("_intPaypal", $row_ConsultaFuncion["intPaypal"]);
+		define("_intCaixa", $row_ConsultaFuncion["intCaixa"]);
+		define("_intSantander", $row_ConsultaFuncion["intSantander"]);
+		define("_intGooglePay", $row_ConsultaFuncion["intGooglePay"]);
+		define("_intApplePay", $row_ConsultaFuncion["intApplePay"]);
+		define("_strURL", $row_ConsultaFuncion["strURL"]);
 	}
 	
 	mysqli_free_result($ConsultaFuncion);
@@ -1539,5 +1557,53 @@ function CalculateDelivering($peso, $zona)
 	mysqli_free_result($ConsultaFuncion);
 	
 	return $coste;
+}
+
+function ConfirmacionPago($tipopago, $estado)
+{
+	global $con;
+	
+	//$_SESSION["usuariotempoactivo"];
+	
+	//$_SESSION["Total"]=$_SESSION["PrecioFinal"]+$_SESSION["PrecioFinal"]*$iva;
+		
+
+	
+	
+	$insertSQL = sprintf("INSERT INTO tblcompra (idUsuario, fchCompra, intTipoPago, dblTotalIVA, dblTotalsinIVA, intFacturacion, intEnvio, intEstado, intZona, strNombre, strDireccion, strProvincia, strPais, intCP, strEmail, strTelefono) VALUES (%s, NOW(), %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                       GetSQLValueString($_SESSION['usuariotempoactivo'], "int"),
+					   $tipopago,
+					   GetSQLValueString($_SESSION["Total"],"double"),
+					   GetSQLValueString($_SESSION["TotalsinImpuestos"],"double"),
+					   0,
+					   0,
+					   $estado,
+					   GetSQLValueString($_SESSION["COMPRA_intZona"],"int"),
+					   GetSQLValueString($_SESSION["COMPRA_strNombre"],"text"),
+					   GetSQLValueString($_SESSION["COMPRA_strDireccion"],"text"),
+					   GetSQLValueString($_SESSION["COMPRA_strProvincia"],"text"),
+					   GetSQLValueString($_SESSION["COMPRA_strPais"],"text"),
+					   GetSQLValueString($_SESSION["COMPRA_intCP"],"int"),
+					   GetSQLValueString($_SESSION["COMPRA_strEmail"],"text"),
+					   GetSQLValueString($_SESSION["COMPRA_strTelefono"],"text"));
+
+	  $Result1 = mysqli_query($con, $insertSQL) or die(mysqli_error($con));
+	  $ultimacompra = mysqli_insert_id($con);
+	  $_SESSION["compraactivavisa"] = $ultimacompra;
+	  ActualizacionCarrito($ultimacompra);
+	  //ActualizacionStock($ultimacompra);
+}
+
+function ActualizacionCarrito($idcompra)
+{	
+	global $con;
+	
+	$updateSQL = sprintf("UPDATE tblcarrito SET intTransaccionEfectuada=%s WHERE refUsuario=%s AND intTransaccionEfectuada=0",
+						 $idcompra, 
+						 $_SESSION["usuariotempoactivo"]);
+  
+  	$Result1 = mysqli_query($con, $updateSQL) or die(mysqli_error($con));
+		
+	
 }
 ?>

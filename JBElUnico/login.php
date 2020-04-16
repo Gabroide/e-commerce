@@ -28,7 +28,7 @@
 						<h2>Acceder a tu cuenta</h2>
 						<form action="acceso.php" method="post">
 							<label for="strEmail">Correo Electrónico</label>
-							<input type="mail" placeholder="micorreo@correo.com" id="strEmail" name="strEmail"/>
+							<input type="email" placeholder="micorreo@correo.com" id="strEmail" name="strEmail"/>
 							<label for="strPassword">Contraseña</label>
 							<input type="password" placeholder="Contraseña" id="strPassword" name="strPassword"/>
 							<span>

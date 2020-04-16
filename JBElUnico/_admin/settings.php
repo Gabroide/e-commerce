@@ -20,14 +20,50 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsert")) {
 		$marcas=1;
 	if(isset($_POST["intImpuesto"]) && ($_POST["intImpuesto"])=="1")
 		$impuesto=1;
+	$pago1=0;
+	if(isset($_POST["intTransferencia"]) && ($_POST["intTransferencia"])=="1")
+		$pago1=1;
+	$pago2=0;
+	if(isset($_POST["intPaypal"]) && ($_POST["intPaypal"])=="1")
+		$pago2=1;
+	$pago3=0;
+	if(isset($_POST["intCaixa"]) && ($_POST["intCaixa"])=="1")
+		$pago3=1;
+	$pago4=0;
+	if(isset($_POST["intSantender"]) && ($_POST["intSantander"])=="1")
+		$pago4=1;
+	$pago5=0;
+	if(isset($_POST["intGooglePay"]) && ($_POST["intGooglePay"])=="1")
+		$pago5=1;
+	$pago6=0;
+	if(isset($_POST["intApplePay"]) && ($_POST["intApplePay"])=="1")
+		$pago6=1;
 	
-  $updateSQL = sprintf("UPDATE tblconfiguracion SET strTelefono=%s, strEmail=%s, strLogo=%s, intMarcas=%s, intImpuesto=%s WHERE idConfiguracion=%s",
+  $updateSQL = sprintf("UPDATE tblconfiguracion SET strTelefono=%s, strEmail=%s, strLogo=%s, intMarcas=%s, intImpuesto=%s, strPaypal_url=%s, strPaypal_email=%s, strCaixa_url=%s, strCaixa_fuc=%s, strCaixa_terminal=%s, strCaixa_version=%s, strCaixa_clave=%s, strSantander_url=%s, strSantander_merchantid=%s, strSantander_secret=%s, strSantander_account=%s, intTransferencia=%s, intPaypal=%s, intCaixa=%s, intSantander=%s, intGooglePay=%s, intApplePay=%s, strURL=%s WHERE idConfiguracion=%s",
                        GetSQLValueString($_POST["strTelefono"], "text"),
 					   GetSQLValueString($_POST["strEmail"], "text"),
 					   GetSQLValueString($_POST["strLogo"], "text"),
 					   GetSQLValueString($marcas, "int"),
 					   GetSQLValueString($impuesto, "int"),
-					   GetSQLValueString($_POST["idConfiguracion"], "int"));
+					   GetSQLValueString($_POST["strPaypal_url"], "text"),
+					   GetSQLValueString($_POST["strPaypal_email"], "text"),
+						GetSQLValueString($_POST["strCaixa_url"], "text"),
+						GetSQLValueString($_POST["strCaixa_fuc"], "text"),
+						GetSQLValueString($_POST["strCaixa_terminal"], "text"),
+						GetSQLValueString($_POST["strCaixa_version"], "text"),
+						GetSQLValueString($_POST["strCaixa_clave"], "text"),
+						GetSQLValueString($_POST["strSantander_url"], "text"),
+						GetSQLValueString($_POST["strSantander_merchantid"], "text"),
+						GetSQLValueString($_POST["strSantander_secret"], "text"),
+						GetSQLValueString($_POST["strSantander_account"], "text"),
+						GetSQLValueString($pago1, "int"),
+						GetSQLValueString($pago2, "int"),
+						GetSQLValueString($pago3, "int"),
+					    GetSQLValueString($pago4, "int"),
+					    GetSQLValueString($pago5, "int"),
+					   GetSQLValueString($pago6, "int"),
+					   GetSQLValueString($_POST["strURL"], "text"),
+					   	GetSQLValueString($_POST["idConfiguracion"], "int"));
 
 //echo $updateSQL;
 $Result1 = mysqli_query($con, $updateSQL) or die(mysqli_error($con));
@@ -110,14 +146,17 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
                         	<!-- /.table-responsive -->
                         </div>
                         <div class="panel-body">
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <form role="form" action="settings.php" method="post" id="forminsert" name="forminsert">
+							<form role="form" action="settings.php" method="post" id="forminsert" name="forminsert">
+								<div class="row">
+									<div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="strURL">Web</label>
+                                            <input class="form-control" placeholder="http://pciexpress.com" name="strURL" id="strURL" value="<?php echo $row_DatosConsulta["strURL"];?>">
+                                        </div>
                                         <div class="form-group">
                                             <label for="strEmail">E-mail</label>
                                             <input class="form-control" placeholder="e-mail" name="strEmail" id="strEmail" value="<?php echo $row_DatosConsulta["strEmail"];?>">
-                                        </div>
-                                        
+                                        </div>                                   
                                         <div class="form-group">
                                             <label for="strTelefono">Teléfono</label>
                                             <input class="form-control" placeholder="Teléfono que saldrá en la parte superior" name="strTelefono" id="strTelefono" value="<?php echo $row_DatosConsulta["strTelefono"];?>">
@@ -191,15 +230,100 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 										//***********************									  //***********************
 										// FIN BLOQUE INSERCION IMAGEN
 										<?php */?>                                        
-                                        <button type="submit" class="btn btn-success" value="Actualizar">Actualizar</button>
+                                        </div>
+									<!-- /.col-lg-6 (nested) -->
+									<div class="col-lg-6">
+										<div class="form-group">
+											<label>Métodos de Pago</label>
+											<div class="checkbox">
+												<label>
+													<input type="checkbox" value="1" name="intTransferencia" id="intTransferencia" <?php if ($row_DatosConsulta["intTransferencia"]==1){ ?>checked="checked" <?php }?>>
+													Transferencia Bancaria
+												</label>
+											</div>
+											<div class="checkbox">
+												<label>
+													<input type="checkbox" value="1" name="intPaypal" id="intPaypal" <?php if ($row_DatosConsulta["intPaypal"]==1){ ?>checked="checked" <?php }?>>
+													Paypal
+												</label>
+											</div>
+											<div class="checkbox">
+												<label>
+													<input type="checkbox" value="1" name="intCaixa" id="intCaixa" <?php if ($row_DatosConsulta["intCaixa"]==1){ ?>checked="checked" <?php }?>>
+													CaixaBank
+												</label>
+											</div>
+											<div class="checkbox">
+												<label>
+													<input type="checkbox" value="1" name="intSantander" id="intSantander" <?php if ($row_DatosConsulta["intSantander"]==1){ ?>checked="checked" <?php }?>>
+													Santander
+												</label>
+											</div>
+											<div class="checkbox">
+												<label>
+													<input type="checkbox" value="1" name="intGooglePay" id="intGooglePay" <?php if ($row_DatosConsulta["intGooglePay"]==1){ ?>checked="checked" <?php }?>>
+													GooglePay
+												</label>
+											</div>
+											<div class="checkbox">
+												<label>
+													<input type="checkbox" value="1" name="intApplePay" id="intApplePay" <?php if ($row_DatosConsulta["intApplePay"]==1){ ?>checked="checked" <?php }?>>
+													ApplePay
+												</label>
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="strPaypal_url">Paypal url</label>
+											<input class="form-control" placeholder="Introduce la url de Paypal" name="strPaypal_url" id="strPaypal_url" value="<?php echo $row_DatosConsulta["strPaypal_url"];?>">
+										</div>
+										<div class="form-group">
+											<label for="strPaypal_email">Paypal Email</label>
+											<input class="form-control" placeholder="Introduce el Email de Paypal" name="strPaypal_email" id="strPaypal_email" value="<?php echo $row_DatosConsulta["strPaypal_email"];?>">
+										</div>
+										<div class="form-group">
+											<label for="strCaixa_url">CaixaBank url</label>
+											<input class="form-control" placeholder="Introduce la url de CaixaBank" name="strCaixa_url" id="strCaixa_url" value="<?php echo $row_DatosConsulta["strCaixa_url"];?>">
+										</div>
+										<div class="form-group">
+											<label for="strCaixa_fuc">CaixaBank fuc</label>
+											<input class="form-control" placeholder="Introduce el fuc de CaixaBank" name="strCaixa_fuc" id="strCaixa_fuc" value="<?php echo $row_DatosConsulta["strCaixa_fuc"];?>">
+										</div>
+										<div class="form-group">
+											<label for="strCaixa_terminal">CaixaBank Terminal</label>
+											<input class="form-control" placeholder="Introduce el Terminal de CaixaBank" name="strCaixa_terminal" id="strCaixa_terminal" value="<?php echo $row_DatosConsulta["strCaixa_terminal"];?>">
+										</div>
+										<div class="form-group">
+											<label for="strCaixa_version">CaixaBank Versión</label>
+											<input class="form-control" placeholder="Introduce la versión de CaixaBank" name="strCaixa_version" id="strCaixa_version" value="<?php echo $row_DatosConsulta["strCaixa_version"];?>">
+										</div>
+										<div class="form-group">
+											<label for="strCaixa_clave">CaixaBank Clave</label>
+											<input class="form-control" placeholder="Introduce la clave de CaixaBank" name="strCaixa_clave" id="strCaixa_clave" value="<?php echo $row_DatosConsulta["strCaixa_clave"];?>">
+										</div>
+										<div class="form-group">
+											<label for="strSantander_url">Santander url</label>
+											<input class="form-control" placeholder="Introduce la url del Santander" name="strSantander_url" id="strSantander_url" value="<?php echo $row_DatosConsulta["strSantander_url"];?>">
+										</div>
+										<div class="form-group">
+											<label for="strSantander_merchantid">Santander merchantId</label>
+											<input class="form-control" placeholder="Introduce el merchantId del Santander" name="strSantander_merchantid" id="strSantander_merchantid" value="<?php echo $row_DatosConsulta["strSantander_merchantid"];?>">
+										</div>
+										<div class="form-group">
+											<label for="strSantander_secret">Santander Secret</label>
+											<input class="form-control" placeholder="Introduce el Secret del Santander" name="strSantander_secret" id="strSantander_secret" value="<?php echo $row_DatosConsulta["strSantander_secret"];?>">
+										</div>
+										<div class="form-group">
+											<label for="strSantander_account">Cuenta del Santander</label>
+											<input class="form-control" placeholder="Introduce la Cuenta del Santander" name="strSantander_account" id="strSantander_account" value="<?php echo $row_DatosConsulta["strSantander_account"];?>">
+										</div>
+										<button type="submit" class="btn btn-success" value="Actualizar">Actualizar</button>
                                         <input type="hidden" name="idConfiguracion" id="idConfiguracion" value="<?php echo $row_DatosConsulta["idConfiguracion"];?>">                                       
                                     	<input type="hidden" name="MM_insert" id="MM_insert" value="forminsert">
-                                    </form>
-                                </div>
-                                <!-- /.col-lg-6 (nested) -->
-                                
-                                <!-- /.col-lg-6 (nested) -->
-                            </div>
+									</div>
+									<!-- /.col-lg-6 (nested) -->
+									
+								</div>
+							</form>
                             <!-- /.row (nested) -->
                         </div>
                         <!-- /.panel-body -->

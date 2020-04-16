@@ -5,11 +5,13 @@
 		if ($_SESSION['MM2_Temporal']=="ELEVADO")
 		{
 			$usuariotempoactivo=$_SESSION['tienda2020Front_UserId'];
+			$_SESSION["usuariotempoactivo"]=$_SESSION['tienda2020Front_UserId'];
 			$insertGoTo = "index.php";//"cart_list.php";
 		}
 		else
 		{
 			$usuariotempoactivo=$_SESSION['MM2_Temporal'];
+			$_SESSION["usuariotempoactivo"]=$_SESSION['MM2_Temporal'];
 			$insertGoTo = "index.php";//"prealta.php";
 		}	
 		
@@ -161,48 +163,91 @@
 				<div class="row">
 					<div class="col-sm-6">
 					<div class="chose_area">
-						<ul class="user_option">
-							<li>
-								<h3><label for="intZona">Seleccionar Zona para envío</label></h3>
-							</li>
-							<li>							
-								<select name="intZona" class="form-control" id="intZona" onChange="MM_jumpMenu('parent',this,0)">
-									<option value="0" <?php if ($_SESSION["zonaactiva"]==0) echo "selected";?> >Selecciona la Zona de envío</option>
-									<?php do { ?>
-									<option value="<?php echo $row_DatosZona["idZona"]?>" <?php if ($row_DatosZona["idZona"]==$_SESSION["zonaactiva"]) echo "selected"; ?>><?php echo $row_DatosZona["strNombre"]?></option>
-				
-									<?php } while ($row_DatosZona = mysqli_fetch_assoc($DatosZona)); ?>
-								</select>
-							<li>
-						</ul>
 						<form action="pay.php" method="post">
 							<ul class="user_option">
+								<li>
+									<h3><label for="intZona">Seleccionar Zona para envío</label></h3>
+								</li>
+								<li>							
+									<select name="intZona" class="form-control" id="intZona" onChange="MM_jumpMenu('parent',this,0)">
+										<option value="0" <?php if ($_SESSION["zonaactiva"]==0) echo "selected";?> >Selecciona la Zona de envío</option>
+										<?php do { ?>
+										<option value="<?php echo $row_DatosZona["idZona"]?>" <?php if ($row_DatosZona["idZona"]==$_SESSION["zonaactiva"]) echo "selected"; ?>><?php echo $row_DatosZona["strNombre"]?></option>
+
+										<?php } while ($row_DatosZona = mysqli_fetch_assoc($DatosZona)); ?>
+									</select>
+								<li>
+							</ul>
+						
+							<?php 
+								$strNombre="";
+								$strDireccion="";
+								$strProvincia="";
+								$strPais="";
+								$intCP="";
+								$strEmail="";
+								$strTelefono="";
+										 
+								$query_DatosComprador = sprintf("SELECT * FROM tblcompra WHERE idUsuario=%s ORDER BY idCompra DESC",
+									   $usuariotempoactivo);
+
+								$DatosComprador = mysqli_query($con,  $query_DatosComprador) or die(mysqli_error($con));
+								$row_DatosComprador = mysqli_fetch_assoc($DatosComprador);
+								$totalRows_DatosComprador = mysqli_num_rows($DatosComprador);	
+										 
+								if($totalRows_DatosComprador>0)
+								{
+									$strNombre=$row_DatosComprador["strNombre"];
+									$strDireccion=$row_DatosComprador["strDireccion"];
+									$strProvincia=$row_DatosComprador["strProvincia"];
+									$strPais=$row_DatosComprador["strPais"];
+									$intCP=$row_DatosComprador["intCP"];
+									$strEmail=$row_DatosComprador["strEmail"];
+									$strTelefono=$row_DatosComprador["strTelefono"];
+								}
+							?>
+							
+							<ul class="user_option">
 								<li><label for="strNombre">Nombre Completo:</label>
-									<input name="strNombre"  type="text" id="strNombre"  class="form-control"/>
+									<input name="strNombre"  type="text" id="strNombre"  class="form-control" value="<?php echo $strNombre; ?>"/>
 						  		</li>
 								<li><label for="strDireccion">Dirección:</label>
-									<input name="strDireccion"  type="text" id="strDireccion"  class="form-control"/>
+									<input name="strDireccion"  type="text" id="strDireccion"  class="form-control" value="<?php echo $strDireccion; ?>"/>
 								</li>
 								<li><label for="strProvincia">Provincia:</label>
-									<input name="strProvincia"  type="text" id="strProvincia"  class="form-control"/>
+									<input name="strProvincia"  type="text" id="strProvincia"  class="form-control" value="<?php echo $strProvincia; ?>"/>
 								</li>
 								<li><lable for="strPais">Pais:</label>
-									<input name="strPais"  type="text" id="strPais"  class="form-control"/>
+									<input name="strPais"  type="text" id="strPais"  class="form-control" value="<?php echo $strPais; ?>"/>
 								</li>
 								<li><label for="intCP">Código Postal:</label>
-									<input name="intCP"  type="number" id="intCP"  class="form-control"/>
+									<input name="intCP"  type="number" id="intCP"  class="form-control" value="<?php echo $intCP; ?>"/>
 								</li>
 								<li><label for="strEmail">E-mail:</label> 
-									<input name="strEmail"  type="mail" id="strEmail"  class="form-control"/>
+									<input name="strEmail"  type="email" id="strEmail"  class="form-control" value="<?php echo $strEmail; ?>"/>
 								</li>
-								<li><label for="intTelefono">Teléfono:</label>
-									<input name="intTelefono"  type="number" id="intTelefono"  class="form-control"/>
+								<li><label for="strTelefono">Teléfono:</label>
+									<input name="strTelefono"  type="text" id="strTelefono"  class="form-control" value="<?php echo $strTelefono; ?>"/>
 								</li><br>
 								<li><label for="intPago">Forma de Pago:</label><br>
-									<input name="intPago" type="radio" value="1" checked="checked"> Transferencia Bancaria<br>
-									<input name="intPago" type="radio" value="2"> Paypal<br>
-									<input name="intPago" type="radio" value="3"> VISA Santander<br>
-									<input name="intPago" type="radio" value="4"> VISA Caixa
+									<?php if(_intTransferencia=="1"){?>
+										<input name="intPago" type="radio" value="1" checked="checked"> Transferencia Bancaria<br>
+									<?php }?>
+									<?php if(_intPaypal=="1"){?>
+										<input name="intPago" type="radio" value="2"> Paypal<br>
+									<?php }?>
+									<?php if(_intCaixa=="1"){?>
+										<input name="intPago" type="radio" value="3"> VISA CaixaBank<br>
+									<?php }?>
+									<?php if(_intSantander=="1"){?>
+										<input name="intPago" type="radio" value="4"> VISA Santander<br>
+									<?php }?>
+									<?php if(_intGooglePay=="1"){?>
+										<input name="intPago" type="radio" value="5"> GooglePay<br>
+									<?php }?>
+									<?php if(_intApplePay=="1"){?>
+										<input name="intPago" type="radio" value="6"> ApplePay
+									<?php }?>
 								</li>	
 							</ul>
 						<input name="botonpagar" type="submit" class="btn btn-default update" value="Pagar">
@@ -216,7 +261,7 @@
 							<li>Impuesto<span><?php echo number_format($totalimpuestos, 2, ",", ".").$_SESSION["monedasimbolo"];?></span></li>
 							<li>Transporte <span><?php $portescalculados=CalculateDelivering($totalpeso, $_SESSION["zonaactiva"]); echo number_format($portescalculados, 2, ",", ".").$_SESSION["monedasimbolo"];
 								?></span></li>
-							<li>Total <span><?php echo number_format($totalcarrito+$portescalculados, 2, ",", ".").$_SESSION["monedasimbolo"];?></span></li>
+							<li>Total <span><?php echo number_format($totalcarrito+$portescalculados, 2, ",", ".").$_SESSION["monedasimbolo"]; $_SESSION["Total"]=$totalcarrito+$portescalculados; $_SESSION["TotalsinImpuestos"]=$totalsinimpuestos;?></span></li>
 						</ul>
 					</div>
 				</div>

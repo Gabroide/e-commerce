@@ -4,7 +4,7 @@
 <file name="zone-edit.php" server="D:/wamp/www/JBElUnico/" local="132302805990000000" remote="132302805990000000" Dst="2" />
 <file name="zonedetail-add.php" server="D:/wamp/www/JBElUnico/" local="132310151971665400" remote="132310151970000000" Dst="2" />
 <file name="zonedetail-edit.php" server="D:/wamp/www/JBElUnico/" local="132310619992836921" remote="132310619990000000" Dst="2" />
-<file name="settings.php" server="D:/wamp/www/JBElUnico/" local="132297725566359428" remote="132297725560000000" Dst="2" />
+<file name="settings.php" server="D:/wamp/www/JBElUnico/" local="132314105684959943" remote="132314105680000000" Dst="2" />
 <file name="product-add.php" server="D:/wamp/www/JBElUnico/" local="132308978745407747" remote="132308978740000000" Dst="2" />
 <file name="product-edit.php" server="D:/wamp/www/JBElUnico/" local="132308991158946362" remote="132308991150000000" Dst="2" />
 <file name="coin-list.php" server="D:/wamp/www/JBElUnico/" local="132311461893291743" remote="132311461890000000" Dst="2" />
@@ -12,4 +12,5 @@
 <file name="coin-edit.php" server="D:/wamp/www/JBElUnico/" local="132308967300000000" remote="132308967300000000" Dst="2" />
 <file name="category-edit.php" server="D:/wamp/www/JBElUnico/" local="132302804369683095" remote="132302804360000000" Dst="2" />
 <file name="main-coin.php" server="D:/wamp/www/JBElUnico/" local="132311462900000000" remote="132311462900000000" Dst="2" />
+<file name="error.php" server="D:/wamp/www/JBElUnico/" local="132300356031289360" remote="132300356030000000" Dst="2" />
 </dwsync>
