@@ -45,12 +45,14 @@
 				<div class="col-sm-4">
 					<div class="signup-form"><!--sign up form-->
 						<h2>Registrarse</h2>
-						<form action="#">
-							<label for="newmail">Correo Electrónico</label>
-							<input type="text" placeholder="Name" />
-							<input type="email" placeholder="Email Address"/>
-							<input type="password" placeholder="Password"/>
-							<button type="submit" class="btn btn-default">Signup</button>
+						<form action="usuario-alta.php" method="post">
+							<label for="strNombre">Nombre</label>
+							<input type="text" placeholder="Nombre" id="strNombre" name="strNombre"/>
+							<label for="strEmail">correo Electrónico</label>
+							<input type="email" placeholder="nombre@gmail.com" id="strEmail" name="strEmail"/>
+							<label for="strPassword">Contraseña</label>
+							<input type="password" placeholder="Contraseña" id="strPassword" name="strPassword"/>
+							<button type="submit" class="btn btn-default">Registrarse</button>
 							<br>
 							<br>
 						</form>

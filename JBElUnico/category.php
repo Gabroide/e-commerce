@@ -7,46 +7,56 @@ $variable_Consulta = "0";
 if (isset($VARIABLE)) {
   $variable_Consulta = $VARIABLE;
 }
+$resultadosporclick=3;
 
-$resultadosporclick=6;
-
-if(isset($_GET["id"]) && !empty($_GET["id"]))
+if (isset($_GET["cat"]) && !empty($_GET["cat"]))
 {
+		//CONSULTAR ID DE SEO DE CATEGORIA ACTUAL
+		$query_DatosSEO = sprintf("SELECT idCategoria FROM tblcategoria WHERE strSEO=%s",
+					GetSQLValueString($_GET["cat"], "text") );
+	$DatosSEO = mysqli_query($con,  $query_DatosSEO) or die(mysqli_error($con));
+	$row_DatosSEO = mysqli_fetch_assoc($DatosSEO);
+	$totalRows_DatosSEO = mysqli_num_rows($DatosSEO);
+
+	$_GET["id"]=$row_DatosSEO["idCategoria"];
+
+
 	$categoriaparaver=$_GET["id"];
 
-	$query_DatosConsultaTotales = sprintf("SELECT COUNT(idProducto) AS TotalProductosConsulta FROM tblproducto WHERE intEstado=1 AND (refCategoria1=".$categoriaparaver." OR refCategoria2=".$categoriaparaver." OR refCategoria3=".$categoriaparaver." OR refCategoria4=".$categoriaparaver." OR refCategoria5=".$categoriaparaver.") ORDER BY idProducto ASC");
+	$query_DatosConsultaTotales = sprintf("SELECT COUNT(idProducto) AS TotalProductosConsulta FROM tblproducto WHERE intEstado=1  AND (refCategoria1=".$categoriaparaver." OR refCategoria2=".$categoriaparaver." OR refCategoria3=".$categoriaparaver." OR refCategoria4=".$categoriaparaver." OR refCategoria5=".$categoriaparaver." ) ORDER BY idProducto ASC");
 	$DatosConsultaTotales = mysqli_query($con,  $query_DatosConsultaTotales) or die(mysqli_error($con));
 	$row_DatosConsultaTotales = mysqli_fetch_assoc($DatosConsultaTotales);
-	$totalRows_DatosConsultaTorales = mysqli_num_rows($DatosConsultaTotales);
+	$totalRows_DatosConsultaTotales = mysqli_num_rows($DatosConsultaTotales);
 
-	$totalresltados=$row_DatosConsultaTotales["TotalProductosConsulta"];
+	$totalresultados=$row_DatosConsultaTotales["TotalProductosConsulta"];
 
-	$query_DatosConsulta = sprintf("SELECT idProducto FROM tblproducto WHERE intEstado=1 AND (refCategoria1=".$categoriaparaver." OR refCategoria2=".$categoriaparaver." OR refCategoria3=".$categoriaparaver." OR refCategoria4=".$categoriaparaver." OR refCategoria5=".$categoriaparaver.") ORDER BY idProducto ASC LIMIT 0,".$resultadosporclick);
+	$query_DatosConsulta = sprintf("SELECT idProducto FROM tblproducto WHERE intEstado=1 AND (refCategoria1=".$categoriaparaver." OR refCategoria2=".$categoriaparaver." OR refCategoria3=".$categoriaparaver." OR refCategoria4=".$categoriaparaver." OR refCategoria5=".$categoriaparaver." ) ORDER BY idProducto ASC LIMIT 0,".$resultadosporclick);
 	$DatosConsulta = mysqli_query($con,  $query_DatosConsulta) or die(mysqli_error($con));
 	$row_DatosConsulta = mysqli_fetch_assoc($DatosConsulta);
 	$totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
-}
 
-//FINAL DE LA PARTE SUPERIOR
+	}
+	//FINAL DE LA PARTE SUPERIOR
 
-//PROCESAMIENTO DE MARCA
-if(isset($_GET["brand"]) && !empty($_GET["brand"]))
-{
+	//PROCESAMIENTO DE MARCA
+	if (isset($_GET["marca"]) && !empty($_GET["marca"])){
+
 	//$categoriaparaver=$_GET["id"];
 
 	$query_DatosConsultaTotales = sprintf("SELECT COUNT(idProducto) AS TotalProductosConsulta FROM tblproducto WHERE intEstado=1 AND refMarca=%s ORDER BY idProducto ASC",
-										 GetSQLvalueString($_GET["brand"],"int"));
-	
+									GetSQLValueString($_GET["marca"], "int"));
+
 	$DatosConsultaTotales = mysqli_query($con,  $query_DatosConsultaTotales) or die(mysqli_error($con));
 	$row_DatosConsultaTotales = mysqli_fetch_assoc($DatosConsultaTotales);
-	$totalRows_DatosConsultaTorales = mysqli_num_rows($DatosConsultaTotales);
+	$totalRows_DatosConsultaTotales = mysqli_num_rows($DatosConsultaTotales);
 
-	$totalresltados=$row_DatosConsultaTotales["TotalProductosConsulta"];
+	$totalresultados=$row_DatosConsultaTotales["TotalProductosConsulta"];
 
-	$query_DatosConsulta = sprintf("SELECT idProducto FROM tblproducto WHERE intEstado=1 AND refMarca=%s ORDER BY idProducto ASC LIMIT 0,".$resultadosporclick, GetSQLvalueString($_GET["brand"],"int"));
+	$query_DatosConsulta = sprintf("SELECT idProducto FROM tblproducto WHERE intEstado=1 AND refMarca=%s ORDER BY idProducto ASC LIMIT 0,".$resultadosporclick, GetSQLValueString($_GET["marca"], "int"));
 	$DatosConsulta = mysqli_query($con,  $query_DatosConsulta) or die(mysqli_error($con));
 	$row_DatosConsulta = mysqli_fetch_assoc($DatosConsulta);
 	$totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
+
 }
 ?>
 <!DOCTYPE html>
@@ -111,7 +121,7 @@ if(isset($_GET["brand"]) && !empty($_GET["brand"]))
 			
 			$tutorial_id=1;
 			
-			if($totalresltados>$resultadosporclick)
+			if($totalresultados>$resultadosporclick)
 			{?>
 			
 			<div style="text-align: center">

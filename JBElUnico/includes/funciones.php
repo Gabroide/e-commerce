@@ -333,33 +333,37 @@ function showsubcategories($padre)
 {
 	global $con;
 	
-	$query_ConsultaFuncion = sprintf("SELECT * FROM tblcategoria WHERE refPadre = %s AND intEstado=1",GetSQLValueString($padre, "text"));
+	$query_ConsultaFuncion = sprintf("SELECT * FROM tblcategoria WHERE refPadre = %s AND intEstado=1",
+		 GetSQLValueString($padre, "text"));
 	//echo $query_ConsultaFuncion;
 	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
 	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
 	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
 	
-	if ($totalRows_ConsultaFuncion>0) 
-	{
-		do{
-			if(hassubcategories($row_ConsultaFuncion["idCategoria"]))
-			{
-		?>
-		<li><a href="category.php?id=<?php echo $row_ConsultaFuncion["idCategoria"];?>"><?php echo $row_ConsultaFuncion["strNombre"];?> </a>
+	if ($totalRows_ConsultaFuncion>0)	{
+		do { 
+			 if (hassubcategories($row_ConsultaFuncion["idCategoria"]))
+				{
+			?>
+			<li><a href="<?php echo GenerarRutaCategoria($row_ConsultaFuncion["idCategoria"])?>"><?php echo $row_ConsultaFuncion["strNombre"];?> </a>
 			<ul>
 				<?php showsubsubcategories($row_ConsultaFuncion["idCategoria"]);?>
-			</ul>
-		</li>
-		<?php
+				</ul>
+			</li>
+			<?php
+				
 			}
-			else
+			else 
 			{
-			?>
-			<li><a href="category.php?id=<?php echo $row_ConsultaFuncion["idCategoria"];?>"><?php echo $row_ConsultaFuncion["strNombre"];?> </a></li>		
-			<?php }
-		} while($row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion));
+			?><li><a href="<?php echo GenerarRutaCategoria($row_ConsultaFuncion["idCategoria"])?>"><?php echo $row_ConsultaFuncion["strNombre"];?> </a>
+			</li>
+			
+			<?php
+			}
+			
+	 } while ($row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion)); 
+		
 	}
-	
 	mysqli_free_result($ConsultaFuncion);
 }
 
@@ -367,18 +371,22 @@ function showsubsubcategories($padre)
 {
 	global $con;
 	
-	$query_ConsultaFuncion = sprintf("SELECT * FROM tblcategoria WHERE refPadre = %s AND intEstado=1",GetSQLValueString($padre, "text"));
+	$query_ConsultaFuncion = sprintf("SELECT * FROM tblcategoria WHERE refPadre = %s AND intEstado=1",
+		 GetSQLValueString($padre, "text"));
 	//echo $query_ConsultaFuncion;
 	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
 	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
 	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
 	
-	if ($totalRows_ConsultaFuncion>0) 
-	{
-		do{ ?>
-		<li><a href="category.php?id=<?php echo $row_ConsultaFuncion["idCategoria"];?>"><?php echo $row_ConsultaFuncion["strNombre"];?> </a></li>
-		<?php
-		} while($row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion));
+	if ($totalRows_ConsultaFuncion>0)	{
+		do { 
+			
+			?>
+			<li><a href="<?php echo GenerarRutaCategoria($row_ConsultaFuncion["idCategoria"])?>"><?php echo $row_ConsultaFuncion["strNombre"];?> </a>
+			</li>
+	<?php
+	 } while ($row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion)); 
+		
 	}
 	
 	mysqli_free_result($ConsultaFuncion);
@@ -596,7 +604,8 @@ function ShowProduct($id, $tipomuestra=0)
 	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
 	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
 	
-	$linkProduct="product-detail.php?id=".$row_ConsultaFuncion["idProducto"];
+	//$linkProduct="product-detail.php?id=".$row_ConsultaFuncion["idProducto"];
+	$linkProduct=GenerarRutaCategoria($row_ConsultaFuncion["refCategoria1"]).$row_ConsultaFuncion["strSEO"].".html";
 ?>
 
 	<div class="product-image-wrapper">
@@ -1092,13 +1101,13 @@ function ShowBreadcrumbs($categoria)
 			<ol class="breadcrumb">
 			  <li><a href="index.php">Inicio</a></li>
 			  <?php if ($nivel1!="") 
-				echo '<li >'.$nivel1.'</li>'
+				echo '<li >'.$nivel1.'</li>';
 				?>
 				 <?php if ($nivel2!="") 
-				echo '<li >'.$nivel2.'</li>'
+				echo '<li >'.$nivel2.'</li>';
 				?>
 				 <?php if ($nivel3!="") 
-				echo '<li >'.$nivel3.'</li>'
+				echo '<li >'.$nivel3.'</li>';
 				?>
 
 			</ol>
@@ -1674,6 +1683,72 @@ function TestUniqueSEOUploadCategory($idactual, $url)
 	else
 		return false;
 	
+	mysqli_free_result($ConsultaFuncion);
+}
+
+function GenerarRutaCategoria($categoria)
+{
+	global $con;
+	
+	$nivel1="";
+	$nivel2="";
+	$nivel3="";
+	
+	$query_ConsultaFuncion = sprintf("SELECT * FROM tblcategoria WHERE idCategoria = %s",
+		 GetSQLValueString($categoria, "int"));
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	if ($row_ConsultaFuncion["refPadre"]!="0")
+	{
+		//ES DE SEGUNDO O TERCER NIVEL
+		$query_ConsultaFuncion2 = sprintf("SELECT * FROM tblcategoria WHERE idCategoria = %s",
+		 GetSQLValueString($row_ConsultaFuncion["refPadre"], "int"));
+		//echo $query_ConsultaFuncion;
+		$ConsultaFuncion2 = mysqli_query($con,  $query_ConsultaFuncion2) or die(mysqli_error($con));
+		$row_ConsultaFuncion2 = mysqli_fetch_assoc($ConsultaFuncion2);
+		$totalRows_ConsultaFuncion2 = mysqli_num_rows($ConsultaFuncion2);
+		
+		if ($row_ConsultaFuncion2["refPadre"]!="0")
+		{
+			//CONSIDERAMOS NIVEL 3
+			$nivel2=$row_ConsultaFuncion2["strSEO"];
+			$nivel3=$row_ConsultaFuncion["strSEO"];
+			
+			$query_ConsultaFuncion3 = sprintf("SELECT * FROM tblcategoria WHERE idCategoria = %s",
+		 GetSQLValueString($row_ConsultaFuncion2["refPadre"], "int"));
+		//echo $query_ConsultaFuncion;
+		$ConsultaFuncion3 = mysqli_query($con,  $query_ConsultaFuncion3) or die(mysqli_error($con));
+		$row_ConsultaFuncion3 = mysqli_fetch_assoc($ConsultaFuncion3);
+		$totalRows_ConsultaFuncion3 = mysqli_num_rows($ConsultaFuncion3);
+			
+			$nivel1=$row_ConsultaFuncion3["strSEO"];	
+		}
+		else
+		{
+			//CONSIDERAMOS NIVEL 2
+			$nivel1=$row_ConsultaFuncion2["strSEO"];
+			$nivel2=$row_ConsultaFuncion["strSEO"];
+		}
+	}
+	else
+	{
+		//ES DE PRIMER NIVEL
+		$nivel1=$row_ConsultaFuncion["strSEO"];
+	}
+	
+	
+	$rutacompleta="";
+	if ($nivel1!="") 
+		$rutacompleta=$nivel1.'/';
+	 if ($nivel2!="") 
+		$rutacompleta=$rutacompleta.$nivel2.'/';
+	if ($nivel3!="") 
+		$rutacompleta=$rutacompleta.$nivel3.'/';
+					
+	return $rutacompleta;
 	mysqli_free_result($ConsultaFuncion);
 }
 ?>

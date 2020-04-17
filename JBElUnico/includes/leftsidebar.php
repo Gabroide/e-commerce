@@ -39,7 +39,7 @@
 		?>
 		<div class="panel-heading">
 				<h4 class="panel-title">
-					<a href="category.php?id=<?php echo $row_DatosConsultaCategorias["idCategoria"];?>">
+					<a href="<?php echo GenerarRutaCategoria($row_DatosConsultaCategorias["idCategoria"]);?>">
 						<?php echo $row_DatosConsultaCategorias["strNombre"];?>
 					</a>
 				</h4>

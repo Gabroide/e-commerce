@@ -8,7 +8,7 @@ if (isset($VARIABLE)) {
   $variable_Consulta = $VARIABLE;
 }
 
-$query_DatosConsulta = sprintf("SELECT * FROM tblproducto WHERE intEstado=1 AND idProducto=%s", GetSQLValueString($_GET["id"], "int"));
+$query_DatosConsulta = sprintf("SELECT * FROM tblproducto WHERE intEstado=1 AND strSEO=%s", GetSQLValueString($_GET["prod"], "text"));
 $DatosConsulta = mysqli_query($con,  $query_DatosConsulta) or die(mysqli_error($con));
 $row_DatosConsulta = mysqli_fetch_assoc($DatosConsulta);
 $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);

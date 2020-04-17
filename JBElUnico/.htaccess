@@ -1,4 +1,4 @@
-RewriteBase /tienda2020/
+RewriteBase /JBElUnico/
 
 Options +FollowSymlinks
 RewriteEngine on
@@ -9,11 +9,11 @@ RewriteEngine on
 RewriteRule ^_admin/.*$ - [PT]
 
 #PRODUCTOS
-RewriteRule ^(.+)/(.+).html$ producto-detalle.php?recordID=$2
-RewriteRule ^(.+)/(.+)/(.+).html$ producto-detalle.php?recordID=$3
-RewriteRule ^(.+)/(.+)/(.+)/(.+).html$ producto-detalle.php?recordID=$4
+RewriteRule ^(.+)/(.+).html$ product-detail.php?prod=$2
+RewriteRule ^(.+)/(.+)/(.+).html$ product-detail.php?prod=$3
+RewriteRule ^(.+)/(.+)/(.+)/(.+).html$ product-detail.php?prod=$4
 
 #CATEGORIAS
-RewriteRule ^(.+)/$ categoria.php?cat=$1
-RewriteRule ^(.+)/(.+)/$ categoria.php?cat=$2
-RewriteRule ^(.+)/(.+)/(.+)/$ categoria.php?cat=$3
+RewriteRule ^(.+)/$ category.php?cat=$1
+RewriteRule ^(.+)/(.+)/$ category.php?cat=$2
+RewriteRule ^(.+)/(.+)/(.+)/$ category.php?cat=$3
