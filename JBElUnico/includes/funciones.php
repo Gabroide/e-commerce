@@ -1602,8 +1602,78 @@ function ActualizacionCarrito($idcompra)
 						 $idcompra, 
 						 $_SESSION["usuariotempoactivo"]);
   
-  	$Result1 = mysqli_query($con, $updateSQL) or die(mysqli_error($con));
-		
+  	$Result1 = mysqli_query($con, $updateSQL) or die(mysqli_error($con));	
+}
+
+function TestUniquSEO($url)
+{
+	global $con;
 	
+	$query_ConsultaFuncion = sprintf("SELECT strSEO FROM tblproducto WHERE strSEO=%s",GetSQLValueString($url, "text"));
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	if ($totalRows_ConsultaFuncion==0) 
+		return true;
+	else
+		return false;
+	
+	mysqli_free_result($ConsultaFuncion);
+}
+
+function TestUniqueSEOUpload($idactual, $url)
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT strSEO FROM tblproducto WHERE strSEO=%s AND idProducto<>%s",GetSQLValueString($url, "text"), GetSQLValueString($idactual, "int"));
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	if ($totalRows_ConsultaFuncion==0)
+		return true;
+	else
+		return false;
+	
+	mysqli_free_result($ConsultaFuncion);
+}
+
+function TestUniquSEOCategory($url)
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT strSEO FROM tblcategoria WHERE strSEO=%s",GetSQLValueString($url, "text"));
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	if ($totalRows_ConsultaFuncion==0) 
+		return true;
+	else
+		return false;
+	
+	mysqli_free_result($ConsultaFuncion);
+}
+
+function TestUniqueSEOUploadCategory($idactual, $url)
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT strSEO FROM tblcategoria WHERE strSEO=%s AND idCategoria<>%s",GetSQLValueString($url, "text"), GetSQLValueString($idactual, "int"));
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	if ($totalRows_ConsultaFuncion==0)
+		return true;
+	else
+		return false;
+	
+	mysqli_free_result($ConsultaFuncion);
 }
 ?>

@@ -15,40 +15,51 @@ $esprincipal=0;
 	if ((isset($_POST["intPrincipal"])) && ($_POST["intPrincipal"]=="1"))
 		$esprincipal=1;
 	
-  $updateSQL = sprintf("UPDATE tblproducto SET strNombre=%s, refCategoria1=%s,  refCategoria2=%s,  refCategoria3=%s, refCategoria4=%s, refCategoria5=%s,  strImagen1=%s, strImagen2=%s, strImagen3=%s, strImagen4=%s, strImagen5=%s, strDescripcion=%s, dblPrecio=%s, dblPrecioAnterior=%s, intEstado=%s, refMarca=%s, intPrincipal=%s, intStock=%s, refImpuesto=%s, dblPeso=%s WHERE idProducto=%s",
-                       GetSQLValueString($_POST["strNombre"], "text"),
-                       GetSQLValueString($_POST["refCategoria1"], "int"),
-					   GetSQLValueString($_POST["refCategoria2"], "int"),
-					   GetSQLValueString($_POST["refCategoria3"], "int"),
-					   GetSQLValueString($_POST["refCategoria4"], "int"),
-					   GetSQLValueString($_POST["refCategoria5"], "int"),
-                       GetSQLValueString($_POST["strImagen1"], "text"),
-					   GetSQLValueString($_POST["strImagen2"], "text"),
-					   GetSQLValueString($_POST["strImagen3"], "text"),
-					   GetSQLValueString($_POST["strImagen4"], "text"),
-					   GetSQLValueString($_POST["strImagen5"], "text"),
-                       GetSQLValueString($_POST["strDescripcion"], "text"),
-                       GetSQLValueString(ProcessComaCost($_POST["dblPrecio"]), "double"),
-					   GetSQLValueString(ProcessComaCost($_POST["dblPrecioAnterior"]), "double"),
-					   GetSQLValueString($_POST["intEstado"], "int"),
-					   GetSQLValueString($_POST["refMarca"], "int"),
-					   GetSQLValueString($esprincipal, "int"),
-					   GetSQLValueString($_POST["intStock"], "int"),
-					   GetSQLValueString($_POST["refImpuesto"], "int"),
-					   GetSQLValueString(ProcessComaCost($_POST["dblPeso"]), "double"),
-					   GetSQLValueString($_POST["idProducto"], "int"));
-
-	//echo $updateSQL;
-	$Result1 = mysqli_query($con, $updateSQL) or die(mysqli_error($con));
+	if(TestUniqueSEOUpload($_POST["idProducto"], $_POST["strSEO"]))
+	{
 	
+	  $updateSQL = sprintf("UPDATE tblproducto SET strNombre=%s, strSEO=%s, refCategoria1=%s,  refCategoria2=%s,  refCategoria3=%s, refCategoria4=%s, refCategoria5=%s,  strImagen1=%s, strImagen2=%s, strImagen3=%s, strImagen4=%s, strImagen5=%s, strDescripcion=%s, dblPrecio=%s, dblPrecioAnterior=%s, intEstado=%s, refMarca=%s, intPrincipal=%s, intStock=%s, refImpuesto=%s, dblPeso=%s WHERE idProducto=%s",
+						   GetSQLValueString($_POST["strNombre"], "text"),
+						   GetSQLValueString($_POST["strSEO"], "text"),
+						   GetSQLValueString($_POST["refCategoria1"], "int"),
+						   GetSQLValueString($_POST["refCategoria2"], "int"),
+						   GetSQLValueString($_POST["refCategoria3"], "int"),
+						   GetSQLValueString($_POST["refCategoria4"], "int"),
+						   GetSQLValueString($_POST["refCategoria5"], "int"),
+						   GetSQLValueString($_POST["strImagen1"], "text"),
+						   GetSQLValueString($_POST["strImagen2"], "text"),
+						   GetSQLValueString($_POST["strImagen3"], "text"),
+						   GetSQLValueString($_POST["strImagen4"], "text"),
+						   GetSQLValueString($_POST["strImagen5"], "text"),
+						   GetSQLValueString($_POST["strDescripcion"], "text"),
+						   GetSQLValueString(ProcessComaCost($_POST["dblPrecio"]), "double"),
+						   GetSQLValueString(ProcessComaCost($_POST["dblPrecioAnterior"]), "double"),
+						   GetSQLValueString($_POST["intEstado"], "int"),
+						   GetSQLValueString($_POST["refMarca"], "int"),
+						   GetSQLValueString($esprincipal, "int"),
+						   GetSQLValueString($_POST["intStock"], "int"),
+						   GetSQLValueString($_POST["refImpuesto"], "int"),
+						   GetSQLValueString(ProcessComaCost($_POST["dblPeso"]), "double"),
+						   GetSQLValueString($_POST["idProducto"], "int"));
+
+		//echo $updateSQL;
+		$Result1 = mysqli_query($con, $updateSQL) or die(mysqli_error($con));
 
 
-  $insertGoTo = "product-list.php";
-  if (isset($_SERVER['QUERY_STRING'])) {
-    $insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
-    $insertGoTo .= $_SERVER['QUERY_STRING'];
-  }
-  header(sprintf("Location: %s", $insertGoTo));
+
+	  $insertGoTo = "product-list.php";
+	  if (isset($_SERVER['QUERY_STRING'])) {
+		$insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
+		$insertGoTo .= $_SERVER['QUERY_STRING'];
+	  }
+	  header(sprintf("Location: %s", $insertGoTo));
+	}
+	else
+	{
+		//EL SEO ESTÁ REPETIDO
+		$insertGoTo = "error.php?error=6";
+	  	header(sprintf("Location: %s", $insertGoTo));
+	}
 }
 
 $query_DatosProducto = sprintf("SELECT * FROM tblproducto WHERE idProducto=%s", GetSQLValueString($_GET["id"], "int") );
@@ -148,8 +159,12 @@ $totalRows_DatosImpuestos = mysqli_num_rows($DatosImpuestos);
 									<div class="col-lg-6">
 										<div class="form-group">
 											<label for="strNombre">Nombre del Producto</label>
-											<input class="form-control" placeholder="Esctibir Nombre del Producto" name="strNombre" id="strNombre" value="<?php echo $row_DatosProducto["strNombre"];?>">
+											<input class="form-control" placeholder="Esctibir Nombre del Producto" name="strNombre" id="strNombre" value="<?php echo $row_DatosProducto["strNombre"];?>" onChange="javascript:document.forminsert.strSEO.value=CodificarSEO(document.forminsert.strNombre.value);">
 										</div>
+                                        <div class="form-group">
+                                            <label>SEO</label>
+                                            <input class="form-control" placeholder="Escribir SEO del Producto" name="strSEO" id="strSEO" value="<?php echo $row_DatosProducto["strSEO"];?>">
+                                        </div>
 										<div class="form-group">
 											<label for="strDescripcion">Descripción del Producto</label>
 											<textarea name="strDescripcion" id="strDescripcion">

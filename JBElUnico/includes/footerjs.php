@@ -5,7 +5,6 @@
 <script src="js/jquery.prettyPhoto.js"></script>
 <script src="js/main.js"></script>
 
-
 <script>
 	function flyToElement(flyer, flyingTo) {
 		var $func = $(this);

@@ -71,6 +71,12 @@
 											<?php ProductosDependientes($_GET["cat"]);  ?>
 											</div>
 										<?php }?>
+										<?php if ($_GET["error"]==6){?>
+											<div class="alert alert-danger">El SEO debe ser único. <a href="product-list.php">Volver al listado de productos.</a></div>
+										<?php }?>
+										<?php if ($_GET["error"]==7){?>
+											<div class="alert alert-danger">El SEO debe ser único. <a href="category-list.php">Volver al listado de categorias.</a></div>
+										<?php }?>
 								  </div>
 									<!-- /.col-lg-6 (nested) -->
 

@@ -8,25 +8,35 @@ if (isset($_SERVER['QUERY_STRING'])) {
   $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
 }
 
-if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsert")) {
-	
+if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsert")) 
+{
+	if(TestUniqueSEOUploadCategory($_POST["idCategoria"], $_POST["strSEO"]))
+	{
 
-  $updateSQL = sprintf("UPDATE tblcategoria SET strNombre=%s, intEstado=%s, refPadre=%s, intOrden=%s WHERE idCategoria=%s",
-                       GetSQLValueString($_POST["strNombre"], "text"),
-					   GetSQLValueString($_POST["intEstado"], "int"),
-					   GetSQLValueString($_POST["refPadre"], "int"),
-					   GetSQLValueString($_POST["intOrden"], "int"),
-					   GetSQLValueString($_POST["idCategoria"], "int"));
+		  $updateSQL = sprintf("UPDATE tblcategoria SET strNombre=%s, strSEO=%s, intEstado=%s, refPadre=%s, intOrden=%s WHERE idCategoria=%s",
+							   GetSQLValueString($_POST["strNombre"], "text"),
+							   GetSQLValueString($_POST["strSEO"], "text"),
+							   GetSQLValueString($_POST["intEstado"], "int"),
+							   GetSQLValueString($_POST["refPadre"], "int"),
+							   GetSQLValueString($_POST["intOrden"], "int"),
+							   GetSQLValueString($_POST["idCategoria"], "int"));
 
-//echo $updateSQL;
-$Result1 = mysqli_query($con, $updateSQL) or die(mysqli_error($con));
+		//echo $updateSQL;
+		$Result1 = mysqli_query($con, $updateSQL) or die(mysqli_error($con));
 
-  $updateGoTo = "category-list.php";
-  if (isset($_SERVER['QUERY_STRING'])) {
-    $updateGoTo .= (strpos($updateGoTo, '?')) ? "&" : "?";
-    $updateGoTo .= $_SERVER['QUERY_STRING'];
-  }
-  header(sprintf("Location: %s", $updateGoTo));
+		  $updateGoTo = "category-list.php";
+		  if (isset($_SERVER['QUERY_STRING'])) {
+			$updateGoTo .= (strpos($updateGoTo, '?')) ? "&" : "?";
+			$updateGoTo .= $_SERVER['QUERY_STRING'];
+		  }
+		  header(sprintf("Location: %s", $updateGoTo));
+		}
+		else
+		{
+			//EL SEO ESTÁ REPETIDO
+			$insertGoTo = "error.php?error=7";
+			header(sprintf("Location: %s", $insertGoTo));
+		}
 	}
 
 $query_DatosConsulta = sprintf("SELECT * FROM tblcategoria WHERE idCategoria=%s", GetSQLValueString($_GET["id"], "int"));
@@ -98,12 +108,17 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
                                 <div class="col-lg-6">
                                     <form action="category-edit.php" method="post" id="forminsert" name="forminsert" role="form" onSubmit="javascript:return validarcategoriaalta();">
                                         <div class="form-group">
-                                            <label for="strNOmbre">Nombre de categoría</label>
-                                            <input class="form-control" placeholder="Escribir Nombre del categoría" name="strNombre" id="strNombre" value="<?php echo $row_DatosConsulta["strNombre"];?>">
+                                            <label for="strNombre">Nombre de categoría</label>
+                                            <input class="form-control" placeholder="Escribir Nombre del categoría" name="strNombre" id="strNombre" value="<?php echo $row_DatosConsulta["strNombre"];?>" onChange="javascript:document.forminsert.strSEO.value=CodificarSEO(document.forminsert.strNombre.value);">
                                         </div>
-                                        <div class="alert alert-danger hiddeit" id="errornombre">eL CAMPO Nombre es obligatorio</div>
+                                        <div class="alert alert-danger hiddeit" id="errornombre">El campo Nombre es obligatorio</div>
                                         <div class="form-group">
-                                        	<label for="intOnden">Orden de categoría</label>
+                                            <label for="strSEO">SEO de categoría</label>
+                                            <input class="form-control" placeholder="categoria-1" name="strSEO" id="strSEO" value="<?php echo $row_DatosConsulta["strSEO"];?>">
+                                        </div>
+                                        <div class="alert alert-danger hiddeit" id="errorseo">El campo SEO es obligatorio</div>
+                                        <div class="form-group">
+                                        	<label for="intOrden">Orden de categoría</label>
                                             <input class="form-control" placeholder="Escribir Orden de la categoría" name="intOrden" id="intOrden" value="<?php echo $row_DatosConsulta["intOrden"];?>">
                                         </div>
                                        	<div class="alert alert-danger hiddeit" id="errororden">Orden obligatorio</div>  

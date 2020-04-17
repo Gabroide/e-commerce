@@ -47,7 +47,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsert")) {
 	}
 	else
 	{
-		//EL EMAIL NO ESTÁ REPETIDO
+		//EL EMAIL ESTÁ REPETIDO
 		$insertGoTo = "error.php?error=2&id=".$_POST["idUsuario"];
 	  	header(sprintf("Location: %s", $insertGoTo));
 	}

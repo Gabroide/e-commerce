@@ -15,8 +15,12 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar")) {
 	if(isset($_POST["intPrincipal"]) && ($_POST["intPrincipal"])=="1")
 		$esprincipal=1;
 	
-	  $insertSQL = sprintf("INSERT INTO tblproducto(strNombre, refCategoria1, strImagen1, strDescripcion, dblPrecio, dblPrecioAnterior, intEstado, refMArca, refCategoria2, refCategoria3, refCategoria4, refCategoria5, strImagen2, strImagen3, strImagen4, strImagen5, intPrincipal, intStock, refImpuesto, dblPeso) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+	if(TestUniqueSEO($_POST["strSEO"]))
+	{
+		
+	  $insertSQL = sprintf("INSERT INTO tblproducto(strNombre, strNombre, refCategoria1, strImagen1, strDescripcion, dblPrecio, dblPrecioAnterior, intEstado, refMArca, refCategoria2, refCategoria3, refCategoria4, refCategoria5, strImagen2, strImagen3, strImagen4, strImagen5, intPrincipal, intStock, refImpuesto, dblPeso) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
 						   GetSQLValueString($_POST["strNombre"], "text"),
+						   GetSQLValueString($_POST["strSEO"], "text"),
 						  GetSQLValueString($_POST["refCategoria1"], "int"),
 						  GetSQLValueString($_POST["strImagen1"], "text"),
 						  GetSQLValueString($_POST["strDescripcion"], "text"),
@@ -46,6 +50,14 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar")) {
 		$insertGoTo .= $_SERVER['QUERY_STRING'];
 	  }
 	  header(sprintf("Location: %s", $insertGoTo));
+	
+	}
+	else
+	{
+		//EL SEO NO ES úNICO
+		$insertGoTo = "error.php?error=6";
+	  	header(sprintf("Location: %s", $insertGoTo));
+	}
 }
 
 $query_DatosMarcas = sprintf("SELECT * FROM tblmarca WHERE intEstado=1 ORDER BY strMarca");
@@ -107,7 +119,6 @@ $totalRows_DatosImpuestos = mysqli_num_rows($DatosImpuestos);
 	});
 </script>
 
-
  <div id="wrapper">
   <!-- Navigation -->
   <?php include("../includes/adm-menu.php"); ?>
@@ -139,9 +150,13 @@ $totalRows_DatosImpuestos = mysqli_num_rows($DatosImpuestos);
 								<div class="row">
 									<div class="col-lg-6">
 										<div class="form-group">
-											<label for="strNombre">Nombre del Producto</label>
-											<input class="form-control" placeholder="Esctibir Nombre del Producto" name="strNombre" id="strNombre">
-										</div>
+                                            <label>Nombre</label>
+                                            <input class="form-control" placeholder="Escribir Nombre del Producto" name="strNombre" id="strNombre" onChange="javascript:document.forminsert.strSEO.value=CodificarSEO(document.forminsert.strNombre.value);">
+                                        </div>
+                                         <div class="form-group">
+                                            <label>SEO</label>
+                                            <input class="form-control" placeholder="Escribir SEO del Producto" name="strSEO" id="strSEO">
+                                        </div>
 										<div class="form-group">
 											<label for="strDescripcion">Descripción del Producto</label>
 											<textarea name="strDescripcion" id="strDescripcion">Esctibir la Descripciónn del Producto</textarea>

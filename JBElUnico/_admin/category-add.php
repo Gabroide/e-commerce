@@ -9,24 +9,35 @@ if (isset($_SERVER['QUERY_STRING'])) {
   $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
 }
 
-if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar")) {
+if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar")) 
+{
+	if(TestUniqueSEOCategory($_POST["strSEO"]))
+	{
 
-	$insertSQL = sprintf("INSERT INTO tblcategoria(strNombre, intEstado, refPadre, intOrden) VALUES (%s, %s, %s, %s)",
-						  GetSQLValueString($_POST["strNombre"], "text"),
-						  GetSQLValueString($_POST["intEstado"], "int"),
-						  GetSQLValueString($_POST["refPadre"], "int"),
-						  GetSQLValueString($_POST["intOrden"], "int"));
+		$insertSQL = sprintf("INSERT INTO tblcategoria(strNombre, strSEO, intEstado, refPadre, intOrden) VALUES (%s, %s, %s, %s, %s)",
+							  GetSQLValueString($_POST["strNombre"], "text"),
+							  GetSQLValueString($_POST["strSEO"], "text"),
+							  GetSQLValueString($_POST["intEstado"], "int"),
+							  GetSQLValueString($_POST["refPadre"], "int"),
+							  GetSQLValueString($_POST["intOrden"], "int"));
 
 
-	  $Result1 = mysqli_query($con,  $insertSQL) or die(mysqli_error($con));
+		  $Result1 = mysqli_query($con,  $insertSQL) or die(mysqli_error($con));
 
 
-	  $insertGoTo = "category-list.php";
-	  if (isset($_SERVER['QUERY_STRING'])) {
-		$insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
-		$insertGoTo .= $_SERVER['QUERY_STRING'];
-	  }
-	  header(sprintf("Location: %s", $insertGoTo));
+		  $insertGoTo = "category-list.php";
+		  if (isset($_SERVER['QUERY_STRING'])) {
+			$insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
+			$insertGoTo .= $_SERVER['QUERY_STRING'];
+		  }
+		  header(sprintf("Location: %s", $insertGoTo));
+	}
+	else
+	{
+		//EL SEO NO ES úNICO
+		$insertGoTo = "error.php?error=7";
+	  	header(sprintf("Location: %s", $insertGoTo));
+	}
 }
 ?>              
 
@@ -92,10 +103,17 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar")) {
                                     <form role="form" action="category-add.php" method="post" id="forminsert" name="forminsert" onSubmit="javascript:return validarcategoriaalta();">
                                         <div class="form-group">
                                             <label for="strNombre">Nombre de Categoría</label>
-                                            <input class="form-control" placeholder="Nombre" name="strNombre" id="strNombre">
+                                            <input class="form-control" placeholder="Nombre" name="strNombre" id="strNombre" onChange="javascript:document.forminsert.strSEO.value=CodificarSEO(document.forminsert.strNombre.value);">
                                         </div>
                                         <div class="alert alert-danger hiddeit" id="errornombre">
                                         	El campo Nombre de Categoría es obligatorio.
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="strSEO">SEO de Categoría</label>
+                                            <input class="form-control" placeholder="categoria-01" name="strSEO" id="strSEO">
+                                        </div>
+                                        <div class="alert alert-danger hiddeit" id="errorseo">
+                                        	El campo SEO de Categoría es obligatorio.
                                         </div>
                                         <div class="form-group">
                                             <label for="intOrden">Orden de Categoría</label>

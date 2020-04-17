@@ -1,4 +1,5 @@
  // JavaScript Document
+
 function validarEmail( email ) {
     expr = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
     if ( !expr.test(email) )
@@ -36,7 +37,7 @@ function validarusuarioalta()
 
 function validarusuarioeditar()
 {
-    valid = true;
+    var valid = true;
 	$("#erroremail").hide("slow");
 	if (document.forminsert.strEmail.value == ""){
 		$("#erroremail").show("slow");
@@ -108,4 +109,24 @@ function validarmarcaalta()
 	}
 	
 	return valid;
+}
+
+function CodificarSEO(url)
+{
+  var encodedUrl = url.toString().toLowerCase(); 
+  
+  encodedUrl = encodedUrl.replace(/Ã¡/g, "a");
+  encodedUrl = encodedUrl.replace(/Ã©/g, "e");
+  encodedUrl = encodedUrl.replace(/Ã­/g, "i");
+  encodedUrl = encodedUrl.replace(/Ã³/g, "o");
+  encodedUrl = encodedUrl.replace(/Ãº/g, "u");
+  encodedUrl = encodedUrl.replace(/Ã±/g, "n");
+  encodedUrl = encodedUrl.replace(/,/g, "-");
+
+  encodedUrl = encodedUrl.split(/\&+/).join("-")
+  encodedUrl = encodedUrl.split(/[^a-z0-9]/).join("-");       
+  encodedUrl = encodedUrl.split(/-+/).join("-");
+  encodedUrl = encodedUrl.trim('-'); 
+
+  return encodedUrl; 
 }

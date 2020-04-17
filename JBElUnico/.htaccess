@@ -1,0 +1,19 @@
+RewriteBase /tienda2020/
+
+Options +FollowSymlinks
+RewriteEngine on
+#rewritecond %{http_host} ^pciexpress.com [nc]
+#rewriterule ^(.*)$ http://www.pciexpress.com/$1 [r=301,nc]
+#DEscomentar las dos líneas anteriores cuando estemos en servidor
+
+RewriteRule ^_admin/.*$ - [PT]
+
+#PRODUCTOS
+RewriteRule ^(.+)/(.+).html$ producto-detalle.php?recordID=$2
+RewriteRule ^(.+)/(.+)/(.+).html$ producto-detalle.php?recordID=$3
+RewriteRule ^(.+)/(.+)/(.+)/(.+).html$ producto-detalle.php?recordID=$4
+
+#CATEGORIAS
+RewriteRule ^(.+)/$ categoria.php?cat=$1
+RewriteRule ^(.+)/(.+)/$ categoria.php?cat=$2
+RewriteRule ^(.+)/(.+)/(.+)/$ categoria.php?cat=$3

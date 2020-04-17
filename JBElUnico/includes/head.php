@@ -1,3 +1,4 @@
+<base href="h<?php echo _strURL;?>/">
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/font-awesome.min.css" rel="stylesheet">
 <link href="css/prettyPhoto.css" rel="stylesheet">
