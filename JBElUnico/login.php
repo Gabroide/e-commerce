@@ -47,11 +47,11 @@
 						<h2>Registrarse</h2>
 						<form action="usuario-alta.php" method="post">
 							<label for="strNombre">Nombre</label>
-							<input type="text" placeholder="Nombre" id="strNombre" name="strNombre"/>
+							<input type="text" placeholder="Nombre" id="strNombre" name="strNombre" required/>
 							<label for="strEmail">correo Electrónico</label>
-							<input type="email" placeholder="nombre@gmail.com" id="strEmail" name="strEmail"/>
+							<input type="email" placeholder="nombre@gmail.com" id="strEmail" name="strEmail" required/>
 							<label for="strPassword">Contraseña</label>
-							<input type="password" placeholder="Contraseña" id="strPassword" name="strPassword"/>
+							<input type="password" placeholder="Contraseña" id="strPassword" name="strPassword" required/>
 							<button type="submit" class="btn btn-default">Registrarse</button>
 							<br>
 							<br>
