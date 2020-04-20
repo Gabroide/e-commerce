@@ -1751,4 +1751,54 @@ function GenerarRutaCategoria($categoria)
 	return $rutacompleta;
 	mysqli_free_result($ConsultaFuncion);
 }
+
+function InsertProductViewed($producto, $usuario)
+{
+	global $con;
+	
+	$insertSQL = sprintf("INSERT INTO tblproductovisita (refUsuario, refProducto) VALUES (%s, %s)",
+                       GetSQLValueString($usuario, "int"),
+                       GetSQLValueString($producto, "int"));
+  $Result1 = mysqli_query($con, $insertSQL) or die(mysqli_error($con));
+  return mysqli_insert_id($con);
+}
+
+function ShowProductExtra($id, $tipomuestra=0)
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT * FROM tblproducto WHERE idProducto=%s",GetSQLValueString($id, "int"));
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	//$linkProduct="product-detail.php?id=".$row_ConsultaFuncion["idProducto"];
+	$linkProduct=GenerarRutaCategoria($row_ConsultaFuncion["refCategoria1"]).$row_ConsultaFuncion["strSEO"].".html";
+?>
+
+	<div class="product-image-wrapper">
+		<div class="single-products">
+			<div class="productinfo text-center">
+				<?php if ($row_ConsultaFuncion["strImagen1"]!=""){?>
+					<a href="<?php echo $linkProduct; ?>">
+						<img src="images/products/<?php echo $row_ConsultaFuncion["strImagen1"];?>" alt="<?php echo $row_ConsultaFuncion["strNombre"];?>" title="<?php echo $row_ConsultaFuncion["strNombre"];?>" id="imagenproducto<?php echo $row_ConsultaFuncion["idProducto"];?>">
+					</a>
+					<?php }
+					else
+					{?>
+					<a href="<?php echo $linkProduct;?>">
+						<img src="images/products/nodisponible.jpg" alt="Producto sin Imagen" id="imagenproducto<?php echo $row_ConsultaFuncion["idProducto"];?>">
+					</a>
+				<?php }?>
+				<h2><?php echo CalculateProductCost($row_ConsultaFuncion["idProducto"]); ?></h2>
+				<p><?php echo $row_ConsultaFuncion["strNombre"]; ?></p>
+				<a href="<?php echo $linkProduct ;?>" class="btn btn-default add-to-cart"><i class="fa fa-cog"></i>Ver</a>
+			</div>									
+		</div>
+	</div>
+
+<?php		
+	mysqli_free_result($ConsultaFuncion);
+}
 ?>

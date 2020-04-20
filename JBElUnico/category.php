@@ -11,9 +11,9 @@ $resultadosporclick=3;
 
 if (isset($_GET["cat"]) && !empty($_GET["cat"]))
 {
-		//CONSULTAR ID DE SEO DE CATEGORIA ACTUAL
-		$query_DatosSEO = sprintf("SELECT idCategoria FROM tblcategoria WHERE strSEO=%s",
-					GetSQLValueString($_GET["cat"], "text") );
+	//CONSULTAR ID DE SEO DE CATEGORIA ACTUAL
+	$query_DatosSEO = sprintf("SELECT idCategoria FROM tblcategoria WHERE strSEO=%s",
+				GetSQLValueString($_GET["cat"], "text") );
 	$DatosSEO = mysqli_query($con,  $query_DatosSEO) or die(mysqli_error($con));
 	$row_DatosSEO = mysqli_fetch_assoc($DatosSEO);
 	$totalRows_DatosSEO = mysqli_num_rows($DatosSEO);

@@ -86,14 +86,15 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 		}
 		else
 		 { //MOSTRAR SI NO HAY RESULTADOS ?>
-                No hay resultados.
-                <?php } ?>
-
-								
+                <p>No hay resultados.</p>
+                <?php } ?>		
 					</div>
        
         <?php include("includes/categories.php"); ?>
-        <?php include("includes/recomended.php"); ?>
+        <?php 
+		  if (isset($_SESSION['tienda2020Front_UserId']))
+				include("includes/recomended.php"); 
+		  ?>
       </div>
     </div>
   </div>

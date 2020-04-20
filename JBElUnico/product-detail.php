@@ -13,6 +13,10 @@ $DatosConsulta = mysqli_query($con,  $query_DatosConsulta) or die(mysqli_error($
 $row_DatosConsulta = mysqli_fetch_assoc($DatosConsulta);
 $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 
+//INSERTAR VISITA DE PRODUCTO
+if (isset($_SESSION['tienda2020Front_UserId']))
+	InsertProductViewed($row_DatosConsulta["idProducto"], $_SESSION['tienda2020Front_UserId']);
+
 //FINAL DE LA PARTE SUPERIOR
 ?>
 <!DOCTYPE html>

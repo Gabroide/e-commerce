@@ -4,4 +4,24 @@
 <file name="extras.css" server="D:/wamp/www/JBElUnico" local="132252401760550424" remote="132252401760000000" Dst="1" />
 <file name="font-awesome.css" server="D:/wamp/www/JBElUnico" local="132252401761807056" remote="132252401760000000" Dst="1" />
 <file name="mixins.css" server="D:/wamp/www/JBElUnico" local="132252401760550424" remote="132252401760000000" Dst="1" />
+<file name="animated.less" server="files.000webhost.com//public_html/" local="131248418060000000" remote="132318330600000000" Dst="2" />
+<file name="bordered-pulled.less" server="files.000webhost.com//public_html/" local="131248418060000000" remote="132318330600000000" Dst="2" />
+<file name="core.less" server="files.000webhost.com//public_html/" local="131248418060000000" remote="132318330600000000" Dst="2" />
+<file name="extras.css" server="files.000webhost.com//public_html/" local="132252401760550424" remote="132318330600000000" Dst="2" />
+<file name="extras.less" server="files.000webhost.com//public_html/" local="131248418060000000" remote="132318330600000000" Dst="2" />
+<file name="fixed-width.less" server="files.000webhost.com//public_html/" local="131248418060000000" remote="132318330600000000" Dst="2" />
+<file name="font-awesome.less" server="files.000webhost.com//public_html/" local="131248418060000000" remote="132318330600000000" Dst="2" />
+<file name="font-awesome.css" server="files.000webhost.com//public_html/" local="132252401761807056" remote="132318330600000000" Dst="2" />
+<file name="icons.less" server="files.000webhost.com//public_html/" local="131248418060000000" remote="132318330600000000" Dst="2" />
+<file name="larger.less" server="files.000webhost.com//public_html/" local="131248418060000000" remote="132318330600000000" Dst="2" />
+<file name="list.less" server="files.000webhost.com//public_html/" local="131248418060000000" remote="132318330600000000" Dst="2" />
+<file name="mixins.less" server="files.000webhost.com//public_html/" local="131248418060000000" remote="132318330600000000" Dst="2" />
+<file name="mixins.css" server="files.000webhost.com//public_html/" local="132252401760550424" remote="132318330600000000" Dst="2" />
+<file name="path.less" server="files.000webhost.com//public_html/" local="131248418060000000" remote="132318330600000000" Dst="2" />
+<file name="screen-reader.less" server="files.000webhost.com//public_html/" local="131248418060000000" remote="132318330600000000" Dst="2" />
+<file name="rotated-flipped.less" server="files.000webhost.com//public_html/" local="131248418060000000" remote="132318330600000000" Dst="2" />
+<file name="spinning.less" server="files.000webhost.com//public_html/" local="131248418060000000" remote="132318330600000000" Dst="2" />
+<file name="stacked.less" server="files.000webhost.com//public_html/" local="131248418060000000" remote="132318330600000000" Dst="2" />
+<file name="variables.css" server="files.000webhost.com//public_html/" local="132252401760550424" remote="132318330600000000" Dst="2" />
+<file name="variables.less" server="files.000webhost.com//public_html/" local="131248418060000000" remote="132318330600000000" Dst="2" />
 </dwsync>
