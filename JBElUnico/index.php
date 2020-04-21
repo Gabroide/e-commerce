@@ -95,6 +95,7 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 		  if (isset($_SESSION['tienda2020Front_UserId']))
 				include("includes/recomended.php"); 
 		  ?>
+     	<?php include("includes/bestsellers.php"); ?>
       </div>
     </div>
   </div>

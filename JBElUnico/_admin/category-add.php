@@ -13,13 +13,18 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar"))
 {
 	if(TestUniqueSEOCategory($_POST["strSEO"]))
 	{
-
-		$insertSQL = sprintf("INSERT INTO tblcategoria(strNombre, strSEO, intEstado, refPadre, intOrden) VALUES (%s, %s, %s, %s, %s)",
+		$esprincipal=0;
+	
+		if(isset($_POST["intPrincipal"]) && ($_POST["intPrincipal"])=="1")
+			$esprincipal=1;
+		
+		$insertSQL = sprintf("INSERT INTO tblcategoria(strNombre, strSEO, intEstado, refPadre, intOrden, intPrincipal) VALUES (%s, %s, %s, %s, %s, %s)",
 							  GetSQLValueString($_POST["strNombre"], "text"),
 							  GetSQLValueString($_POST["strSEO"], "text"),
 							  GetSQLValueString($_POST["intEstado"], "int"),
 							  GetSQLValueString($_POST["refPadre"], "int"),
-							  GetSQLValueString($_POST["intOrden"], "int"));
+							  GetSQLValueString($_POST["intOrden"], "int"),
+							  GetSQLValueString($esprincipal, "int"));
 
 
 		  $Result1 = mysqli_query($con,  $insertSQL) or die(mysqli_error($con));
@@ -136,7 +141,15 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar"))
                                                 <option value="1" selected>Activo</option>
                                             </select>
                                         </div>
-                                                                            
+                                        <div class="form-group">
+                                            <label>Mostrar en página principal</label>
+ 											<div class="checkbox">
+												<label>
+													<input type="checkbox" value="1" name="intPrincipal" id="intPrincipal">
+													Marcar para mostrar la categoría en la página principal de la tienda.
+												</label>
+											</div>
+                                        </div>                              
                                         <button type="submit" class="btn btn-success" value="Añadir">Añadir</button>                                        
                                     	<input type="hidden" name="MM_insert" id="MM_insert" value="forminsertar">
                                     </form>

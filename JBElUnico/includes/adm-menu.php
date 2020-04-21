@@ -250,7 +250,10 @@
                             <a href="options-list.php"><i class="fa fa-ellipsis-h fa-fw"></i> Opciones de Producto</a>
                         </li>
                         <li>
-                            <a href="zone-list.php"><i class="fa fa-globe fa-fw"></i> Zonas</a>
+                            <a href="options-list.php"><i class="fa fa-ellipsis-h fa-fw"></i> Opciones de Producto</a>
+                        </li>
+                        <li>
+                            <a href="slider-list.php"><i class="fa fa-film fa-fw"></i> Slider Principal</a>
                         </li>
                         <li>
                             <a href="characteristic-list.php"><i class="fa fa-gears fa-fw"></i> Características del Producto</a>

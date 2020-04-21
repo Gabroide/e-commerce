@@ -11,7 +11,7 @@ if (isset($_SERVER['QUERY_STRING'])) {
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsert")) {
 
-$esprincipal=0;
+	$esprincipal=0;
 	if ((isset($_POST["intPrincipal"])) && ($_POST["intPrincipal"]=="1"))
 		$esprincipal=1;
 	
