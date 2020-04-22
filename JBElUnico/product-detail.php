@@ -125,8 +125,8 @@ if (isset($_SESSION['tienda2020Front_UserId']))
 									<p><b>Brand:</b> E-SHOPPER</p>-->
 								</form>
 								<!-- Go to www.addthis.com/dashboard to customize your tools -->
-								<div class="addthis_inline_share_toolbox"></div>
 							</div><!--/product-information-->
+							<div class="addthis_inline_share_toolbox_7ge8" style="padding-left: 60px"></div>
 						</div>
 					</div><!--/product-details-->
 					
@@ -134,9 +134,9 @@ if (isset($_SESSION['tienda2020Front_UserId']))
 						<div class="col-sm-12">
 							<ul class="nav nav-tabs">
 								<li  class="active"><a href="#details" data-toggle="tab">Detalles</a></li>
-								<li><a href="#companyprofile" data-toggle="tab">Productos similares</a></li>
+								<!--<li><a href="#companyprofile" data-toggle="tab">Productos similares</a></li>
 								<li><a href="#tag" data-toggle="tab">Tag</a></li>
-								<li><a href="#reviews" data-toggle="tab">Comentarios (XXX)</a></li>
+								--><li><a href="#reviews" data-toggle="tab">Comentarios (XXX)</a></li>
 							</ul>
 						</div>
 						<div class="tab-content">
@@ -275,97 +275,8 @@ if (isset($_SESSION['tienda2020Front_UserId']))
 						</div>
 					</div><!--/category-tab-->
 					
-					<div class="recommended_items"><!--recommended_items-->
-						<h2 class="title text-center">recommended items</h2>
-						
-						<div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
-							<div class="carousel-inner">
-								<div class="item active">	
-									<div class="col-sm-4">
-										<div class="product-image-wrapper">
-											<div class="single-products">
-												<div class="productinfo text-center">
-													<img src="images/home/recommend1.jpg" alt="" />
-													<h2>$56</h2>
-													<p>Easy Polo Black Edition</p>
-													<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-4">
-										<div class="product-image-wrapper">
-											<div class="single-products">
-												<div class="productinfo text-center">
-													<img src="images/home/recommend2.jpg" alt="" />
-													<h2>$56</h2>
-													<p>Easy Polo Black Edition</p>
-													<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-4">
-										<div class="product-image-wrapper">
-											<div class="single-products">
-												<div class="productinfo text-center">
-													<img src="images/home/recommend3.jpg" alt="" />
-													<h2>$56</h2>
-													<p>Easy Polo Black Edition</p>
-													<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="item">	
-									<div class="col-sm-4">
-										<div class="product-image-wrapper">
-											<div class="single-products">
-												<div class="productinfo text-center">
-													<img src="images/home/recommend1.jpg" alt="" />
-													<h2>$56</h2>
-													<p>Easy Polo Black Edition</p>
-													<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-4">
-										<div class="product-image-wrapper">
-											<div class="single-products">
-												<div class="productinfo text-center">
-													<img src="images/home/recommend2.jpg" alt="" />
-													<h2>$56</h2>
-													<p>Easy Polo Black Edition</p>
-													<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-4">
-										<div class="product-image-wrapper">
-											<div class="single-products">
-												<div class="productinfo text-center">
-													<img src="images/home/recommend3.jpg" alt="" />
-													<h2>$56</h2>
-													<p>Easy Polo Black Edition</p>
-													<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							 <a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
-								<i class="fa fa-angle-left"></i>
-							  </a>
-							  <a class="right recommended-item-control" href="#recommended-item-carousel" data-slide="next">
-								<i class="fa fa-angle-right"></i>
-							  </a>			
-						</div>
-					</div><!--/recommended_items-->
-					
+					<?php include("includes/bestsellers.php"); ?>
+	
 				</div>
     </div>
   </div>
@@ -414,7 +325,7 @@ function showPic (whichpic) {
  }
 }
 </script>
-<!-- Go to www.addthis.com/dashboard to customize your tools --> 
+<!-- Go to www.addthis.com/dashboard to customize your tools -->
 <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5e9fe8b72ea1dab7"></script>
 <!-- InstanceEndEditable -->
 </body>
