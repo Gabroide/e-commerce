@@ -46,11 +46,11 @@ if (isset($_SESSION['tienda2020Front_UserId']))
         <?php include("includes/leftsidebar.php"); ?>
       </div>
       <div class="col-sm-9 padding-right">
-					<div class="product-details"><!--product-details-->
+					<div class="product-details" itemscope itemtype="http://schema.org/Product"><!--product-details-->
 						<div class="col-sm-5">
 							<div class="view-product">
 								<?php if ($row_DatosConsulta["strImagen1"]!=""){?>
-									<img id="placeholder" src="images/products/<?php echo $row_DatosConsulta["strImagen1"];?>" alt="<?php echo $row_DatosConsulta["strNombre"];?>" data-big="images/products/<?php echo $row_DatosConsulta["strImagen1"];?>" />
+									<img id="placeholder" src="images/products/<?php echo $row_DatosConsulta["strImagen1"];?>" alt="<?php echo $row_DatosConsulta["strNombre"];?>" data-big="images/products/<?php echo $row_DatosConsulta["strImagen1"];?>" itemprop="image"/>
 								<?php }
 									else
 								{?>
@@ -96,11 +96,11 @@ if (isset($_SESSION['tienda2020Front_UserId']))
 							</div>
 						</div>
 						<div class="col-sm-7">
-							<div class="product-information"><!--/product-information-->
-								<img src="images/product-details/new.jpg" class="newarrival" alt="New arrival" />
-								<h2><?php echo $row_DatosConsulta["strNombre"];?></h2>
+							<div class="product-information" itemprop="offers" itemscope itemtype="http://schema.org/Offer"><!--/product-information-->
+								<img src="images/product-details/new.jpg" class="newarrival" alt="Novedad" />
+								<h2 itemprop="name"><?php echo $row_DatosConsulta["strNombre"];?></h2>
 								<!--<p>Web ID: 1089772</p>-->
-								<img src="images/product-details/rating.png" alt="" />
+								<img src="images/product-details/rating.png" alt="Valoración" />
 								<form name="formcompra" id="formcompra" method="post" action="cart-add.php">
 									<span>
 										<?php if($row_DatosConsulta["dblPrecioAnterior"]!=0){?>
@@ -108,7 +108,7 @@ if (isset($_SESSION['tienda2020Front_UserId']))
 											<br>
 											<br>
 										<?php }?>
-										<span><?php echo CalculateProductCost($row_DatosConsulta["idProducto"]);?></span>
+										<span itemprop="price"><?php echo CalculateProductCost($row_DatosConsulta["idProducto"]);?></span>
 										<label>Cantidad:</label>
 										<input id="intCantidad" name="intCantidad" type="number" value="1" />
 										<input id="refProducto" name="refProducto" type="hidden" value="<?php echo $row_DatosConsulta["idProducto"];?>"/>
@@ -123,8 +123,9 @@ if (isset($_SESSION['tienda2020Front_UserId']))
 									<!--<p><b>Availability:</b> In Stock</p>
 									<p><b>Condition:</b> New</p>
 									<p><b>Brand:</b> E-SHOPPER</p>-->
-									<a href=""><img src="images/product-details/share.png" class="share img-responsive"  alt="" /></a>
 								</form>
+								<!-- Go to www.addthis.com/dashboard to customize your tools -->
+								<div class="addthis_inline_share_toolbox"></div>
 							</div><!--/product-information-->
 						</div>
 					</div><!--/product-details-->
@@ -140,10 +141,8 @@ if (isset($_SESSION['tienda2020Front_UserId']))
 						</div>
 						<div class="tab-content">
 							<div class="tab-pane fade active in" id="details" >
-								<div class="col-sm-12">
-								
+								<div class="col-sm-12" itemprop="description"><!-- LONG DESCRIPTION -->
 									<?php ShowCharacFrontEnd($row_DatosConsulta["idProducto"]);?>
-								
 								</div>
 							</div>
 							
@@ -415,6 +414,8 @@ function showPic (whichpic) {
  }
 }
 </script>
+<!-- Go to www.addthis.com/dashboard to customize your tools --> 
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5e9fe8b72ea1dab7"></script>
 <!-- InstanceEndEditable -->
 </body>
 <!-- InstanceEnd --></html> 
