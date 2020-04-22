@@ -9,53 +9,108 @@ if (isset($VARIABLE)) {
 }
 $resultadosporclick=3;
 
-if (isset($_GET["cat"]) && !empty($_GET["cat"]))
-{
+//BLOQUE BUSCADOR DINAMICO
+$bloqueparaAJAX="";
+if (isset($_GET["id"]) && !empty($_GET["id"])){
+
+$categoriaparaver=$_GET["id"];
+	
+
+//Inicl¡iamos las variables para construir la consulta dinámica:
+	
+	$bloqueconsultadinamica="";
+
+//REVISAMOS LOS PARAMETROS DE GET PARA COGER LOS QUE EMPIEZAN POR "opcion-"
+	foreach($_GET as $key => $value)
+	{
+		//COMPARA SI ES IGUAL A opcion-
+		if (substr($key, 0,7)=='opcion-')
+		{
+			//SI ES IGUAL GENERAMOS EL TROZO DE CONSULTA
+			//Si es distinto a "-1" significa que tenemos un valor diferente a "Todos"
+			if ($value!="-1")
+			{
+				//Agregamos el parámetro para el bloque AJAX de debajo de la página:
+				$bloqueparaAJAX.="&".$key."=".$value;
+				//Separamos el opcion-?? para ver a qué característica se refiere
+				$porciones = explode("-", $key);
+				$caracteristica= $porciones[1]; // Bloque a la derecha de "-"
+				$bloqueconsultadinamica.=" AND  idProducto IN (( SELECT refProducto FROM tblproductocaracteristica WHERE (tblproductocaracteristica.refCaracteristica =".$caracteristica.") AND (tblproductocaracteristica.refSeleccionada=".$value.")))";
+
+				
+			}
+		}
+	}
+
+$query_DatosConsultaTotales = sprintf("SELECT DISTINCT(COUNT(idProducto)) AS TotalProductosConsulta FROM tblproducto  WHERE tblproducto.intEstado =  1 AND  (refCategoria1=".$categoriaparaver." OR refCategoria2=".$categoriaparaver." OR refCategoria3=".$categoriaparaver." OR refCategoria4=".$categoriaparaver." OR refCategoria5=".$categoriaparaver." ) ".$bloqueconsultadinamica." ORDER BY idProducto ASC");
+		//echo $query_DatosConsultaTotales;
+$DatosConsultaTotales = mysqli_query($con,  $query_DatosConsultaTotales) or die(mysqli_error($con));
+$row_DatosConsultaTotales = mysqli_fetch_assoc($DatosConsultaTotales);
+$totalRows_DatosConsultaTotales = mysqli_num_rows($DatosConsultaTotales);
+
+$totalresultados=$row_DatosConsultaTotales["TotalProductosConsulta"];
+
+$query_DatosConsulta = sprintf("SELECT DISTINCT(tblproducto.idProducto) FROM tblproducto  WHERE tblproducto.intEstado =  1 AND (refCategoria1=".$categoriaparaver." OR refCategoria2=".$categoriaparaver." OR refCategoria3=".$categoriaparaver." OR refCategoria4=".$categoriaparaver." OR refCategoria5=".$categoriaparaver." ) ".$bloqueconsultadinamica." ORDER BY idProducto ASC LIMIT 0,".$resultadosporclick);
+$DatosConsulta = mysqli_query($con,  $query_DatosConsulta) or die(mysqli_error($con));
+$row_DatosConsulta = mysqli_fetch_assoc($DatosConsulta);
+$totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
+	
+
+
+}
+//FIN BLOQUE BUSCADOR DINAMICO
+
+
+if (isset($_GET["cat"]) && !empty($_GET["cat"])){
+	
 	//CONSULTAR ID DE SEO DE CATEGORIA ACTUAL
 	$query_DatosSEO = sprintf("SELECT idCategoria FROM tblcategoria WHERE strSEO=%s",
 				GetSQLValueString($_GET["cat"], "text") );
-	$DatosSEO = mysqli_query($con,  $query_DatosSEO) or die(mysqli_error($con));
-	$row_DatosSEO = mysqli_fetch_assoc($DatosSEO);
-	$totalRows_DatosSEO = mysqli_num_rows($DatosSEO);
+$DatosSEO = mysqli_query($con,  $query_DatosSEO) or die(mysqli_error($con));
+$row_DatosSEO = mysqli_fetch_assoc($DatosSEO);
+$totalRows_DatosSEO = mysqli_num_rows($DatosSEO);
+	
+$_GET["id"]=$row_DatosSEO["idCategoria"];
+	
 
-	$_GET["id"]=$row_DatosSEO["idCategoria"];
+$categoriaparaver=$_GET["id"];
+
+$query_DatosConsultaTotales = sprintf("SELECT COUNT(idProducto) AS TotalProductosConsulta FROM tblproducto WHERE intEstado=1  AND (refCategoria1=".$categoriaparaver." OR refCategoria2=".$categoriaparaver." OR refCategoria3=".$categoriaparaver." OR refCategoria4=".$categoriaparaver." OR refCategoria5=".$categoriaparaver." ) ORDER BY idProducto ASC");
+$DatosConsultaTotales = mysqli_query($con,  $query_DatosConsultaTotales) or die(mysqli_error($con));
+$row_DatosConsultaTotales = mysqli_fetch_assoc($DatosConsultaTotales);
+$totalRows_DatosConsultaTotales = mysqli_num_rows($DatosConsultaTotales);
+
+$totalresultados=$row_DatosConsultaTotales["TotalProductosConsulta"];
+
+$query_DatosConsulta = sprintf("SELECT idProducto FROM tblproducto WHERE intEstado=1 AND (refCategoria1=".$categoriaparaver." OR refCategoria2=".$categoriaparaver." OR refCategoria3=".$categoriaparaver." OR refCategoria4=".$categoriaparaver." OR refCategoria5=".$categoriaparaver." ) ORDER BY idProducto ASC LIMIT 0,".$resultadosporclick);
+$DatosConsulta = mysqli_query($con,  $query_DatosConsulta) or die(mysqli_error($con));
+$row_DatosConsulta = mysqli_fetch_assoc($DatosConsulta);
+$totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
+
+}
+//FINAL DE LA PARTE SUPERIOR
 
 
-	$categoriaparaver=$_GET["id"];
 
-	$query_DatosConsultaTotales = sprintf("SELECT COUNT(idProducto) AS TotalProductosConsulta FROM tblproducto WHERE intEstado=1  AND (refCategoria1=".$categoriaparaver." OR refCategoria2=".$categoriaparaver." OR refCategoria3=".$categoriaparaver." OR refCategoria4=".$categoriaparaver." OR refCategoria5=".$categoriaparaver." ) ORDER BY idProducto ASC");
-	$DatosConsultaTotales = mysqli_query($con,  $query_DatosConsultaTotales) or die(mysqli_error($con));
-	$row_DatosConsultaTotales = mysqli_fetch_assoc($DatosConsultaTotales);
-	$totalRows_DatosConsultaTotales = mysqli_num_rows($DatosConsultaTotales);
 
-	$totalresultados=$row_DatosConsultaTotales["TotalProductosConsulta"];
+//PROCESAMIENTO DE MARCA
+if (isset($_GET["marca"]) && !empty($_GET["marca"])){
 
-	$query_DatosConsulta = sprintf("SELECT idProducto FROM tblproducto WHERE intEstado=1 AND (refCategoria1=".$categoriaparaver." OR refCategoria2=".$categoriaparaver." OR refCategoria3=".$categoriaparaver." OR refCategoria4=".$categoriaparaver." OR refCategoria5=".$categoriaparaver." ) ORDER BY idProducto ASC LIMIT 0,".$resultadosporclick);
-	$DatosConsulta = mysqli_query($con,  $query_DatosConsulta) or die(mysqli_error($con));
-	$row_DatosConsulta = mysqli_fetch_assoc($DatosConsulta);
-	$totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
+//$categoriaparaver=$_GET["id"];
 
-	}
-	//FINAL DE LA PARTE SUPERIOR
+$query_DatosConsultaTotales = sprintf("SELECT COUNT(idProducto) AS TotalProductosConsulta FROM tblproducto WHERE intEstado=1 AND refMarca=%s ORDER BY idProducto ASC",
+								GetSQLValueString($_GET["marca"], "int"));
+	
+$DatosConsultaTotales = mysqli_query($con,  $query_DatosConsultaTotales) or die(mysqli_error($con));
+$row_DatosConsultaTotales = mysqli_fetch_assoc($DatosConsultaTotales);
+$totalRows_DatosConsultaTotales = mysqli_num_rows($DatosConsultaTotales);
 
-	//PROCESAMIENTO DE MARCA
-	if (isset($_GET["marca"]) && !empty($_GET["marca"])){
+$totalresultados=$row_DatosConsultaTotales["TotalProductosConsulta"];
 
-	//$categoriaparaver=$_GET["id"];
-
-	$query_DatosConsultaTotales = sprintf("SELECT COUNT(idProducto) AS TotalProductosConsulta FROM tblproducto WHERE intEstado=1 AND refMarca=%s ORDER BY idProducto ASC",
-									GetSQLValueString($_GET["marca"], "int"));
-
-	$DatosConsultaTotales = mysqli_query($con,  $query_DatosConsultaTotales) or die(mysqli_error($con));
-	$row_DatosConsultaTotales = mysqli_fetch_assoc($DatosConsultaTotales);
-	$totalRows_DatosConsultaTotales = mysqli_num_rows($DatosConsultaTotales);
-
-	$totalresultados=$row_DatosConsultaTotales["TotalProductosConsulta"];
-
-	$query_DatosConsulta = sprintf("SELECT idProducto FROM tblproducto WHERE intEstado=1 AND refMarca=%s ORDER BY idProducto ASC LIMIT 0,".$resultadosporclick, GetSQLValueString($_GET["marca"], "int"));
-	$DatosConsulta = mysqli_query($con,  $query_DatosConsulta) or die(mysqli_error($con));
-	$row_DatosConsulta = mysqli_fetch_assoc($DatosConsulta);
-	$totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
+$query_DatosConsulta = sprintf("SELECT idProducto FROM tblproducto WHERE intEstado=1 AND refMarca=%s ORDER BY idProducto ASC LIMIT 0,".$resultadosporclick, GetSQLValueString($_GET["marca"], "int"));
+$DatosConsulta = mysqli_query($con,  $query_DatosConsulta) or die(mysqli_error($con));
+$row_DatosConsulta = mysqli_fetch_assoc($DatosConsulta);
+$totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 
 }
 ?>
@@ -103,47 +158,42 @@ if (isset($_GET["cat"]) && !empty($_GET["cat"]))
   		<?php }?>
 	  	
         <div class="features_items"><!--features_items-->
-						<h2 class="title text-center">Features Items</h2>
+						<h2 class="title text-center">Productos Destacados</h2>
 						
-						<?php 
+ <?php 
 		//AQUI ES DONDE SE SACAN LOS DATOS, SE COMPRUEBA QUE HAY RESULTADOS
 		if ($totalRows_DatosConsulta > 0) {  
 			 do { 
-				 ?>
-				 <div class="col-sm-4">
-					<?php ShowProduct($row_DatosConsulta["idProducto"]); ?>			
-				</div>
-				 
-				 <?php
-			
-                  
-              		 } while ($row_DatosConsulta = mysqli_fetch_assoc($DatosConsulta));
+              		?>
+              		<div class="col-sm-4">
+							<?php 
+						ShowProduct($row_DatosConsulta["idProducto"]);
+						?>
+						</div>
+              		
+              		<?php
+			  		 } while ($row_DatosConsulta = mysqli_fetch_assoc($DatosConsulta)); 
 			
 			$tutorial_id=1;
 			
-			if($totalresultados>$resultadosporclick)
-			{?>
-			
+			if ($totalresultados>$resultadosporclick){
+			?>
 			<div style="text-align: center">
-				<div class="btn btn-default add-to-cart" id="show_more_main<?php echo $tutorial_id; ?>">
-        			<span id="<?php echo $tutorial_id; ?>" class="show_more" title="Ver más productos">Ver más productos</span>
-        			<span class="loding" style="display: none;"><span class="loding_txt">Cargando productos....</span></span>
-    			</div>
-    		</div>
-			
-		 <?php
-			}
-		} 
+			<div class="btn btn-default add-to-cart" id="show_more_main<?php echo $tutorial_id; ?>">
+        <span id="<?php echo $tutorial_id; ?>" class="show_more" title="Ver más productos">Ver más productos</span>
+        <span class="loding" style="display: none;"><span class="loding_txt">Cargando productos....</span></span>
+    </div> </div>
+    <?php
+		}
+		 } 
 		else
 		 { //MOSTRAR SI NO HAY RESULTADOS ?>
                 No hay resultados.
                 <?php } ?>
-
-								
+						
 					</div>
-       
-        <?php //include("includes/categories.php"); ?>
-        <?php //include("includes/recomended.php"); ?>
+        <?php //include("includes/categoriasespeciales.php"); ?>
+        <?php //include("includes/recomendados.php"); ?>
       </div>
     </div>
   </div>

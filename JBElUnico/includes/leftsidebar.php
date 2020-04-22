@@ -52,6 +52,81 @@
 		?>
 	</div><!--/category-products-->
 	
+	<?php if (isset($_GET["id"]) && !empty($_GET["id"])){
+	//BUSCADOR POR CARACTERISTICAS
+		$query_BuscadorProductos = sprintf("SELECT DISTINCT(tblproductocaracteristica.refCaracteristica) FROM tblproducto Inner Join tblproductocaracteristica ON tblproducto.idProducto = tblproductocaracteristica.refProducto WHERE intEstado=1 AND (refCategoria1=".$categoriaparaver." OR refCategoria2=".$categoriaparaver." OR refCategoria3=".$categoriaparaver." OR refCategoria4=".$categoriaparaver." OR refCategoria5=".$categoriaparaver." ) ORDER BY idProducto ASC"); 
+		$BuscadorProductos = mysqli_query($con,  $query_BuscadorProductos) or die(mysqli_error($con));
+		$row_BuscadorProductos = mysqli_fetch_assoc($BuscadorProductos);
+		$totalRows_BuscadorProductos = mysqli_num_rows($BuscadorProductos);
+	
+	//LISTAMOS LAS CARACTERISTICAS Y MOSTRAMOS LAS OPCIONES DE CADA UNA DE ELLAS
+	
+		if ($totalRows_BuscadorProductos>0){
+	?>
+	<form name="buscadorextra" action="category.php" method="get">
+		<div class="brands_products" style="color:#696763;">
+			<h2>Características</h2>
+				<div class="brands-name">
+					<ul class="nav nav-pills nav-stacked">
+					<?php
+						do {
+							$query_BuscadorCaracteristicas = sprintf("SELECT * FROM tblcaracteristica WHERE idCaracteristica=%s AND intEstado=1 ORDER BY intOrden ASC", $row_BuscadorProductos["refCaracteristica"]); 
+							$BuscadorCaracteristicas = mysqli_query($con,  $query_BuscadorCaracteristicas) or die(mysqli_error($con));
+							$row_BuscadorCaracteristicas = mysqli_fetch_assoc($BuscadorCaracteristicas);
+							$totalRows_BuscadorCaracteristicas = mysqli_num_rows($BuscadorCaracteristicas);
+							
+							if ($totalRows_BuscadorCaracteristicas>0)
+							{
+								do {
+						?>
+					  		<li style="padding-left: 25px;font-weight: bold;">   <?php echo $row_BuscadorCaracteristicas["strNombre"];?></li>
+								<?php 
+									$query_BuscadorCaracteristicasDatos = sprintf("SELECT * FROM tblcaracteristica WHERE refPadre=%s AND intEstado=1 ORDER BY intOrden ASC", $row_BuscadorProductos["refCaracteristica"]); 
+									$BuscadorCaracteristicasDatos = mysqli_query($con,  $query_BuscadorCaracteristicasDatos) or die(mysqli_error($con));
+									$row_BuscadorCaracteristicasDatos = mysqli_fetch_assoc($BuscadorCaracteristicasDatos);
+									$totalRows_BuscadorCaracteristicasDatos = mysqli_num_rows($BuscadorCaracteristicasDatos);
+	
+									if ($totalRows_BuscadorCaracteristicasDatos>0)
+									{
+										do {
+								?>
+							<li style="padding-left: 35px;">  <input name="opcion-<?php echo $row_BuscadorProductos["refCaracteristica"];?>" type="radio" value="<?php echo $row_BuscadorCaracteristicasDatos["idCaracteristica"];?>" <?php if (isset($_GET["opcion-".$row_BuscadorProductos["refCaracteristica"]])) {
+				  				if ($_GET["opcion-".$row_BuscadorProductos["refCaracteristica"]]==$row_BuscadorCaracteristicasDatos["idCaracteristica"]){?>
+				  					checked<?php 
+				  				}
+							}?>
+	> 						<?php echo $row_BuscadorCaracteristicasDatos["strNombre"];?></li>
+							<?php
+	
+							} while ($row_BuscadorCaracteristicasDatos = mysqli_fetch_assoc($BuscadorCaracteristicasDatos));?>
+							<li style="padding-left: 35px;">  <input name="opcion-<?php echo $row_BuscadorProductos["refCaracteristica"];?>" type="radio" value="-1" 
+								<?php if (isset($_GET["opcion-".$row_BuscadorProductos["refCaracteristica"]])) {
+				  					if ($_GET["opcion-".$row_BuscadorProductos["refCaracteristica"]]=="-1"){?>
+				  						checked<?php 
+				  					}
+								}
+								else 
+								{
+									echo "checked";
+								}?>> Todos</li>
+							<?php
+								}				
+							?>
+						<?php
+							} while ($row_BuscadorCaracteristicas = mysqli_fetch_assoc($BuscadorCaracteristicas));
+						}
+					} while ($row_BuscadorProductos = mysqli_fetch_assoc($BuscadorProductos)); ?>
+			</ul>			</div>
+		</div>
+		<input type="hidden" value="<?php echo $_GET["id"];?>" name="id">
+		<div class="text-center">
+			<button type="submit" class="btn btn-default">Filtrar</button></div>
+	</form>					
+	<?php }
+		}
+	//FIN BUSCADOR POR CARACTERISTICAS
+	?>
+	
 	<?php
 		$query_DatosConsultaMarcas = sprintf("SELECT * FROM tblmarca WHERE intEstado=1 ORDER BY intOrden ASC");
 

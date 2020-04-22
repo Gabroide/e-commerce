@@ -20,10 +20,31 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
 		$extramarcas="AND intMarca=".$_POST["brand"];
 	}
 	
+	//REVISAMOS LOS PARAMETROS DE GET PARA COGER LOS QUE EMPIEZAN POR "opcion-"
+	$bloqueconsultadinamica="";
+	foreach($_POST as $key => $value)
+	{
+		//COMPARA SI ES IGUAL A opcion-
+		if (substr($key, 0,7)=='opcion-')
+		{
+			//SI ES IGUAL GENERAMOS EL TROZO DE CONSULTA
+			//Si es distinto a "-1" significa que tenemos un valor diferente a "Todos"
+			if ($value!="-1")
+			{
+				//Agregamos el parámetro para el bloque AJAX de debajo de la página:
+				//$bloqueparaAJAX.="&".$key."=".$value;
+				//Separamos el opcion-?? para ver a qué característica se refiere
+				$porciones = explode("-", $key);
+				$caracteristica= $porciones[1]; // Bloque a la derecha de "-"
+				$bloqueconsultadinamica.=" AND  idProducto IN (( SELECT refProducto FROM tblproductocaracteristica WHERE (tblproductocaracteristica.refCaracteristica =".$caracteristica.") AND (tblproductocaracteristica.refSeleccionada=".$value.")))";
+			}
+		}
+	}
+	
 //Mostrados hasta ahora 
 	$Totalmostrados = $_POST["id"]*$_POST["max"];
 //Contar resultados menos los mostrados hasta ahora
-$query_DatosConsulta = sprintf("SELECT COUNT(idProducto) AS Totalconsulta FROM tblproducto WHERE intEstado=1 ".$extramarcas." ".$extraprincipal." ".$extraconsulta);
+$query_DatosConsulta = sprintf("SELECT COUNT(idProducto) AS Totalconsulta FROM tblproducto WHERE intEstado=1 ".$extramarcas." ".$extraprincipal." ".$extraconsulta." ".$bloqueconsultadinamica);
 $DatosConsulta = mysqli_query($con,  $query_DatosConsulta) or die(mysqli_error($con));
 $row_DatosConsulta = mysqli_fetch_assoc($DatosConsulta);
 $allRows = $row_DatosConsulta["Totalconsulta"]-$Totalmostrados;	
@@ -31,7 +52,7 @@ $allRows = $row_DatosConsulta["Totalconsulta"]-$Totalmostrados;
 
 //Hacer consulta para bloque siguiente
 	
-$query_DatosConsulta = sprintf("SELECT idProducto FROM tblproducto WHERE intEstado=1 ".$extramarcas." ".$extraprincipal." ".$extraconsulta." ORDER BY idProducto ASC LIMIT %s OFFSET %s", $_POST["max"], $Totalmostrados);
+$query_DatosConsulta = sprintf("SELECT idProducto FROM tblproducto WHERE intEstado=1 ".$extramarcas." ".$extraprincipal." ".$extraconsulta." ".$bloqueconsultadinamica." ORDER BY idProducto ASC LIMIT %s OFFSET %s", $_POST["max"], $Totalmostrados);
 	//echo $query_DatosConsulta;
 $DatosConsulta = mysqli_query($con,  $query_DatosConsulta) or die(mysqli_error($con));
 $row_DatosConsulta = mysqli_fetch_assoc($DatosConsulta);
