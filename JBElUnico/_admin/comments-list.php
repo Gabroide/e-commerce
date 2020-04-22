@@ -15,19 +15,19 @@
 	{
 		switch ($_GET["valor"]) {
 		case 1:
-			$parametro_orden= "idSlider";
+			$parametro_orden= "idComentario";
 			break;
 		case 2:
-			$parametro_orden= "intEstado";
+			$parametro_orden= "strFecha";
 			break;
 		case 3:
-			$parametro_orden= "intOrden";
+			$parametro_orden= "strNombreComentador";
 			break;
 
 		}
 	}
 	else
-		$parametro_orden= "idSlider"; //POR DEFECTO
+		$parametro_orden= "strFecha"; //POR DEFECTO
 
 	if (isset($_GET["orden"]))
 	{
@@ -41,7 +41,7 @@
 		}
 	}
 	else
-		$parametro_ordena_sentido= "ASC"; //POR DEFECTO
+		$parametro_ordena_sentido= "DESC"; //POR DEFECTO
 
 	$cadenaOrden=" ORDER BY ".$parametro_orden." ".$parametro_ordena_sentido;
 
@@ -69,7 +69,7 @@
 	$consultaextendidaparaordenacion="";
 
 
-		$query_DatosConsulta = sprintf("SELECT * FROM tblslider ".$cadenaOrden);
+		$query_DatosConsulta = sprintf("SELECT * FROM tblcomentario WHERE intEstado=0".$cadenaOrden);
 
 
 	$query_limit_DatosConsulta = sprintf("%s LIMIT %d, %d", $query_DatosConsulta, $startRow_DatosConsulta, $maxRows_DatosConsulta);
@@ -147,7 +147,7 @@
   <div id="page-wrapper">
      <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Gestión de Slider</h1>
+                    <h1 class="page-header">Gestión de Comentarios</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -156,7 +156,7 @@
             
 <div class="row">
 	<div class="col-lg-5">
-		<a href="slider-add.php" class="btn btn-outline btn-primary">Añadir Slider</a>
+		<a href="slider-add.php" class="btn btn-outline btn-primary">Autorizar Comentario</a>
 	</div>
 	
 </div><br>
@@ -191,10 +191,9 @@
 													}
 													MostrarOrdenCampo($parametroparaprocesar, $orden, $valor,$currentPage, $consultaextendidaparaordenacion);
 												?></th>
-                                            <th></th>
                                             
-                                             <th>Orden <?php
-													//BLOQUE ORDENACIÓN
+                                            <th>Fecha <?php
+													//BLOQUE FECHA
 													//SI HAY PARÁMETROS, HAY QUE SABER SI SON DE ORDEN
 													$parametroparaprocesar="3";
 													if (!isset($_GET["orden"])) {
@@ -208,7 +207,7 @@
 													MostrarOrdenCampo($parametroparaprocesar, $orden, $valor,$currentPage, $consultaextendidaparaordenacion);
 												?></th>
                                            
-                                            <th>Estado <?php
+                                            <th>Nombre <?php
 													//BLOQUE ORDENACIÓN
 													//SI HAY PARÁMETROS, HAY QUE SABER SI SON DE ORDEN
 													$parametroparaprocesar="2";
@@ -223,6 +222,9 @@
 													MostrarOrdenCampo($parametroparaprocesar, $orden, $valor,$currentPage, $consultaextendidaparaordenacion);
 												?></th>
                                            
+                                           	<th>Comentario</th>
+                                           	<th>Producto</th>
+            								<th>Estado</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
@@ -233,18 +235,15 @@
 			 do { 
               		?>
               		
-				<tr>
-						<td><?php echo $row_DatosConsulta["idSlider"];?></td>
-						<td>
-						<?php if ($row_DatosConsulta["strImagen"]!=""){?>
-						<img src="../images/slider/<?php echo $row_DatosConsulta["strImagen"];?>" width="100"  alt=""/>
-						<?php }
-						?></td>
-					<td><?php echo $row_DatosConsulta["intOrden"];?></td>
-						<td><?php echo ShowState($row_DatosConsulta["intEstado"]);?></td>
-					
-					<td><a title="Editar Producto" href="slider-edit.php?id=<?php echo $row_DatosConsulta["idSlider"];?>" class="btn btn-warning btn-circle"><i class="fa fa-edit"></i></a> </td>
-				</tr>
+										<tr>
+											<td><?php echo $row_DatosConsulta["idComentario"];?></td>
+											<td><?php echo $row_DatosConsulta["strFecha"];?></td>
+											<td><?php echo $row_DatosConsulta["strNombreComentador"];?></td>
+											<td><?php echo $row_DatosConsulta["txtComentario"];?></td>
+											<td><?php echo $row_DatosConsulta["refProducto"];?></td>
+											<td><?php echo ShowState($row_DatosConsulta["intEstado"]);?></td>
+											<td><a title="Editar Comentario" href="comments-ok.php?id=<?php echo $row_DatosConsulta["idComentario"];?>" class="btn btn -success btn-circle"></a></td>
+										</tr>
               		
               		<?php
               		 } while ($row_DatosConsulta = mysqli_fetch_assoc($DatosConsulta)); 

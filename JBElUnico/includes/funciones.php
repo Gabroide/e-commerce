@@ -1801,4 +1801,28 @@ function ShowProductExtra($id, $tipomuestra=0)
 <?php		
 	mysqli_free_result($ConsultaFuncion);
 }
+
+function DateToHumano($fecha)
+{
+	$parte1=substr($fecha, 0, 10);
+	$parte2=substr($fecha, 10, 18);
+	
+	if($parte1<>"")
+	{
+		$trozos=explode("-", $parte1,3);
+		return $trozos[2]."/".$trozos[1]."/".$trozos[0];
+	}
+	else
+	{
+		return "NULL";
+	}
+}
+
+function TimeToHumano($fecha)
+{
+	$parte1=substr($fecha, 0, 10);
+	$parte2=substr($fecha, 10, 18);
+	
+	return $parte2;
+}
 ?>

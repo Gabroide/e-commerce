@@ -17,6 +17,15 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 if (isset($_SESSION['tienda2020Front_UserId']))
 	InsertProductViewed($row_DatosConsulta["idProducto"], $_SESSION['tienda2020Front_UserId']);
 
+//COMENTARIOS
+$query_DatosComentarios = sprintf("SELECT * FROM tblcomentario WHERE refProducto=%s AND intEstado=1 ORDER BY strFecha DESC", 
+								  GetSQLValueString($row_DatosConsulta["idProducto"], "int"));
+
+$DatosComentarios = mysqli_query($con,  $query_DatosComentarios) or die(mysqli_error($con));
+$row_DatosComentarios = mysqli_fetch_assoc($DatosComentarios);
+$totalRows_DatosComentarios = mysqli_num_rows($DatosComentarios);
+
+
 //FINAL DE LA PARTE SUPERIOR
 ?>
 <!DOCTYPE html>
@@ -146,7 +155,7 @@ if (isset($_SESSION['tienda2020Front_UserId']))
 								</div>
 							</div>
 							
-							<div class="tab-pane fade" id="companyprofile" >
+							<!--<div class="tab-pane fade" id="companyprofile" >
 								<div class="col-sm-3">
 									<div class="product-image-wrapper">
 										<div class="single-products">
@@ -195,9 +204,9 @@ if (isset($_SESSION['tienda2020Front_UserId']))
 										</div>
 									</div>
 								</div>
-							</div>
+							</div>-->
 							
-							<div class="tab-pane fade" id="tag" >
+							<!--<div class="tab-pane fade" id="tag" >
 								<div class="col-sm-3">
 									<div class="product-image-wrapper">
 										<div class="single-products">
@@ -246,28 +255,71 @@ if (isset($_SESSION['tienda2020Front_UserId']))
 										</div>
 									</div>
 								</div>
-							</div>
+							</div>-->
 							
 							<div class="tab-pane fade" id="reviews" >
 								<div class="col-sm-12">
-									<ul>
-										<li><a href=""><i class="fa fa-user"></i>EUGEN</a></li>
-										<li><a href=""><i class="fa fa-clock-o"></i>12:41 PM</a></li>
-										<li><a href=""><i class="fa fa-calendar-o"></i>31 DEC 2014</a></li>
-									</ul>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-									<p><b>Write Your Review</b></p>
+									<?php
+									if($totalRows_DatosComentarios>0)
+									{
+										do{ 
+									?>
+										<ul>
+											<li><span><i class="fa fa-user"></i>
+												<?php
+													if($row_DatosComentarios["refUsuario"]==0)
+													{
+														echo $row_DatosComentarios["strNombreComentador"];
+													}
+												?>
+											</span></li>
+											<li><span><i class="fa fa-clock-o"></i>
+												<?php echo TimeToHumano($row_DatosComentarios["strFecha"]);?>
+											</span></li>
+											<li><span><i class="fa fa-calendar-o"></i>
+												<?php echo DateToHumano($row_DatosComentarios["strFecha"]);?>
+											</span></li>
+										</ul>
+										<p>
+											<?php echo $row_DatosComentarios["txtComentario"];?>
+										</p>
+									<?php 
+									   }while($row_DatosComentarios=mysqli_fetch_assoc($DatosComentarios));
+									}
+									?>
+									<p><b>Deja un Comentario</b></p>
 									
-									<form action="#">
+									<form action="product-detail-comment.php" method="post">
 										<span>
-											<input type="text" placeholder="Your Name"/>
-											<input type="email" placeholder="Email Address"/>
+											<?php if (isset($_SESSION['tienda2020Front_UserId'])){
+											?>
+												<input name="strNombreComentador" type="hidden"  id="strNombreComentador" value="Registrado"/>
+											<?php }
+											else
+											{?>
+												<label for="strNombreComentador">Nombre:</label>
+												<input type="text" placeholder="Su nombre" required name="strNombreComentador" id="strNombreComentador"/>
+											<?php }?> 
 										</span>
-										<textarea name="" ></textarea>
-										<b>Rating: </b> <img src="images/product-details/rating.png" alt="" />
-										<button type="button" class="btn btn-default pull-right">
-											Submit
-										</button>
+										<label for="txtComentario">Comentario:</label>
+										<textarea name="txtComentario" id="txtComentario" placeholder="Deje aquí su comentario" style="margin-top: 0;margin-bottom: 0;" required></textarea>
+										<?php 
+											if(isset($_SESSION["tienda2020Front_UserId"]))
+											{
+											?>
+												<input name="intCaptcha" id="intCaptcha" type="hidden" value="11"/>
+											<?php
+											} 
+											else
+											{?>
+												<label for="intCaptcha">5+6=</label>
+												<input name="intCaptcha" id="intCaptcha" type="number" style="margin-top: 0"/>
+											<?php }?>
+										<!--<b>Rating: </b> <img src="images/product-details/rating.png" alt="" />
+										-->
+										<input type="hidden" name="refProducto" id="refProducto" value="<?php echo $row_DatosConsulta["idProducto"];?>"/>
+										<input type="hidden" name="refURL" id="refURL" value="<?php echo "http://". $_SERVER['SERVER_NAME'] .$_SERVER['REQUEST_URI'];?>"/>
+										<input type="submit" class="btn btn-default pull-right" value="Enviar"/>
 									</form>
 								</div>
 							</div>

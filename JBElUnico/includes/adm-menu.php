@@ -256,6 +256,9 @@
                             <a href="slider-list.php"><i class="fa fa-film fa-fw"></i> Slider Principal</a>
                         </li>
                         <li>
+                            <a href="comments-list.php"><i class="fa fa-film fa-fw"></i> Comentarios</a>
+                        </li>
+                        <li>
                             <a href="characteristic-list.php"><i class="fa fa-gears fa-fw"></i> Características del Producto</a>
                         </li>
                        	<li>

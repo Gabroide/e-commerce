@@ -15,3 +15,17 @@
 {
 	padding-bottom: 5px !important;
 }
+
+#reviews form span input
+{
+	color: #656565 !important;
+}
+
+#reviews ul li span
+{
+	color: #696763;
+	display: block;
+	font-family: "Roboto", sans-serif;
+	font-size: 14px;
+	padding-right: 15px;
+}
