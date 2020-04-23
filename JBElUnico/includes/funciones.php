@@ -1859,11 +1859,12 @@ function GetComments()
 	mysqli_free_result($ConsultaFuncion);
 }
 
-function GetCommentsAproved()
+function GetCommentsAproved($producto)
 {
 	global $con;
 	
-	$query_ConsultaFuncion = sprintf("SELECT COUNT(idComentario) AS total FROM tblcomentario WHERE intEstado=1");
+	$query_ConsultaFuncion = sprintf("SELECT COUNT(idComentario) AS total FROM tblcomentario WHERE intEstado=1 AND refProducto=%s",
+									GetSQLValueString($producto, "int"));
 	//echo $query_ConsultaFuncion;
 	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
 	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
