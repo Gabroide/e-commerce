@@ -145,7 +145,7 @@ $totalRows_DatosComentarios = mysqli_num_rows($DatosComentarios);
 								<li  class="active"><a href="#details" data-toggle="tab">Detalles</a></li>
 								<!--<li><a href="#companyprofile" data-toggle="tab">Productos similares</a></li>
 								<li><a href="#tag" data-toggle="tab">Tag</a></li>
-								--><li><a href="#reviews" data-toggle="tab">Comentarios (XXX)</a></li>
+								--><li><a href="#reviews" data-toggle="tab">Comentarios (<?php echo GetCommentsAproved();?>)</a></li>
 							</ul>
 						</div>
 						<div class="tab-content">

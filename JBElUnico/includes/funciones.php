@@ -1825,4 +1825,52 @@ function TimeToHumano($fecha)
 	
 	return $parte2;
 }
+
+function ShowProductName($producto)
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT strNombre FROM tblproducto WHERE idProducto=%s",
+		 GetSQLValueString($producto, "int"));
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	if ($totalRows_ConsultaFuncion>0)	
+		return $row_ConsultaFuncion["strNombre"];
+	else
+		return "-";
+	mysqli_free_result($ConsultaFuncion);
+}
+
+function GetComments()
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT COUNT(idComentario) AS total FROM tblcomentario WHERE intEstado=0");
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	return $row_ConsultaFuncion["total"];
+	
+	mysqli_free_result($ConsultaFuncion);
+}
+
+function GetCommentsAproved()
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT COUNT(idComentario) AS total FROM tblcomentario WHERE intEstado=1");
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	return $row_ConsultaFuncion["total"];
+	
+	mysqli_free_result($ConsultaFuncion);
+}
 ?>

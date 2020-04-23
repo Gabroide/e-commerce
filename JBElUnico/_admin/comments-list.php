@@ -156,7 +156,6 @@
             
 <div class="row">
 	<div class="col-lg-5">
-		<a href="slider-add.php" class="btn btn-outline btn-primary">Autorizar Comentario</a>
 	</div>
 	
 </div><br>
@@ -237,13 +236,16 @@
               		
 										<tr>
 											<td><?php echo $row_DatosConsulta["idComentario"];?></td>
-											<td><?php echo $row_DatosConsulta["strFecha"];?></td>
+											<td><?php echo DateToHumano($row_DatosConsulta["strFecha"]);?> <?php echo TimeToHumano($row_DatosConsulta["strFecha"]);?></td>
 											<td><?php echo $row_DatosConsulta["strNombreComentador"];?></td>
-											<td><?php echo $row_DatosConsulta["txtComentario"];?></td>
-											<td><?php echo $row_DatosConsulta["refProducto"];?></td>
-											<td><?php echo ShowState($row_DatosConsulta["intEstado"]);?></td>
-											<td><a title="Editar Comentario" href="comments-ok.php?id=<?php echo $row_DatosConsulta["idComentario"];?>" class="btn btn -success btn-circle"></a></td>
-										</tr>
+											<td><?php echo nl2br($row_DatosConsulta["txtComentario"]);?></td>
+											<td><?php echo ShowProductName($row_DatosConsulta["refProducto"]);?></td>									
+											<td></td>
+											<td>
+           										<a title="Editar Comentario" href="comments-ok.php?id=<?php echo $row_DatosConsulta["idComentario"];?>" class="btn btn-success btn-circle"><i class="fa fa-check"></i></a>
+            									<a title="Editar Comentario" href="comments-delete.php?id=<?php echo $row_DatosConsulta["idComentario"];?>" class="btn btn-danger btn-circle"><i class="fa fa-times-circle"></i></a>
+            								</td>
+             							</tr>
               		
               		<?php
               		 } while ($row_DatosConsulta = mysqli_fetch_assoc($DatosConsulta)); 

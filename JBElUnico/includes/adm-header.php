@@ -14,3 +14,6 @@
     
    <!-- Extra admin -->
     <link href="../css/extra-admin.css" rel="stylesheet" type="text/css">
+    
+   <!-- Animated icons -->
+    <link href="../css/font-awesome-animation.min.css" rel="stylesheet" type="text/css">

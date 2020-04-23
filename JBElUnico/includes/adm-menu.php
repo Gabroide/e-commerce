@@ -143,17 +143,27 @@
                 <!-- /.dropdown -->
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
+                       <?php $comentariospendientes=GetComments();
+						if($comentariospendientes>0){?>
+                       		<i class="fa fa-bell faa-ring animated"></i> <i class="fa fa-caret-down"></i>
+                       	<?php }
+						else
+						{?>
+                        	<i class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
+                        <?php }?>
                     </a>
+                    
                     <ul class="dropdown-menu dropdown-alerts">
                         <li>
-                            <a href="#">
+                            <a href="../_admin/comments-list.php" title="Ir a Comentarios">
                                 <div>
-                                    <i class="fa fa-comment fa-fw"></i> New Comment
-                                    <span class="pull-right text-muted small">4 minutes ago</span>
+                                    <i class="fa fa-comment fa-fw"></i> Nuevo Comentario
+                                    <span class="pull-right text-muted small"><?php echo $comentariospendientes; ?></span>
                                 </div>
                             </a>
                         </li>
+					</ul>
+                <!--  <ul class="dropdown-menu dropdown-alerts">
                         <li class="divider"></li>
                         <li>
                             <a href="#">
@@ -256,7 +266,7 @@
                             <a href="slider-list.php"><i class="fa fa-film fa-fw"></i> Slider Principal</a>
                         </li>
                         <li>
-                            <a href="comments-list.php"><i class="fa fa-film fa-fw"></i> Comentarios</a>
+                            <a href="comments-list.php"><i class="fa fa-comment fa-fw"></i> Comentarios</a>
                         </li>
                         <li>
                             <a href="characteristic-list.php"><i class="fa fa-gears fa-fw"></i> Características del Producto</a>
