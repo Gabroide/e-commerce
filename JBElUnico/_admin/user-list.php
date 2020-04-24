@@ -348,7 +348,8 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 											<td><?php echo ShowState($row_DatosConsulta["intEstado"]);?></td>
 											<td><?php echo ShowLevel($row_DatosConsulta["intNivel"]);?></td>
 										  <td><a href="user-edit.php?id=<?php echo $row_DatosConsulta["idUsuario"];?>" class="btn btn-warning btn-circle" title="Edición de Usuario">
-												<i class="fa fa-edit"></i></a></td>
+												<i class="fa fa-edit"></i></a> <a href="phoneseller.php?id=<?php echo $row_DatosConsulta["idUsuario"];?>" class="btn btn-success btn-circle" title="Edición de Usuario" target="_blank">
+												<i class="fa fa-headphones"></i></a></td>
 										</tr>
               		
               							<?php
