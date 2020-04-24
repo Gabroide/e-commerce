@@ -18,7 +18,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar")) {
 	if(TestUniqueSEO($_POST["strSEO"]))
 	{
 		
-	  $insertSQL = sprintf("INSERT INTO tblproducto(strNombre, strNombre, refCategoria1, strImagen1, strDescripcion, dblPrecio, dblPrecioAnterior, intEstado, refMArca, refCategoria2, refCategoria3, refCategoria4, refCategoria5, strImagen2, strImagen3, strImagen4, strImagen5, intPrincipal, intStock, refImpuesto, dblPeso) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+	  $insertSQL = sprintf("INSERT INTO tblproducto(strNombre, strNombre, refCategoria1, strImagen1, strDescripcion, dblPrecio, dblPrecioAnterior, intEstado, refMArca, refCategoria2, refCategoria3, refCategoria4, refCategoria5, strImagen2, strImagen3, strImagen4, strImagen5, intPrincipal, intStock, refImpuesto, dblPeso, refGrupo) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
 						   GetSQLValueString($_POST["strNombre"], "text"),
 						   GetSQLValueString($_POST["strSEO"], "text"),
 						  GetSQLValueString($_POST["refCategoria1"], "int"),
@@ -39,7 +39,8 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsertar")) {
 						  GetSQLValueString($esprincipal, "int"),
 						  GetSQLValueString($_POST["intStock"], "int"),
 						  GetSQLValueString($_POST["refImpuesto"], "int"),
-						  GetSQLValueString(ProcessComaCost($_POST["dblPeso"]), "double"));
+						  GetSQLValueString(ProcessComaCost($_POST["dblPeso"]), "double"),
+						  GetSQLValueString(($_POST["refGrupo"]), "int"));
 
 
 	  $Result1 = mysqli_query($con,  $insertSQL) or die(mysqli_error($con));
@@ -71,6 +72,11 @@ $query_DatosImpuestos = sprintf("SELECT * FROM tblimpuesto ORDER BY strNombre");
 $DatosImpuestos = mysqli_query($con,  $query_DatosImpuestos) or die(mysqli_error($con));
 $row_DatosImpuestos = mysqli_fetch_assoc($DatosImpuestos);
 $totalRows_DatosImpuestos = mysqli_num_rows($DatosImpuestos);
+
+$query_PrecioGrupo = sprintf("SELECT * FROM tbldescuento WHERE refPadre=0 ORDER BY strNombre");
+$PrecioGrupo = mysqli_query($con,  $query_PrecioGrupo) or die(mysqli_error($con));
+$row_PrecioGrupo = mysqli_fetch_assoc($PrecioGrupo);
+$totalRows_PrecioGrupo = mysqli_num_rows($PrecioGrupo);
 
 ?>              
 
@@ -175,6 +181,17 @@ $totalRows_DatosImpuestos = mysqli_num_rows($DatosImpuestos);
 												<?php do{?>
 												<option value="<?php echo $row_DatosImpuestos["idImpuesto"];?>"><?php echo $row_DatosImpuestos["strNombre"];?></option>
 												<?php } while($row_DatosImpuestos=mysqli_fetch_assoc($DatosImpuestos));?>
+											</select>
+										</div>
+										<div class="form-group">
+											<label for="refGrupo">Precio Grupo</label>
+											<select name="refGrupo" class="form-control" id="refGrupo">
+												<option value="0">Sin descuento por Grupo</option>
+												<?php do { ?>
+													<option value="<?php echo $row_PrecioGrupo["idGrupo"]?>" ><?php echo $row_PrecioGrupo["strNombre"]?></option>
+												<?php
+													 } while ($row_PrecioGrupo = mysqli_fetch_assoc($PrecioGrupo)); 
+												?>
 											</select>
 										</div>
 										<div class="form-group">

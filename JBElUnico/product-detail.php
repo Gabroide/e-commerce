@@ -118,7 +118,7 @@ $totalRows_DatosComentarios = mysqli_num_rows($DatosComentarios);
 											<br>
 										<?php }?>
 										<span itemprop="price"><?php echo CalculateProductCost($row_DatosConsulta["idProducto"]);?></span>
-										<label>Cantidad:</label>
+										<label for="intCantidad">Cantidad:</label>
 										<input id="intCantidad" name="intCantidad" type="number" value="1" />
 										<input id="refProducto" name="refProducto" type="hidden" value="<?php echo $row_DatosConsulta["idProducto"];?>"/>
 										<button type="button" class="btn btn-fefault cart" onClick="document.formcompra.submit()">
@@ -127,6 +127,10 @@ $totalRows_DatosComentarios = mysqli_num_rows($DatosComentarios);
 										</button>
 									</span>
 									<br>
+									<?php 
+										if($row_DatosConsulta["refGrupo"]!=0)
+											ShowGroupCost($row_DatosConsulta["refGrupo"]);
+									?>									
 									<?php ShowOptions($row_DatosConsulta["idProducto"]);?>
 									<?php echo $row_DatosConsulta["strDescripcion"]; ?>
 									<!--<p><b>Availability:</b> In Stock</p>

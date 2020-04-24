@@ -18,7 +18,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsert")) {
 	if(TestUniqueSEOUpload($_POST["idProducto"], $_POST["strSEO"]))
 	{
 	
-	  $updateSQL = sprintf("UPDATE tblproducto SET strNombre=%s, strSEO=%s, refCategoria1=%s,  refCategoria2=%s,  refCategoria3=%s, refCategoria4=%s, refCategoria5=%s,  strImagen1=%s, strImagen2=%s, strImagen3=%s, strImagen4=%s, strImagen5=%s, strDescripcion=%s, dblPrecio=%s, dblPrecioAnterior=%s, intEstado=%s, refMarca=%s, intPrincipal=%s, intStock=%s, refImpuesto=%s, dblPeso=%s WHERE idProducto=%s",
+	  $updateSQL = sprintf("UPDATE tblproducto SET strNombre=%s, strSEO=%s, refCategoria1=%s,  refCategoria2=%s,  refCategoria3=%s, refCategoria4=%s, refCategoria5=%s,  strImagen1=%s, strImagen2=%s, strImagen3=%s, strImagen4=%s, strImagen5=%s, strDescripcion=%s, dblPrecio=%s, dblPrecioAnterior=%s, intEstado=%s, refMarca=%s, intPrincipal=%s, intStock=%s, refImpuesto=%s, dblPeso=%s, refGrupo=%s WHERE idProducto=%s",
 						   GetSQLValueString($_POST["strNombre"], "text"),
 						   GetSQLValueString($_POST["strSEO"], "text"),
 						   GetSQLValueString($_POST["refCategoria1"], "int"),
@@ -40,6 +40,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsert")) {
 						   GetSQLValueString($_POST["intStock"], "int"),
 						   GetSQLValueString($_POST["refImpuesto"], "int"),
 						   GetSQLValueString(ProcessComaCost($_POST["dblPeso"]), "double"),
+						   GetSQLValueString(($_POST["refGrupo"]), "int"),
 						   GetSQLValueString($_POST["idProducto"], "int"));
 
 		//echo $updateSQL;
@@ -79,6 +80,11 @@ $query_DatosImpuestos = sprintf("SELECT * FROM tblimpuesto ORDER BY strNombre");
 $DatosImpuestos = mysqli_query($con,  $query_DatosImpuestos) or die(mysqli_error($con));
 $row_DatosImpuestos = mysqli_fetch_assoc($DatosImpuestos);
 $totalRows_DatosImpuestos = mysqli_num_rows($DatosImpuestos);
+
+$query_PrecioGrupo = sprintf("SELECT * FROM tbldescuento WHERE refPadre=0 ORDER BY strNombre");
+$PrecioGrupo = mysqli_query($con,  $query_PrecioGrupo) or die(mysqli_error($con));
+$row_PrecioGrupo = mysqli_fetch_assoc($PrecioGrupo);
+$totalRows_PrecioGrupo = mysqli_num_rows($PrecioGrupo);
 ?>
 
 <!DOCTYPE html>
@@ -185,6 +191,17 @@ $totalRows_DatosImpuestos = mysqli_num_rows($DatosImpuestos);
 												<?php do{?>
 												<option value="<?php echo $row_DatosImpuestos["idImpuesto"];?>"<?php if($row_DatosProducto["refImpuesto"]==$row_DatosImpuestos["idImpuesto"]) echo "selected"; ?>><?php echo $row_DatosImpuestos["strNombre"];?></option>
 												<?php } while($row_DatosImpuestos=mysqli_fetch_assoc($DatosImpuestos));?>
+											</select>
+										</div>
+										<div class="form-group">
+											<label for="refGrupo">Descuento de Grupo</label>
+											<select name="refGrupo" class="form-control" id="refGrupo">
+												<option value="0">Sin descuento por Grupo</option>
+												<?php do { ?>
+													<option value="<?php echo $row_PrecioGrupo["idGrupo"]?>" <?php if ($row_DatosProducto["refGrupo"]==$row_PrecioGrupo["idGrupo"]) echo "selected"; ?>><?php echo $row_PrecioGrupo["strNombre"]?></option>
+												<?php
+													 } while ($row_PrecioGrupo = mysqli_fetch_assoc($PrecioGrupo)); 
+												?>
 											</select>
 										</div>
 										<div class="form-group">

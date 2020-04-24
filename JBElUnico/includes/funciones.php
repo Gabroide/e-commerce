@@ -1879,4 +1879,66 @@ function GetComments()
 	mysqli_free_result($ConsultaFuncion);
 }
 
+function DiscountAdminLevelOption($padre, $pertenencia="")
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT * FROM tbldescuento WHERE refPadre=%s ",GetSQLValueString($padre, "int"));
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	if ($totalRows_ConsultaFuncion>0) 
+	{
+		do{
+		?>
+			<tr>
+				<td><?php echo $row_ConsultaFuncion["idGrupo"];?></td>
+				<td><?php echo $pertenencia.$row_ConsultaFuncion["strNombre"];?></td>
+				<td><?php echo ShowState($row_ConsultaFuncion["intEstado"]);?></td>
+				<td><?php echo $row_ConsultaFuncion["dblInferior"];?></td>
+				<td><?php echo $row_ConsultaFuncion["dblSuperior"];?></td>
+				<td><?php echo $row_ConsultaFuncion["dblCoste"];?></td>
+				<td>
+					<a href="discountdetail-edit.php?id=<?php echo $row_ConsultaFuncion["idGrupo"];?>" class="btn btn-warning btn-circle" title="Edición del Descuento">
+					<i class="fa fa-edit"></i></a>
+				</td>
+			</tr>
+		<?php	
+		} while($row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion));
+	}
+	
+	mysqli_free_result($ConsultaFuncion);
+}
+
+function ShowGroupCost($idGrupo)
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT * FROM tbldescuento WHERE refPadre=%s ",
+									 GetSQLValueString($idGrupo, "int"));
+	
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	if ($totalRows_ConsultaFuncion>0) 
+	{
+	?>
+		<span class="preciogrupo">
+			<p><b>¡Producto con descuento!</b></p>
+		<?php
+		do{
+		?>
+			<p>- De <?php echo $row_ConsultaFuncion["dblInferior"];?>  a <?php if($row_ConsultaFuncion["dblSuperior"]==100000) echo "a la cantidad que elija de unidades"; else echo $row_ConsultaFuncion["dblSuperior"];?> unidades hay un <?php echo $row_ConsultaFuncion["dblCoste"];?>% de descuento.</p>
+			<?php  
+		} while($row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion));
+		?>
+		</span>
+	<?php
+	}
+	
+	mysqli_free_result($ConsultaFuncion);
+}
 ?>

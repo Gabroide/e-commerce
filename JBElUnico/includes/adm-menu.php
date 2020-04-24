@@ -143,7 +143,7 @@
                 <!-- /.dropdown -->
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                       <?php $comentariospendientes=GetComments();
+                       <?php $comentariospendientes = GetComments();
 						
 						if ($comentariospendientes>0) {?>
                       <i class="fa fa-bell faa-ring animated"></i> <i class="fa fa-caret-down"></i>
@@ -266,6 +266,9 @@
                         </li>
                         <li>
                             <a href="options-list.php"><i class="fa fa-ellipsis-h fa-fw"></i> Opciones de Producto</a>
+                        </li>
+                        <li>
+                            <a href="discount-list.php"><i class="fa fa-arrow-circle-o-down fa-fw"></i> Descuentos</a>
                         </li>
                         <li>
                             <a href="slider-list.php"><i class="fa fa-film fa-fw"></i> Slider Principal</a>
