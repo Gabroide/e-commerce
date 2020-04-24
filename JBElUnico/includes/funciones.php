@@ -396,7 +396,7 @@ function ConfigIni()
 {
 	global $con;
 	
-	$query_ConsultaFuncion = sprintf("SELECT * FROM tblconfiguracion WHERE idConfiguracion = 1");
+	$query_ConsultaFuncion = sprintf("SELECT * FROM tblconfiguracion WHERE idConfiguracion=1");
 	//echo $query_ConsultaFuncion;
 	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
 	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
@@ -427,6 +427,7 @@ function ConfigIni()
 		define("_intGooglePay", $row_ConsultaFuncion["intGooglePay"]);
 		define("_intApplePay", $row_ConsultaFuncion["intApplePay"]);
 		define("_strURL", $row_ConsultaFuncion["strURL"]);
+		define("_dblDescuento", $row_ConsultaFuncion["dblDescuento"]);
 	}
 	
 	mysqli_free_result($ConsultaFuncion);
@@ -763,18 +764,21 @@ function CalculateProductCost($producto, $opcion=0)
 	{
 		$impuesto=0;
 	
-		if(_mostrarimpuesto==0)
+		if(_mostrarimpuesto==1)
 		{
+			
+			
 			$datoimpuesto=GetTax($row_ConsultaFuncion["refImpuesto"]);
 			$impuesto=$row_ConsultaFuncion["dblPrecio"]*($datoimpuesto/100)*$_SESSION["monedavalor"];
+			$impuesto=$impuesto - ($impuesto * (_dblDescuento/100));
 		}
 
-		return number_format(($row_ConsultaFuncion["dblPrecio"]*$_SESSION["monedavalor"])+$impuesto, 2, ",", ".").$_SESSION["monedasimbolo"];
+		return number_format((($row_ConsultaFuncion["dblPrecio"]*$_SESSION["monedavalor"])+$impuesto) - ((($row_ConsultaFuncion["dblPrecio"]*$_SESSION["monedavalor"])+$impuesto) * (_dblDescuento/100)), 2, ",", ".").$_SESSION["monedasimbolo"];
 	}
 	
 	if($opcion==1)	
 	{
-		return $row_ConsultaFuncion["dblPrecio"]*$_SESSION["monedavalor"];
+		return ($row_ConsultaFuncion["dblPrecio"]*$_SESSION["monedavalor"]) - (($row_ConsultaFuncion["dblPrecio"]*$_SESSION["monedavalor"]) * (_dblDescuento/100));
 	}
 	
 	mysqli_free_result($ConsultaFuncion);
@@ -1396,7 +1400,7 @@ function CalculateProductTax($producto)
 	
 	$impuesto=GetTax($row_ConsultaFuncion["refImpuesto"]);
 	
-	return number_format($row_ConsultaFuncion["dblPrecio"]*($impuesto/100), 2, ",", ".");
+	return number_format(($row_ConsultaFuncion["dblPrecio"]*($impuesto/100)) - (($row_ConsultaFuncion["dblPrecio"]*($impuesto/100)) * (_dblDescuento/100)), 2, ",", ".");
 	
 	mysqli_free_result($ConsultaFuncion);
 }
@@ -1844,21 +1848,6 @@ function ShowProductName($producto)
 	mysqli_free_result($ConsultaFuncion);
 }
 
-function GetComments()
-{
-	global $con;
-	
-	$query_ConsultaFuncion = sprintf("SELECT COUNT(idComentario) AS total FROM tblcomentario WHERE intEstado=0");
-	//echo $query_ConsultaFuncion;
-	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
-	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
-	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
-	
-	return $row_ConsultaFuncion["total"];
-	
-	mysqli_free_result($ConsultaFuncion);
-}
-
 function GetCommentsAproved($producto)
 {
 	global $con;
@@ -1874,4 +1863,20 @@ function GetCommentsAproved($producto)
 	
 	mysqli_free_result($ConsultaFuncion);
 }
+
+function GetComments()
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT COUNT(idComentario) AS total FROM tblcomentario WHERE intEstado=0");
+	//echo $query_ConsultaFuncion;
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	return $row_ConsultaFuncion["total"];
+	
+	mysqli_free_result($ConsultaFuncion);
+}
+
 ?>

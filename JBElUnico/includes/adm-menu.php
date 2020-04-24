@@ -144,13 +144,18 @@
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                        <?php $comentariospendientes=GetComments();
-						if($comentariospendientes>0){?>
-                       		<i class="fa fa-bell faa-ring animated"></i> <i class="fa fa-caret-down"></i>
-                       	<?php }
-						else
-						{?>
-                        	<i class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
-                        <?php }?>
+						
+						if ($comentariospendientes>0) {?>
+                      <i class="fa fa-bell faa-ring animated"></i> <i class="fa fa-caret-down"></i>
+                       
+                       <?php }
+                       else
+                       {?>
+                        <i class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
+                       
+                       <?php }?>
+                       
+                        
                     </a>
                     
                     <ul class="dropdown-menu dropdown-alerts">

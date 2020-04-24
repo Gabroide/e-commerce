@@ -39,7 +39,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsert")) {
 	if(isset($_POST["intApplePay"]) && ($_POST["intApplePay"])=="1")
 		$pago6=1;
 	
-  $updateSQL = sprintf("UPDATE tblconfiguracion SET strTelefono=%s, strEmail=%s, strLogo=%s, intMarcas=%s, intImpuesto=%s, strPaypal_url=%s, strPaypal_email=%s, strCaixa_url=%s, strCaixa_fuc=%s, strCaixa_terminal=%s, strCaixa_version=%s, strCaixa_clave=%s, strSantander_url=%s, strSantander_merchantid=%s, strSantander_secret=%s, strSantander_account=%s, intTransferencia=%s, intPaypal=%s, intCaixa=%s, intSantander=%s, intGooglePay=%s, intApplePay=%s, strURL=%s WHERE idConfiguracion=%s",
+  $updateSQL = sprintf("UPDATE tblconfiguracion SET strTelefono=%s, strEmail=%s, strLogo=%s, intMarcas=%s, intImpuesto=%s, strPaypal_url=%s, strPaypal_email=%s, strCaixa_url=%s, strCaixa_fuc=%s, strCaixa_terminal=%s, strCaixa_version=%s, strCaixa_clave=%s, strSantander_url=%s, strSantander_merchantid=%s, strSantander_secret=%s, strSantander_account=%s, intTransferencia=%s, intPaypal=%s, intCaixa=%s, intSantander=%s, intGooglePay=%s, intApplePay=%s, strURL=%s, dblDescuento=%s WHERE idConfiguracion=%s",
                        GetSQLValueString($_POST["strTelefono"], "text"),
 					   GetSQLValueString($_POST["strEmail"], "text"),
 					   GetSQLValueString($_POST["strLogo"], "text"),
@@ -63,6 +63,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "forminsert")) {
 					    GetSQLValueString($pago5, "int"),
 					   GetSQLValueString($pago6, "int"),
 					   GetSQLValueString($_POST["strURL"], "text"),
+					   GetSQLValueString(($_POST["dblDescuento"]), "double"),
 					   	GetSQLValueString($_POST["idConfiguracion"], "int"));
 
 //echo $updateSQL;
@@ -178,6 +179,10 @@ $totalRows_DatosConsulta = mysqli_num_rows($DatosConsulta);
 													Marcar para mostrar el precio con los Impuestos añadidos.
 												</label>
 											</div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="dblDescuento">Descuento General</label>
+                                            <input class="form-control" name="dblDescuento" id="dblDescuento" value="<?php echo $row_DatosConsulta["dblDescuento"];?>">
                                         </div>                                    
                                         <?php 
 											//BLOQUE INSERCION IMAGEN
