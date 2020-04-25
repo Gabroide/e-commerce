@@ -1941,4 +1941,31 @@ function ShowGroupCost($idGrupo)
 	
 	mysqli_free_result($ConsultaFuncion);
 }
+
+function CalculateProductDiscountCost($idProducto, $cantidad, $refGrupo)
+{
+	global $con;
+	
+	$query_ConsultaFuncion = sprintf("SELECT * FROM tbldescuento WHERE refPadre=%s ",
+									 GetSQLValueString($refGrupo, "int"));
+	
+	$ConsultaFuncion = mysqli_query($con,  $query_ConsultaFuncion) or die(mysqli_error($con));
+	$row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion);
+	$totalRows_ConsultaFuncion = mysqli_num_rows($ConsultaFuncion);
+	
+	if ($totalRows_ConsultaFuncion>0) 
+	{
+		$descuento=0;
+		do{
+			if($cantidad>=$row_ConsultaFuncion["dblInferior"] && $cantidad<=$row_ConsultaFuncion["dblSuperior"])
+			{
+				$descuento=$row_ConsultaFuncion["dblCoste"];
+			}
+		} while($row_ConsultaFuncion = mysqli_fetch_assoc($ConsultaFuncion));
+	}
+	
+	mysqli_free_result($ConsultaFuncion);
+	
+	return $descuento;
+}
 ?>

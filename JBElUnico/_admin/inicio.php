@@ -1,3 +1,5 @@
+<?php require_once('../Connections/conexion.php'); 
+RestringirAcceso("1, 10, 100");?>
 <!DOCTYPE html>
 <html lang="en"><!-- InstanceBegin template="/Templates/Administracion.dwt.php" codeOutsideHTMLIsLocked="false" -->
 

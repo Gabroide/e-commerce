@@ -122,10 +122,26 @@
 								<td width="10%"><!-- class="cart_price">-->
 									<p><?php 
 									$pesoproducto=$row_DatosConsultaProducto["dblPeso"]*$row_DatosConsulta["intCantidad"];
-									$precioproducto=CalculateProductCost($row_DatosConsultaProducto["idProducto"], 1); echo number_format($precioproducto, 2, ",", ".").$_SESSION["monedasimbolo"];?></p>
+									$precioproducto=CalculateProductCost($row_DatosConsultaProducto["idProducto"], 1);
+									
+									$descuentoporcantidad=0;
+									if($row_DatosConsultaProducto["refGrupo"]!=0)
+										$descuentoporcantidad=CalculateProductDiscountCost($row_DatosConsulta["refProducto"], $row_DatosConsulta["intCantidad"], $row_DatosConsultaProducto["refGrupo"]);
+									if($descuentoporcantidad!=0)
+									{
+										$factor=1-($descuentoporcantidad/100);
+										$precioproducto= $precioproducto * $factor;
+									}
+									echo number_format($precioproducto, 2, ",", ".").$_SESSION["monedasimbolo"];?></p>
 								</td>
 								<td width="10%">
-									<p><?php $impuestoproducto=CalculateProductTax($row_DatosConsultaProducto["idProducto"]); $totalimpuestos=$totalimpuestos+($impuestoproducto*$row_DatosConsulta["intCantidad"]); echo $impuestoproducto;?></p>
+									<p><?php $impuestoproducto=CalculateProductTax($row_DatosConsultaProducto["idProducto"]); $totalimpuestos=$totalimpuestos+($impuestoproducto*$row_DatosConsulta["intCantidad"]);
+									if($descuentoporcantidad!=0)
+									{
+										$factor=1-($descuentoporcantidad/100);
+										$impuestoproducto=$impuestoproducto * $factor;
+									}
+									echo $impuestoproducto;?></p>
 								</td>
 								<td width="15%"><!--class="cart_quantity">-->
 									<div class="cart_quantity_button">
